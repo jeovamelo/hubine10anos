@@ -1,0 +1,66 @@
+/* Hubine 10 Anos - Design System Tokens */
+:root {
+  /* Color Palette: Bordô Institucional, Branco e Cinza */
+  --primary: #6B1D2F;          /* Bordô institucional BNB */
+  --primary-hover: #822238;    /* Bordô vibrante */
+  --primary-active: #521524;   /* Bordô escuro */
+  --primary-light: #FDF2F4;    /* Fundo suave bordô */
+  --primary-border: #F1D4DB;   /* Borda suave bordô */
+  --primary-gradient: linear-gradient(135deg, #6B1D2F 0%, #4D1220 100%);
+  --hero-gradient: linear-gradient(145deg, #581424 0%, #3D0D19 50%, #24080F 100%);
+
+  /* Neutrals */
+  --bg-page: #F8FAFC;          /* Fundo principal neutro */
+  --bg-card: #FFFFFF;          /* Fundo cartões */
+  --bg-subtle: #F1F5F9;        /* Fundo secundário cinza */
+  --bg-elevated: #FFFFFF;
+  --text-main: #0F172A;        /* Slate 900 */
+  --text-body: #334155;        /* Slate 700 */
+  --text-muted: #64748B;       /* Slate 500 */
+  --text-light: #94A3B8;       /* Slate 400 */
+  --border-subtle: #E2E8F0;    /* Slate 200 */
+  --border-focus: #6B1D2F;
+
+  /* Accents */
+  --accent-gold: #D97706;      /* Dourado inovação 10 anos */
+  --accent-gold-light: #FEF3C7;
+  --accent-gold-text: #92400E;
+
+  --color-success: #059669;    /* Verde confirmação */
+  --color-success-bg: #ECFDF5;
+  --color-success-text: #065F46;
+
+  --color-warning: #D97706;    /* Âmbar lista de espera */
+  --color-warning-bg: #FFFBEB;
+  --color-warning-text: #B45309;
+
+  --color-danger: #DC2626;     /* Vermelho cancelamento/erro */
+  --color-danger-bg: #FEF2F2;
+  --color-danger-text: #991B1B;
+
+  --color-info: #0284C7;       /* Azul informativo */
+  --color-info-bg: #F0F9FF;
+  --color-info-text: #075985;
+
+  /* Typography */
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 4px 20px rgba(107, 29, 47, 0.06);
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}

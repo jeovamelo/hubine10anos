@@ -1,0 +1,137 @@
+/* Comprovante / Credencial Visual */
+.ticket-wrapper {
+  max-width: 650px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.ticket-card {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(107, 29, 47, 0.12);
+  border: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+.ticket-header {
+  background: var(--primary-gradient);
+  color: #FFFFFF;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.ticket-brand-badge {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #FDE68A;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.ticket-event-name {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 0.25rem;
+}
+
+.ticket-theme {
+  font-size: 0.95rem;
+  color: #F1F5F9;
+  opacity: 0.9;
+}
+
+.ticket-status-pill-wrap {
+  margin-top: 1.25rem;
+}
+
+.ticket-body {
+  padding: 2rem;
+}
+
+.ticket-qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: var(--bg-subtle);
+  border-radius: var(--radius-lg);
+  margin-bottom: 2rem;
+  border: 2px dashed #CBD5E1;
+}
+
+.ticket-qr-img {
+  width: 220px;
+  height: 220px;
+  border-radius: var(--radius-md);
+  background-color: #FFFFFF;
+  padding: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ticket-reg-number {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-top: 1rem;
+  letter-spacing: 1px;
+}
+
+.ticket-qr-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.ticket-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.ticket-field-label {
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.ticket-field-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.ticket-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .ticket-card, .ticket-card * {
+    visibility: visible;
+  }
+  .ticket-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  .ticket-actions, .site-header, .site-footer {
+    display: none !important;
+  }
+}

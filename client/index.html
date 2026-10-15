@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hubine 10 Anos — Banco do Nordeste</title>
+  <meta name="description" content="Evento comemorativo dos 10 anos do Hub de Inovação do Banco do Nordeste — Conectando inovação, pessoas e desenvolvimento regional. 4 de novembro de 2026, Fortaleza — CE.">
+
+  <!-- Typography: Google Fonts Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/comprovante.css">
+  <link rel="stylesheet" href="css/admin.css">
+
+  <!-- HTML5 QR Code Scanner Library (Local npm or CDN fallback) -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- Demo Mode Notification Bar -->
+  <div id="demo-mode-banner" class="demo-mode-bar" style="display: none;">
+    <span>⚡ <strong>Modo Demonstração Ativo:</strong> Envio de e-mail operando em modo de teste institucional. Inspecione e teste os e-mails gerados na</span>
+    <a href="#admin" onclick="switchAdminTab && switchAdminTab('outbox')">Caixa de E-mails do Painel</a>
+  </div>
+
+  <!-- Main Institutional Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <!-- Reserved Brand Marks Slots -->
+      <a href="#inicio" class="brand-group" aria-label="Página inicial do Hubine 10 Anos">
+        <div class="logo-slot" title="Espaço reservado para marca oficial Banco do Nordeste">
+          <span class="logo-slot-label">Espaço Reservado</span>
+          <span class="logo-slot-brand">Banco do Nordeste</span>
+        </div>
+        <div class="brand-separator"></div>
+        <div class="logo-slot" title="Espaço reservado para marca oficial Hubine">
+          <span class="logo-slot-label">Hub de Inovação</span>
+          <span class="logo-slot-brand">Hubine 10 Anos</span>
+        </div>
+      </a>
+
+      <!-- Navigation Menu -->
+      <nav aria-label="Navegação principal">
+        <ul class="nav-menu" id="main-nav-menu">
+          <li><a href="#inicio" class="nav-link">O Evento</a></li>
+          <li><a href="#programacao" class="nav-link">Programação</a></li>
+          <li><a href="#palestrantes" class="nav-link">Palestrantes</a></li>
+          <li><a href="#local" class="nav-link">Local</a></li>
+          <li><a href="#faq" class="nav-link">Dúvidas</a></li>
+          <li><a href="#admin" class="nav-link" style="color: var(--primary);">Painel Restrito</a></li>
+          <li>
+            <a href="#inscricao" class="btn btn-primary btn-sm">Confirmar Participação</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Abrir menu de navegação">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- SPA VIEW: Public Landing Page -->
+  <main id="view-public" class="spa-view">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-badge-tag">
+          <span>✨ 10 Anos de Conexões e Impacto Regional</span>
+        </div>
+        <h1 class="hero-title">Hubine 10 Anos</h1>
+        <p class="hero-theme">Conectando inovação, pessoas e desenvolvimento regional</p>
+
+        <div class="hero-meta-grid">
+          <div class="hero-meta-card">
+            <span class="hero-meta-icon">📅</span>
+            <div>
+              <div class="hero-meta-label">Data</div>
+              <div class="hero-meta-value">4 de novembro de 2026</div>
+            </div>
+          </div>
+          <div class="hero-meta-card">
+            <span class="hero-meta-icon">📍</span>
+            <div>
+              <div class="hero-meta-label">Local</div>
+              <div class="hero-meta-value">Auditório Celso Furtado</div>
+            </div>
+          </div>
+          <div class="hero-meta-card">
+            <span class="hero-meta-icon">⏰</span>
+            <div>
+              <div class="hero-meta-label">Credenciamento</div>
+              <div class="hero-meta-value">A partir das 13h</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <span id="hero-capacity-badge" class="badge badge-success">Carregando disponibilidade de vagas...</span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#inscricao" class="btn btn-primary btn-lg">Confirmar minha participação</a>
+          <a href="#programacao" class="btn btn-outline-light btn-lg">Ver Programação</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Hubine 10 Anos -->
+    <section id="sobre" class="section">
+      <div class="container">
+        <div class="about-grid">
+          <div>
+            <div class="section-kicker">Trajetória Institucional</div>
+            <h2 class="section-title">Uma década fortalecendo o ecossistema nordestino</h2>
+            <p style="font-size: 1.1rem; line-height: 1.7; color: var(--text-body);">
+              Criado para ser a ponte entre o Banco do Nordeste e a nova economia, o <strong>Hubine</strong> completa 10 anos celebrando histórias de transformação, fomento a empreendimentos inovadores e articulação com centros de pesquisa, startups e comunidades acadêmicas.
+            </p>
+            <p style="color: var(--text-muted); line-height: 1.7;">
+              Este encontro comemorativo reúne convidados, dirigentes e colaboradores do BNB, empreendedores, investidores e parceiros institucionais para refletir sobre os aprendizados da primeira década e projetar as próximas fronteiras da inovação para o desenvolvimento regional sustentável.
+            </p>
+          </div>
+
+          <div class="about-features">
+            <div class="about-feature-item">
+              <div class="about-feature-icon">🚀</div>
+              <div>
+                <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Aceleração e Apoio a Startups</h4>
+                <p class="text-muted" style="font-size: 0.9rem; margin: 0;">Centenas de negócios escalados com capacitação, conexões de mercado e fomento financeiro.</p>
+              </div>
+            </div>
+            <div class="about-feature-item">
+              <div class="about-feature-icon">🤝</div>
+              <div>
+                <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Integração Ecossistêmica</h4>
+                <p class="text-muted" style="font-size: 0.9rem; margin: 0;">Parcerias estratégicas com universidades, institutos de ciência e órgãos governamentais.</p>
+              </div>
+            </div>
+            <div class="about-feature-item">
+              <div class="about-feature-icon">💡</div>
+              <div>
+                <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Inovação Aberta no BNB</h4>
+                <p class="text-muted" style="font-size: 0.9rem; margin: 0;">Soluções ágeis e tecnologias aplicadas aos desafios reais do crédito e da inclusão produtiva.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schedule Timeline -->
+    <section id="programacao" class="section section-subtle">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">Agenda do Dia</div>
+          <h2 class="section-title">Programação Prevista</h2>
+          <p class="section-desc">Confira os momentos comemorativos e debates planejados para a tarde de 4 de novembro.</p>
+          <div style="margin-top: 1rem;">
+            <span class="badge badge-warning" style="font-size: 0.775rem;">Programação preliminar — sujeita a alterações</span>
+          </div>
+        </div>
+
+        <div id="schedule-timeline-container" class="timeline">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Speakers Area -->
+    <section id="palestrantes" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">Vozes da Inovação</div>
+          <h2 class="section-title">Palestrantes e Convidados Especiais</h2>
+          <p class="section-desc">Especialistas e lideranças que compartilharão visões sobre futuro, pessoas e impacto regional.</p>
+        </div>
+
+        <div id="speakers-grid-container" class="speakers-grid">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Location & Venue -->
+    <section id="local" class="section section-subtle">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">Como Chegar</div>
+          <h2 class="section-title">Auditório Celso Furtado</h2>
+          <p class="section-desc">Fortaleza — CE</p>
+        </div>
+
+        <div class="location-grid">
+          <div class="location-info">
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--primary);">Espaço Celso Furtado</h3>
+            <p id="location-address-text" style="font-size: 1.05rem; color: var(--text-body); margin-bottom: 1.5rem;">
+              Av. Dr. Silas Munguba, 5700 - Passaré (Campus Banco do Nordeste)
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <a id="location-map-btn" href="https://maps.google.com/?q=Banco+do+Nordeste+Passare+Fortaleza" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                📍 Abrir no Google Maps
+              </a>
+              <a href="#inscricao" class="btn btn-secondary">
+                Garantir Minha Vaga
+              </a>
+            </div>
+          </div>
+          <div class="location-map-placeholder">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🗺️</div>
+            <h4 style="color: #FFFFFF; margin-bottom: 0.5rem;">Localização Institucional</h4>
+            <p style="color: #CBD5E1; font-size: 0.9rem; max-width: 320px;">
+              Localizado na Direção Geral do Banco do Nordeste. Estacionamento interno disponível aos participantes credenciados.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section">
+      <div class="container" style="max-width: 840px;">
+        <div class="section-header">
+          <div class="section-kicker">Tire suas Dúvidas</div>
+          <h2 class="section-title">Perguntas Frequentes</h2>
+          <p class="section-desc">Orientações práticas para sua participação no evento comemorativo.</p>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Quem pode se inscrever no evento?</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+              O evento é destinado a convidados, dirigentes e colaboradores do Banco do Nordeste, fundadores de startups, empresários, representantes da academia, pesquisadores, investidores, órgãos públicos e parceiros do ecossistema de inovação.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>O evento é gratuito?</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+              Sim, a participação no evento comemorativo dos 10 anos do Hubine é totalmente gratuita. As inscrições são individuais e estão sujeitas à capacidade máxima do auditório.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Como funciona a lista de espera caso as vagas se esgotem?</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+              Assim que o limite inicial de vagas confirmadas é atingido, o formulário passa automaticamente a registrar inscrições na Lista de Espera por ordem cronológica. Se houver cancelamentos ou ampliação de vagas pela organização, você receberá um e-mail com a confirmação imediata.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Como é realizado o credenciamento no dia do evento?</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+              O credenciamento terá início pontualmente às 13h no foyer do Auditório Celso Furtado. Basta apresentar o QR Code gerado no seu comprovante de inscrição na tela do celular ou impresso para a leitura rápida pela equipe.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>O auditório conta com acessibilidade?</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+              Sim, o espaço dispõe de rampas de acesso, assentos reservados e sanitários adaptados. No formulário de inscrição, você pode indicar qualquer necessidade específica; nossa equipe fará contato prévio de forma reservada para providenciar o apoio necessário.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Como posso alterar dados ou cancelar minha inscrição?</span>
+              <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+              Ao concluir sua inscrição, você recebe um link seguro individual (também enviado por e-mail). Por ele, é possível alterar seu nome para crachá, telefone ou cancelar a inscrição a qualquer momento, liberando sua vaga para os colegas da lista de espera.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guest Registration Form -->
+    <section id="inscricao" class="section section-subtle bg-grid-pattern">
+      <div class="container registration-container">
+        <div class="section-header">
+          <div class="section-kicker">Participe Conosco</div>
+          <h2 class="section-title">Inscrição de Convidados</h2>
+          <p class="section-desc">Preencha seus dados institucionais para garantir sua credencial individual.</p>
+        </div>
+
+        <div id="form-capacity-alert" class="alert alert-warning" style="display: none;"></div>
+
+        <div class="registration-card">
+          <form id="guest-registration-form" novalidate>
+            <div id="reg-form-alert" class="alert" style="display: none;"></div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="reg-name">Nome Completo <span class="required-mark">*</span></label>
+                <input type="text" id="reg-name" class="form-input" placeholder="Seu nome completo" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="reg-email">E-mail <span class="required-mark">*</span></label>
+                <input type="email" id="reg-email" class="form-input" placeholder="seu.email@exemplo.com" required>
+                <span class="form-hint">O comprovante e o QR Code serão enviados para este endereço.</span>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="reg-institution">Instituição ou Empresa <span class="required-mark">*</span></label>
+                <input type="text" id="reg-institution" class="form-input" placeholder="Ex: Banco do Nordeste, Startup X, UFC..." required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="reg-profile">Perfil de Participação <span class="required-mark">*</span></label>
+                <select id="reg-profile" class="form-select" required>
+                  <option value="">Selecione seu perfil...</option>
+                  <option value="Funcionário do BNB">Funcionário / Colaborador do BNB</option>
+                  <option value="Startup">Startup</option>
+                  <option value="Empresa">Empresa / Setor Produtivo</option>
+                  <option value="Academia">Academia / Ensino e Pesquisa</option>
+                  <option value="Investidor">Investidor / Venture Capital</option>
+                  <option value="Órgão Público">Órgão Público / Governo</option>
+                  <option value="Entidade de Apoio">Entidade de Apoio ao Ecossistema</option>
+                  <option value="Parceiro">Parceiro Institucional</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Optional Fields Section -->
+            <div style="margin: 1.5rem 0 1rem 0; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+              <span style="font-size: 0.825rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">
+                Informações Complementares (Opcionais)
+              </span>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="reg-badge-name">Nome Social ou Nome para o Crachá</label>
+                <input type="text" id="reg-badge-name" class="form-input" placeholder="Como prefere ser chamado no crachá">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="reg-role">Cargo ou Função</label>
+                <input type="text" id="reg-role" class="form-input" placeholder="Ex: Gestor de Inovação, Fundador, Pesquisador...">
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="reg-phone">Telefone / WhatsApp com DDD</label>
+                <input type="tel" id="reg-phone" class="form-input" placeholder="(85) 99999-9999">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="reg-city">Cidade e UF</label>
+                <input type="text" id="reg-city" class="form-input" placeholder="Ex: Fortaleza / CE">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-accessibility">Solicitação de Recurso de Acessibilidade</label>
+              <textarea id="reg-accessibility" class="form-textarea" rows="2" placeholder="Ex: Intérprete de Libras, espaço para cadeira de rodas, material adaptado..."></textarea>
+              <span class="form-hint" style="color: var(--primary); font-weight: 500;">
+                🔒 Nota: A equipe organizadora entrará em contato de forma reservada para alinhar os detalhes e acolhimento.
+              </span>
+            </div>
+
+            <!-- Privacy Notice and Consents -->
+            <div class="privacy-box">
+              <h4>Aviso de Privacidade e Tratamento de Dados (LGPD)</h4>
+              <p style="margin-bottom: 0.5rem;">
+                Os dados coletados neste formulário têm a finalidade exclusiva de credenciamento, emissão de comprovantes de acesso e organização do evento Hubine 10 Anos, sob responsabilidade do <strong>Banco do Nordeste do Brasil S.A.</strong>
+              </p>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                Não coletamos CPF, RG ou dados financeiros. Para detalhes sobre retenção e exercício de direitos, <a href="#" data-open-privacy-modal style="font-weight: 600; text-decoration: underline;">consulte o aviso completo de privacidade</a>.
+              </p>
+
+              <label class="form-checkbox-label" style="margin-bottom: 0.75rem;">
+                <input type="checkbox" id="reg-privacy-check" required>
+                <span><strong>Declaro ciência</strong> quanto ao tratamento dos meus dados para fins de credenciamento e acesso ao evento. <span class="required-mark">*</span></span>
+              </label>
+
+              <label class="form-checkbox-label">
+                <input type="checkbox" id="reg-optin">
+                <span>Desejo receber avisos futuros sobre iniciativas, editais e eventos de inovação do Hubine (opcional).</span>
+              </label>
+            </div>
+
+            <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-lg btn-block">
+              Confirmar minha participação
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SPA VIEW: Ticket / Credential Confirmation -->
+  <div id="view-comprovante" class="spa-view" style="display: none;">
+    <div id="comprovante-content-area"></div>
+  </div>
+
+  <!-- SPA VIEW: Speaker Private Onboarding -->
+  <div id="view-palestrante" class="spa-view" style="display: none;">
+    <div id="palestrante-content-area"></div>
+  </div>
+
+  <!-- SPA VIEW: Restricted Admin Panel -->
+  <div id="view-admin" class="spa-view" style="display: none;">
+    <!-- Admin Login Screen -->
+    <div id="admin-login-view" style="padding: 4rem 1rem;">
+      <div class="card" style="max-width: 440px; margin: 0 auto; box-shadow: var(--shadow-xl);">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div class="badge badge-primary" style="margin-bottom: 0.5rem;">Acesso Restrito</div>
+          <h2 style="font-size: 1.75rem; color: var(--text-main);">Painel da Organização</h2>
+          <p class="text-muted" style="font-size: 0.9rem;">Gestão, credenciamento e programação do Hubine 10 Anos</p>
+        </div>
+
+        <div id="admin-login-alert" class="alert" style="display: none;"></div>
+
+        <form id="admin-login-form">
+          <div class="form-group">
+            <label class="form-label" for="admin-login-email">E-mail Institucional</label>
+            <input type="email" id="admin-login-email" class="form-input" placeholder="seu.email@hubine10anos.bnb.gov.br" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="admin-login-password">Senha</label>
+            <input type="password" id="admin-login-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+            Entrar no Painel
+          </button>
+        </form>
+
+        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-muted);">
+          <strong>Acessos de Teste (Demonstração):</strong>
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-secondary" data-login-preset="admin">Administrador</button>
+            <button class="btn btn-sm btn-secondary" data-login-preset="org">Organização</button>
+            <button class="btn btn-sm btn-secondary" data-login-preset="cred">Credenciamento</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard (Authenticated) -->
+    <div id="admin-dashboard-view" class="admin-wrapper" style="display: none;">
+      <div class="container">
+        <div class="admin-header">
+          <div class="admin-title-wrap">
+            <h1>Painel de Gestão — Hubine 10 Anos</h1>
+            <p class="text-muted" style="margin: 0;">Auditório Celso Furtado • 4 de novembro de 2026</p>
+          </div>
+          <div class="admin-user-info">
+            <span id="admin-user-display-name" style="font-weight: 700;"></span>
+            <span id="admin-user-display-role" class="badge"></span>
+            <a href="#credenciamento" class="btn btn-sm btn-primary">📱 Abrir Credenciamento</a>
+            <button id="btn-admin-logout" class="btn btn-sm btn-secondary">Sair</button>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="admin-tabs">
+          <button class="admin-tab-btn active" data-tab="overview">📊 Visão Geral</button>
+          <button class="admin-tab-btn" data-tab="registrations">👥 Participantes</button>
+          <button class="admin-tab-btn" data-tab="speakers">🎤 Palestrantes</button>
+          <button class="admin-tab-btn" data-tab="schedule">📅 Programação</button>
+          <button class="admin-tab-btn admin-only-tab" data-tab="settings">⚙️ Configurações</button>
+          <button class="admin-tab-btn admin-only-tab" data-tab="users">🔐 Usuários</button>
+          <button class="admin-tab-btn" data-tab="outbox">📬 Caixa de E-mails (Demo)</button>
+          <button class="admin-tab-btn admin-only-tab" data-tab="audit">📜 Auditoria</button>
+        </div>
+
+        <!-- Tab 1: Overview -->
+        <div id="tab-content-overview" class="admin-tab-content">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">Total de Inscrições</div>
+              <div id="kpi-total-val" class="kpi-value">—</div>
+              <div class="kpi-subtext">Todas as solicitações</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Confirmados</div>
+              <div id="kpi-confirmed-val" class="kpi-value" style="color: var(--color-success);">—</div>
+              <div class="kpi-subtext">Com vaga garantida</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Credenciados (Presentes)</div>
+              <div id="kpi-present-val" class="kpi-value" style="color: var(--color-info);">—</div>
+              <div class="kpi-subtext">Check-in realizado no local</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Lista de Espera</div>
+              <div id="kpi-waitlist-val" class="kpi-value" style="color: var(--color-warning);">—</div>
+              <div class="kpi-subtext">Aguardando desistências</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Cancelados</div>
+              <div id="kpi-cancelled-val" class="kpi-value" style="color: var(--color-danger);">—</div>
+              <div class="kpi-subtext">Vagas liberadas</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Taxa de Ocupação</div>
+              <div id="kpi-occupancy-val" class="kpi-value">—</div>
+              <div class="kpi-subtext">Capacidade do auditório</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 1.5rem;">
+            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--primary);">Distribuição por Perfil de Participação</h3>
+            <div id="admin-profile-breakdown"></div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Registrations Table -->
+        <div id="tab-content-registrations" class="admin-tab-content" style="display: none;">
+          <div class="filter-bar">
+            <input type="text" id="reg-filter-search" class="form-input filter-search-input" placeholder="Buscar por nome, instituição, e-mail ou código HUB10...">
+            <select id="reg-filter-status" class="form-select" style="max-width: 200px;">
+              <option value="">Todos os Status</option>
+              <option value="CONFIRMADO">Confirmados</option>
+              <option value="PRESENTE">Presentes (Check-in)</option>
+              <option value="LISTA_ESPERA">Lista de Espera</option>
+              <option value="CANCELADO">Cancelados</option>
+            </select>
+            <select id="reg-filter-profile" class="form-select" style="max-width: 200px;">
+              <option value="">Todos os Perfis</option>
+              <option value="Funcionário do BNB">Funcionários BNB</option>
+              <option value="Startup">Startups</option>
+              <option value="Empresa">Empresas</option>
+              <option value="Academia">Academia</option>
+              <option value="Investidor">Investidores</option>
+              <option value="Órgão Público">Órgãos Públicos</option>
+              <option value="Parceiro">Parceiros</option>
+            </select>
+            <button id="btn-export-csv" class="btn btn-secondary">📥 Exportar CSV (Excel)</button>
+            <span id="registrations-count-badge" class="badge badge-secondary"></span>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nº Inscrição</th>
+                  <th>Participante</th>
+                  <th>E-mail</th>
+                  <th>Instituição</th>
+                  <th>Perfil</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="admin-registrations-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 3: Speakers Management -->
+        <div id="tab-content-speakers" class="admin-tab-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+              <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Gestão de Palestrantes e Painelistas</h2>
+              <p class="text-muted" style="margin: 0;">Gere links individuais seguros de convite e revise as submissões antes de publicar.</p>
+            </div>
+            <button id="btn-new-speaker-invite" class="btn btn-primary">+ Gerar Novo Convite</button>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Palestrante</th>
+                  <th>E-mail</th>
+                  <th>Instituição</th>
+                  <th>Título da Participação</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="admin-speakers-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 4: Schedule Editor -->
+        <div id="tab-content-schedule" class="admin-tab-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+              <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Editor da Programação Oficial</h2>
+              <p class="text-muted" style="margin: 0;">Edite horários, títulos e participantes das atividades públicas.</p>
+            </div>
+            <button id="btn-save-schedule" class="btn btn-primary">Salvar Alterações na Programação</button>
+          </div>
+          <div id="admin-schedule-list"></div>
+        </div>
+
+        <!-- Tab 5: Settings (Admin Only) -->
+        <div id="tab-content-settings" class="admin-tab-content" style="display: none;">
+          <div class="card" style="max-width: 800px;">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--primary);">Configurações Gerais do Evento</h2>
+            <form id="admin-settings-form">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="set-capacity">Capacidade Máxima do Auditório</label>
+                  <input type="number" id="set-capacity" class="form-input" min="10" max="1000" required>
+                  <span class="form-hint">Ao atingir este limite, novas inscrições vão para a lista de espera.</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Status das Inscrições</label>
+                  <label class="form-checkbox-label" style="margin-top: 0.85rem;">
+                    <input type="checkbox" id="set-registrations-open">
+                    <span>Inscrições abertas para o público</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="set-contact-email">E-mail Oficial de Contato da Organização</label>
+                <input type="email" id="set-contact-email" class="form-input" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="set-location-address">Endereço do Local</label>
+                <input type="text" id="set-location-address" class="form-input" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="set-location-map">URL do Mapa / Google Maps</label>
+                <input type="url" id="set-location-map" class="form-input" required>
+              </div>
+
+              <div style="border-top: 1px solid var(--border-subtle); margin: 1.5rem 0; padding-top: 1.5rem;">
+                <h3 style="font-size: 1.15rem; color: var(--primary); margin-bottom: 1rem;">Termos de Privacidade e LGPD</h3>
+                
+                <div class="form-group">
+                  <label class="form-label" for="set-privacy-controller">Controlador do Tratamento</label>
+                  <input type="text" id="set-privacy-controller" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="set-privacy-purpose">Finalidade do Tratamento</label>
+                  <textarea id="set-privacy-purpose" class="form-textarea" rows="2" required></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="set-privacy-legal">Base Legal Adotada</label>
+                  <input type="text" id="set-privacy-legal" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="set-privacy-retention">Prazo de Retenção dos Dados</label>
+                  <input type="text" id="set-privacy-retention" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="set-privacy-dpo">Contato do Encarregado (DPO / Privacidade)</label>
+                  <input type="email" id="set-privacy-dpo" class="form-input" required>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg">Salvar Configurações</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Tab 6: Users Management (Admin Only) -->
+        <div id="tab-content-users" class="admin-tab-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+              <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Controle de Operadores e Permissões</h2>
+              <p class="text-muted" style="margin: 0;">Administradores, comissão organizadora e equipe de credenciamento.</p>
+            </div>
+            <button id="btn-new-user" class="btn btn-primary">+ Criar Novo Usuário</button>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>E-mail</th>
+                  <th>Perfil de Acesso</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 7: Outbox Mailbox Inspector (Demo Mode) -->
+        <div id="tab-content-outbox" class="admin-tab-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+              <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Caixa de E-mails do Modo Demonstração</h2>
+              <p class="text-muted" style="margin: 0;">Visualize o formato exato, QR Codes e links enviados para os participantes e palestrantes.</p>
+            </div>
+            <button id="btn-clear-outbox" class="btn btn-outline-danger">Limpar Caixa</button>
+          </div>
+
+          <div id="admin-outbox-list"></div>
+        </div>
+
+        <!-- Tab 8: Audit Logs (Admin Only) -->
+        <div id="tab-content-audit" class="admin-tab-content" style="display: none;">
+          <div style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Histórico e Logs de Auditoria</h2>
+            <p class="text-muted" style="margin: 0;">Registro cronológico de todas as ações administrativas, alterações e credenciamentos realizados.</p>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Data e Hora</th>
+                  <th>Operação</th>
+                  <th>Detalhes</th>
+                  <th>Operador / Origem</th>
+                </tr>
+              </thead>
+              <tbody id="admin-audit-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SPA VIEW: Mobile Check-in (Credenciamento) -->
+  <div id="view-credenciamento" class="spa-view" style="display: none;">
+    <div style="background-color: #0F172A; color: #FFFFFF; padding: 1.25rem 0;">
+      <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+          <div style="font-size: 0.75rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px;">Hubine 10 Anos • Recepção</div>
+          <h2 style="font-size: 1.35rem; margin: 0; color: #FFFFFF;">Credenciamento Rápido</h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span id="cred-operator-name" style="font-size: 0.85rem; color: #CBD5E1;"></span>
+          <a href="#admin" class="btn btn-sm btn-secondary">Voltar ao Painel</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="max-width: 600px; padding-top: 2rem; padding-bottom: 4rem;">
+      <!-- QR Scanner Container -->
+      <div class="card" style="text-align: center; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: var(--primary);">Leitor de QR Code</h3>
+        
+        <div id="qr-scanner-viewport" class="scanner-viewport-wrap" style="display: none;"></div>
+
+        <button id="btn-toggle-camera" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+          📷 Abrir Câmera do Celular
+        </button>
+      </div>
+
+      <!-- Manual Code Input -->
+      <div class="card">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: var(--text-main);">Busca Manual por Inscrição ou Nome</h3>
+        <form id="cred-manual-form" style="display: flex; gap: 0.5rem;">
+          <input type="text" id="cred-manual-input" class="form-input" placeholder="Digite HUB10-XXXX, nome ou e-mail..." required autofocus>
+          <button type="submit" class="btn btn-primary" style="white-space: nowrap;">Registrar</button>
+        </form>
+      </div>
+
+      <!-- Checkin Feedback Result Area -->
+      <div id="cred-result-area"></div>
+
+      <!-- Undo checkin action -->
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <button id="btn-undo-checkin" class="btn btn-outline-danger" style="display: none;">
+          ↩️ Desfazer Último Check-in
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 class="footer-brand-title">Hubine 10 Anos</h3>
+          <p style="font-size: 0.9rem; max-width: 420px; color: #94A3B8;">
+            Hub de Inovação do Banco do Nordeste — Conectando inovação, pessoas e desenvolvimento regional.
+          </p>
+          <p style="font-size: 0.85rem; color: #64748B;">
+            Auditório Celso Furtado — Fortaleza, CE • 4 de novembro de 2026
+          </p>
+        </div>
+        <div>
+          <h4 style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 1rem;">Navegação</h4>
+          <ul class="footer-links">
+            <li><a href="#inicio">O Evento</a></li>
+            <li><a href="#programacao">Programação</a></li>
+            <li><a href="#palestrantes">Palestrantes</a></li>
+            <li><a href="#local">Localização</a></li>
+            <li><a href="#inscricao">Formulário de Inscrição</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 1rem;">Institucional & LGPD</h4>
+          <ul class="footer-links">
+            <li><a href="#" data-open-privacy-modal>Aviso de Privacidade</a></li>
+            <li><a href="#faq">Perguntas Frequentes</a></li>
+            <li><a href="mailto:hubine10anos@bnb.gov.br">Contato da Organização</a></li>
+            <li><a href="#admin">Acesso Restrito</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Banco do Nordeste do Brasil S.A. Todos os direitos reservados.</span>
+        <span>Auditório Celso Furtado • Fortaleza — CE</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+
+  <!-- 1. Privacy Policy Modal -->
+  <div id="privacy-policy-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Aviso de Privacidade e Tratamento de Dados</h3>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 0.9rem;">
+        <p><strong>Controlador:</strong> <span id="privacy-modal-controller">Banco do Nordeste do Brasil S.A. — Hubine</span></p>
+        <p><strong>Finalidade do Tratamento:</strong> <span id="privacy-modal-purpose">Credenciamento, emissão de comprovantes com QR Code, controle de capacidade do auditório e segurança predial do evento comemorativo Hubine 10 Anos.</span></p>
+        <p><strong>Base Legal:</strong> <span id="privacy-modal-legal">Execução de procedimentos preliminares a pedido do titular e legítimo interesse institucional (LGPD Art. 7º, V e IX).</span></p>
+        <p><strong>Prazo de Retenção:</strong> <span id="privacy-modal-retention">90 dias após o evento para fins de auditoria e emissão de certificados, após o que os dados cadastrais serão eliminados.</span></p>
+        <p><strong>Encarregado pelo Tratamento (DPO):</strong> <span id="privacy-modal-contact">privacidade@bnb.gov.br</span></p>
+        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 1rem 0;">
+        <p style="color: var(--text-muted); font-size: 0.85rem;">
+          O Banco do Nordeste não solicita CPF, RG ou dados bancários para a participação neste evento. As informações de acessibilidade têm tratamento confidencial restrito à equipe técnica de apoio.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-close-modal>Entendi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Duplicate Email Notice Modal -->
+  <div id="duplicate-email-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--primary);">Inscrição Já Registrada</h3>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>O e-mail <strong id="duplicate-modal-email"></strong> já possui uma inscrição cadastrada para o evento Hubine 10 Anos.</p>
+        <p class="text-muted" style="font-size: 0.9rem;">
+          Para consultar seu comprovante, obter seu QR Code ou atualizar suas informações, podemos reenviar o link seguro de acesso diretamente para sua caixa de entrada.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Fechar</button>
+        <button id="btn-resend-duplicate-access" class="btn btn-primary">Reenviar Comprovante por E-mail</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Self-Service Management Modal -->
+  <div id="self-service-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Atualizar Dados ou Cancelar Inscrição</h3>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="self-badge-name">Nome para o Crachá</label>
+          <input type="text" id="self-badge-name" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="self-role">Cargo ou Função</label>
+          <input type="text" id="self-role" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="self-phone">Telefone / WhatsApp</label>
+          <input type="text" id="self-phone" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="self-city">Cidade e UF</label>
+          <input type="text" id="self-city" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="self-accessibility">Recurso de Acessibilidade</label>
+          <textarea id="self-accessibility" class="form-textarea" rows="2"></textarea>
+        </div>
+
+        <div style="border-top: 1px solid var(--border-subtle); padding-top: 1.25rem; margin-top: 1.5rem;">
+          <h4 style="color: var(--color-danger); font-size: 1rem; margin-bottom: 0.5rem;">Desistência da Vaga</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Caso não possa comparecer, cancele sua inscrição para que um colega da lista de espera seja promovido imediatamente.
+          </p>
+          <button type="button" id="self-cancel-btn" class="btn btn-outline-danger">
+            Cancelar Minha Inscrição
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Fechar</button>
+        <button type="button" id="self-save-btn" class="btn btn-primary">Salvar Alterações</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Registration Details Modal (Admin) -->
+  <div id="reg-detail-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Detalhes da Inscrição</h3>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div id="reg-detail-modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Speaker Invite Modal (Admin) -->
+  <div id="speaker-invite-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Novo Convite Individual de Palestrante</h3>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <form id="speaker-invite-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="invite-spk-name">Nome do Palestrante / Painelista <span class="required-mark">*</span></label>
+            <input type="text" id="invite-spk-name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="invite-spk-email">E-mail <span class="required-mark">*</span></label>
+            <input type="email" id="invite-spk-email" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="invite-spk-institution">Instituição</label>
+            <input type="text" id="invite-spk-institution" class="form-input" placeholder="Ex: CESAR, BNB...">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="invite-spk-talk">Título Previsto da Participação</label>
+            <input type="text" id="invite-spk-talk" class="form-input">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
+          <button type="submit" class="btn btn-primary">Gerar Convite e Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. Speaker Review Modal (Admin) -->
+  <div id="speaker-review-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Revisão de Dados do Palestrante</h3>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div id="speaker-review-modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal>Fechar</button>
+        <button type="button" id="btn-approve-speaker" class="btn btn-primary">Aprovar e Publicar no Site</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Admin Create User Modal -->
+  <div id="admin-user-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Novo Usuário do Painel</h3>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <form id="admin-user-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="user-new-name">Nome Completo <span class="required-mark">*</span></label>
+            <input type="text" id="user-new-name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="user-new-email">E-mail <span class="required-mark">*</span></label>
+            <input type="email" id="user-new-email" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="user-new-pass">Senha Provisória <span class="required-mark">*</span></label>
+            <input type="password" id="user-new-pass" class="form-input" required minlength="8">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="user-new-role">Perfil de Permissão <span class="required-mark">*</span></label>
+            <select id="user-new-role" class="form-select" required>
+              <option value="credenciamento">Credenciamento (Apenas Leitura e Check-in)</option>
+              <option value="organizacao">Organização (Gestão de Participantes e Palestrantes)</option>
+              <option value="administrador">Administrador (Gestão Completa e Configurações)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
+          <button type="submit" class="btn btn-primary">Cadastrar Usuário</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. Email View Modal (Demo Mailbox Inspector) -->
+  <div id="email-view-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 720px; height: 85vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <h3 class="modal-title">Inspeção de E-mail Enviado</h3>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div id="email-modal-header-info" style="padding: 0.75rem 1.5rem; background: var(--bg-subtle); border-bottom: 1px solid var(--border-subtle); font-size: 0.9rem;"></div>
+      <div style="flex-grow: 1; padding: 0;">
+        <iframe id="email-modal-iframe" style="width: 100%; height: 100%; border: none;"></iframe>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-close-modal>Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client-side Router and Controller Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/comprovante.js"></script>
+  <script src="js/palestrante.js"></script>
+  <script src="js/credenciamento.js"></script>
+  <script src="js/admin.js"></script>
+
+  <script>
+    // SPA Hash Router
+    function router() {
+      const hash = window.location.hash || '#inicio';
+      const views = document.querySelectorAll('.spa-view');
+      views.forEach(v => v.style.display = 'none');
+
+      // Close mobile menu on navigate
+      const menu = document.getElementById('main-nav-menu');
+      if (menu) menu.classList.remove('open');
+
+      if (hash.startsWith('#comprovante/')) {
+        const token = hash.replace('#comprovante/', '');
+        document.getElementById('view-comprovante').style.display = 'block';
+        initComprovantePage(token);
+      } else if (hash.startsWith('#gerenciar/')) {
+        const token = hash.replace('#gerenciar/', '');
+        document.getElementById('view-comprovante').style.display = 'block';
+        initComprovantePage(token);
+      } else if (hash.startsWith('#palestrante/convite/')) {
+        const token = hash.replace('#palestrante/convite/', '');
+        document.getElementById('view-palestrante').style.display = 'block';
+        initPalestrantePage(token);
+      } else if (hash === '#admin') {
+        document.getElementById('view-admin').style.display = 'block';
+        initAdminPage();
+      } else if (hash === '#credenciamento') {
+        document.getElementById('view-credenciamento').style.display = 'block';
+        initCredenciamentoPage();
+      } else {
+        // Default public landing page
+        document.getElementById('view-public').style.display = 'block';
+        initPublicPage();
+
+        // If sub-anchor like #programacao or #inscricao, smooth scroll
+        if (hash !== '#inicio' && hash.length > 1) {
+          const target = document.querySelector(hash);
+          if (target) {
+            setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
+          }
+        }
+      }
+    }
+
+    window.addEventListener('hashchange', router);
+    window.addEventListener('DOMContentLoaded', () => {
+      // Mobile nav toggle
+      const toggle = document.getElementById('mobile-menu-toggle');
+      const menu = document.getElementById('main-nav-menu');
+      if (toggle && menu) {
+        toggle.addEventListener('click', () => menu.classList.toggle('open'));
+      }
+
+      // Generic modal close handler
+      document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.classList.remove('active');
+        });
+      });
+
+      setupSelfServiceHandlers();
+      router();
+    });
+  </script>
+</body>
+</html>
