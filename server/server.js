@@ -19,35 +19,27 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 const clientPath = path.join(__dirname, '..', 'client');
 
-// Mount helper for serving under root '/' or subpath '/dezanos'
-function registerApp(prefix) {
-  const p = prefix || '';
-
-  // API Routes
-  app.use(p + '/api/public', publicRoutes);
-  app.use(p + '/api/speakers', speakerRoutes);
-  app.use(p + '/api/checkin', checkinRoutes);
-  app.use(p + '/api/admin', adminRoutes);
-
-  // Static files
-  if (p) {
-    app.use(p, express.static(clientPath));
-    app.get(p, (req, res) => res.redirect(p + '/'));
-    app.get(p + '/*', (req, res, next) => {
-      if (req.path.startsWith(p + '/api/')) return next();
-      res.sendFile(path.join(clientPath, 'index.html'));
-    });
-  } else {
-    app.use(express.static(clientPath));
-  }
+// Mount API routes for both root and /dezanos
+function mountApiRoutes(prefix = '') {
+  app.use(prefix + '/api/public', publicRoutes);
+  app.use(prefix + '/api/speakers', speakerRoutes);
+  app.use(prefix + '/api/checkin', checkinRoutes);
+  app.use(prefix + '/api/admin', adminRoutes);
 }
 
-// Support both /dezanos and /
-registerApp('/dezanos');
-registerApp('');
+mountApiRoutes('/dezanos');
+mountApiRoutes('');
 
-// SPA fallback for root
-app.use((req, res) => {
+// Static files for /dezanos and /
+app.use('/dezanos', express.static(clientPath));
+app.use(express.static(clientPath));
+
+// Redirect /dezanos without trailing slash to /dezanos/
+app.get('/dezanos', (req, res) => res.redirect('/dezanos/'));
+
+// Universal SPA fallback for Express 5 without wildcard errors
+app.use((req, res, next) => {
+  if (req.method !== 'GET') return next();
   if (req.path.startsWith('/api/') || req.path.startsWith('/dezanos/api/')) {
     return res.status(404).json({ error: 'Endpoint da API não encontrado.' });
   }
@@ -55,10 +47,10 @@ app.use((req, res) => {
 });
 
 if (require.main === module) {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log('====================================================');
-    console.log('🎉 Servidor Hubine 10 Anos rodando em: http://localhost:' + PORT);
-    console.log('   Rota base alternativa: http://localhost:' + PORT + '/dezanos/');
+    console.log('🎉 Servidor Hubine 10 Anos rodando em: http://0.0.0.0:' + PORT);
+    console.log('   Rota base alternativa: http://0.0.0.0:' + PORT + '/dezanos/');
     console.log('====================================================');
     console.log('Painel Administrativo: http://localhost:' + PORT + '/#admin');
     console.log('Credenciamento Mobile:  http://localhost:' + PORT + '/#credenciamento');
