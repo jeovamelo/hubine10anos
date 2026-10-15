@@ -1058,6 +1058,11 @@
   <script src="js/admin.js"></script>
 
   <script>
+    // Ensure trailing slash on subpath so relative assets resolve properly
+    if (window.location.pathname === '/dezanos') {
+      window.location.replace('/dezanos/' + (window.location.hash || '#inicio'));
+    }
+
     // SPA Hash Router
     function router() {
       const hash = window.location.hash || '#inicio';

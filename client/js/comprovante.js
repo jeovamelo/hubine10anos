@@ -112,7 +112,7 @@ function renderTicket(reg) {
               <a href="${gcalUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-block">
                 📅 Adicionar ao Google Agenda
               </a>
-              <a href="/api/public/calendar/${reg.token}" download class="btn btn-secondary btn-block">
+              <a href="${API.getBasePath()}/api/public/calendar/${reg.token}" download class="btn btn-secondary btn-block">
                 💾 Baixar Arquivo de Calendário (.ICS)
               </a>
               <button onclick="window.print()" class="btn btn-secondary btn-block">

@@ -253,7 +253,7 @@ function setupRegistrationsFilters() {
   const exportBtn = document.getElementById('btn-export-csv');
   if (exportBtn) {
     exportBtn.onclick = () => {
-      window.location.href = '/api/admin/export/csv?token=' + API.getToken();
+      window.location.href = API.getBasePath() + '/api/admin/export/csv?token=' + API.getToken();
     };
   }
 }
@@ -349,7 +349,7 @@ async function loadAdminSpeakers() {
       else if (s.status === 'AGUARDANDO_REVISAO') statusBadge = '<span class="badge badge-warning">Aguardando Revisão</span>';
       else statusBadge = '<span class="badge badge-info">Convite Pendente</span>';
 
-      const inviteUrl = window.location.origin + '/#palestrante/convite/' + s.inviteToken;
+      const inviteUrl = window.location.origin + API.getBasePath() + '/#palestrante/convite/' + s.inviteToken;
 
       return `
         <tr>

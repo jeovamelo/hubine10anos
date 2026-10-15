@@ -10,7 +10,7 @@
     "locationCity": "Fortaleza — CE",
     "locationAddress": "Av. Dr. Silas Munguba, 5700 - Passaré (Campus Banco do Nordeste)",
     "locationMapUrl": "https://maps.google.com/?q=Banco+do+Nordeste+Passare+Fortaleza",
-    "capacity": 250,
+    "capacity": 220,
     "registrationsOpen": true,
     "contactEmail": "hubine10anos@bnb.gov.br",
     "privacyNotice": {
@@ -18,8 +18,7 @@
       "purpose": "Credenciamento, emissão de comprovantes, organização logística, segurança predial e controle de acesso ao evento comemorativo Hubine 10 Anos.",
       "legalBasis": "Execução de procedimentos preliminares a pedido do titular e legítimo interesse institucional (Art. 7º, incisos V e IX da Lei Geral de Proteção de Dados - LGPD).",
       "retentionPeriod": "90 dias após o encerramento do evento para fins de auditoria e emissão de certificados, após os quais os dados cadastrais serão eliminados ou anonimizados, exceto comunicações expressamente autorizadas.",
-      "dpoContact": "privacidade@bnb.gov.br",
-      "accessibilityNote": "Dados sobre recursos de acessibilidade têm tratamento confidencial e restrito à equipe técnica de suporte do evento para atendimento às necessidades indicadas."
+      "dpoContact": "privacidade@bnb.gov.br"
     }
   },
   "users": [
@@ -315,6 +314,13 @@
       "timestamp": "2026-10-15T17:28:43.536Z",
       "action": "CHECKIN_REALIZADO",
       "details": "Credenciamento de Dra. Gabriela Medeiros (HUB10-1002) por Administrador Hubine",
+      "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792087034225_1nygf",
+      "timestamp": "2026-10-15T17:57:14.228Z",
+      "action": "CONFIGURACOES_ATUALIZADAS",
+      "details": "Configurações do evento atualizadas por Administrador Hubine",
       "user": "Administrador Hubine"
     }
   ],

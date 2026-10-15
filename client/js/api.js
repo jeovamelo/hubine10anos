@@ -27,7 +27,16 @@ const API = {
     }
   },
 
+  getBasePath() {
+    return window.location.pathname.startsWith('/dezanos') ? '/dezanos' : '';
+  },
+
   async request(endpoint, options = {}) {
+    const basePath = this.getBasePath();
+    const finalEndpoint = (endpoint.startsWith('/') && !endpoint.startsWith(basePath + '/'))
+      ? basePath + endpoint
+      : endpoint;
+
     const headers = {
       'Content-Type': 'application/json',
       ...options.headers
@@ -48,7 +57,7 @@ const API = {
     }
 
     try {
-      const res = await fetch(endpoint, config);
+      const res = await fetch(finalEndpoint, config);
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {

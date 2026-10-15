@@ -1,0 +1,17 @@
+services:
+  hubine10anos:
+    build: .
+    container_name: hubine10anos-app
+    restart: always
+    ports:
+      - "127.0.0.1:3010:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - APP_URL=http://eventos.hubine.org/dezanos
+      - JWT_SECRET=hubine-10-anos-chave-secreta-jwt-2026-vps
+    volumes:
+      - hubine10anos_data:/app/data
+
+volumes:
+  hubine10anos_data:
