@@ -31,7 +31,8 @@ router.get('/event-info', (req, res) => {
     isWaitlistActive: confirmed >= settings.capacity,
     contactEmail: settings.contactEmail,
     privacyNotice: settings.privacyNotice,
-    isDemoMode: !emailService.isSmtpConfigured
+    isDemoMode: !emailService.isSmtpConfigured,
+    allowDemoLogin: process.env.NODE_ENV !== 'production'
   });
 });
 
@@ -138,77 +139,90 @@ router.post('/register', async (req, res) => {
 
     const cleanEmail = email.trim().toLowerCase();
 
-    // Check duplicate
-    const existing = db.getRegistrationByEmail(cleanEmail);
-    if (existing && existing.status !== 'CANCELADO') {
-      return res.status(409).json({
-        error: 'DUPLICATE_EMAIL',
-        message: 'Este e-mail já possui uma inscrição registrada para este evento.',
-        token: existing.token
-      });
-    }
-
-    // Check capacity and determine status
-    const confirmedCount = db.getConfirmedCount();
-    const isCapacityFull = confirmedCount >= settings.capacity;
-    const status = isCapacityFull ? 'LISTA_ESPERA' : 'CONFIRMADO';
-
-    let waitlistPosition = null;
-    if (isCapacityFull) {
-      waitlistPosition = db.getWaitlistCount() + 1;
-    }
-
-    // Generate random secure tokens
-    const token = crypto.randomBytes(24).toString('hex');
-    const qrToken = 'urn:hubine:checkin:' + crypto.randomUUID();
-
-    // Generate readable registration number HUB10-XXXX
-    const registrations = db.getRegistrations();
-    const nextSeq = 1000 + registrations.length + 1;
-    const registrationNumber = `HUB10-${nextSeq}`;
-
-    // Generate QR Code data URL
-    const qrCodeDataUrl = await qrcode.toDataURL(qrToken, {
-      width: 320,
-      margin: 2,
-      color: {
-        dark: '#6B1D2F',
-        light: '#FFFFFF'
+    // Atomic execution for duplicate check, capacity check, and sequence assignment
+    const newReg = await db.runLocked(async () => {
+      // Check duplicate
+      const existing = db.getRegistrationByEmail(cleanEmail);
+      if (existing && existing.status !== 'CANCELADO') {
+        const error = new Error('DUPLICATE_EMAIL');
+        error.status = 409;
+        error.customResponse = {
+          error: 'DUPLICATE_EMAIL',
+          message: 'Este e-mail já possui uma inscrição registrada para este evento.'
+        };
+        throw error;
       }
-    });
 
-    const newReg = {
-      id: 'reg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
-      registrationNumber,
-      token,
-      qrToken,
-      qrCodeDataUrl,
-      name: name.trim(),
-      email: cleanEmail,
-      institution: institution.trim(),
-      profile: profile.trim(),
-      badgeName: (badgeName || name).trim(),
-      role: (role || '').trim(),
-      phone: (phone || '').trim(),
-      cityUf: (cityUf || '').trim(),
-      accessibility: (accessibility || '').trim(),
-      futureEventsOptIn: Boolean(futureEventsOptIn),
-      type: 'CONVIDADO',
-      status, // CONFIRMADO | LISTA_ESPERA
-      waitlistPosition,
-      checkinAt: null,
-      checkinOperator: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+      // Check capacity and determine status
+      const confirmedCount = db.getConfirmedCount();
+      const isCapacityFull = confirmedCount >= settings.capacity;
+      const status = isCapacityFull ? 'LISTA_ESPERA' : 'CONFIRMADO';
 
-    await db.addRegistration(newReg);
+      let waitlistPosition = null;
+      if (isCapacityFull) {
+        waitlistPosition = db.getWaitlistCount() + 1;
+      }
 
-    // Audit log
-    await db.addAuditLog({
-      action: 'NOVA_INSCRICAO',
-      details: `Inscrição criada: ${registrationNumber} (${newReg.name}) - Status: ${status}`,
-      user: 'Público (Inscrição Web)'
+      // Generate random secure tokens
+      const token = crypto.randomBytes(24).toString('hex');
+      const qrToken = 'urn:hubine:checkin:' + crypto.randomUUID();
+
+      // Generate readable sequential registration number HUB10-XXXX
+      const registrationNumber = db.getNextRegistrationNumber();
+
+      // Generate QR Code data URL
+      const qrCodeDataUrl = await qrcode.toDataURL(qrToken, {
+        width: 320,
+        margin: 2,
+        color: {
+          dark: '#6B1D2F',
+          light: '#FFFFFF'
+        }
+      });
+
+      const regItem = {
+        id: 'reg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        registrationNumber,
+        token,
+        qrToken,
+        qrCodeDataUrl,
+        name: name.trim(),
+        email: cleanEmail,
+        institution: institution.trim(),
+        profile: profile.trim(),
+        badgeName: (badgeName || name).trim(),
+        role: (role || '').trim(),
+        phone: (phone || '').trim(),
+        whatsapp: (phone || '').trim(),
+        cityUf: (cityUf || '').trim(),
+        accessibility: (accessibility || '').trim(),
+        futureEventsOptIn: Boolean(futureEventsOptIn),
+        origin: 'PUBLIC_REGISTRATION',
+        invitedBy: null,
+        invitedAt: null,
+        invitationSentAt: null,
+        invitationChannel: null,
+        invitationStatus: null,
+        internalNotes: '',
+        type: 'CONVIDADO',
+        status, // CONFIRMADO | LISTA_ESPERA
+        waitlistPosition,
+        checkinAt: null,
+        checkinOperator: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      await db.addRegistration(regItem);
+
+      // Audit log
+      await db.addAuditLog({
+        action: 'NOVA_INSCRICAO',
+        details: `Inscrição pública criada: ${registrationNumber} (${regItem.name}) - Status: ${status}`,
+        user: 'Público (Inscrição Web)'
+      });
+
+      return regItem;
     });
 
     // Send confirmation email
@@ -216,15 +230,18 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      registrationNumber,
-      token,
-      status,
-      waitlistPosition,
-      message: isCapacityFull
+      registrationNumber: newReg.registrationNumber,
+      token: newReg.token,
+      status: newReg.status,
+      waitlistPosition: newReg.waitlistPosition,
+      message: newReg.status === 'LISTA_ESPERA'
         ? 'Inscrição registrada na Lista de Espera! Enviamos os detalhes para seu e-mail.'
         : 'Inscrição confirmada com sucesso! Seu comprovante e QR Code foram gerados.'
     });
   } catch (err) {
+    if (err.status && err.customResponse) {
+      return res.status(err.status).json(err.customResponse);
+    }
     console.error('Erro ao processar inscrição:', err);
     res.status(500).json({ error: 'Ocorreu um erro interno ao processar sua inscrição. Tente novamente.' });
   }
@@ -287,7 +304,10 @@ router.put('/registration/:token', async (req, res) => {
   const updates = {};
   if (badgeName !== undefined) updates.badgeName = badgeName.trim();
   if (role !== undefined) updates.role = role.trim();
-  if (phone !== undefined) updates.phone = phone.trim();
+  if (phone !== undefined) {
+    updates.phone = phone.trim();
+    updates.whatsapp = phone.trim();
+  }
   if (cityUf !== undefined) updates.cityUf = cityUf.trim();
   if (accessibility !== undefined) updates.accessibility = accessibility.trim();
   if (futureEventsOptIn !== undefined) updates.futureEventsOptIn = Boolean(futureEventsOptIn);

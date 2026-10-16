@@ -248,8 +248,191 @@ async function runTests() {
     const afterCancel = await request('/api/public/registration/' + regToken);
     assert(afterCancel.data.status === 'CANCELADO', 'Status refletido como CANCELADO');
 
+    // 11. Login no Painel Restrito (Modo Demonstração e Modo Normal)
+    console.log('\n[Fluxo 11] Login com Modo Demonstração e Credenciais Institucionais');
+    // Checagem de disponibilidade de modo demonstração na API pública
+    const demoCheckRes = await request('/api/public/event-info');
+    assert(demoCheckRes.data.allowDemoLogin === true, 'Ambiente de desenvolvimento/teste expõe allowDemoLogin=true');
+
+    // Testar login dos três usuários institucionais
+    const orgLoginRes = await request('/api/admin/login', {
+      method: 'POST',
+      body: {
+        email: 'organizacao@hubine10anos.bnb.gov.br',
+        password: 'HubineOrg2026!'
+      }
+    });
+    assert(orgLoginRes.status === 200, 'Login do perfil Organização bem-sucedido');
+    assert(orgLoginRes.data.user.role === 'organizacao', 'Perfil retornado é organizacao');
+
+    // Login com senha incorreta
+    const invalidLoginRes = await request('/api/admin/login', {
+      method: 'POST',
+      body: {
+        email: 'admin@hubine10anos.bnb.gov.br',
+        password: 'SenhaErrada123!'
+      }
+    });
+    assert(invalidLoginRes.status === 401, 'Rejeita login com credenciais inválidas (HTTP 401)');
+
+    // 12. Filtro de Participantes (Padrão CONFIRMADO, CANCELADO, TODOS) e Busca por WhatsApp
+    console.log('\n[Fluxo 12] Filtros da Lista de Participantes e Busca por WhatsApp');
+    // Filtro padrão sem status deve retornar apenas CONFIRMADO
+    const defaultListRes = await request('/api/admin/registrations', {
+      headers: { Authorization: 'Bearer ' + adminToken }
+    });
+    assert(defaultListRes.status === 200, 'Lista de participantes carrega com status 200');
+    assert(defaultListRes.data.every(r => r.status === 'CONFIRMADO'), 'Filtro padrão exibe exclusivamente participantes CONFIRMADOS');
+
+    // Filtro explícito de CANCELADO
+    const cancelledListRes = await request('/api/admin/registrations?status=CANCELADO', {
+      headers: { Authorization: 'Bearer ' + adminToken }
+    });
+    assert(cancelledListRes.status === 200, 'Filtro por CANCELADO responde com status 200');
+    assert(cancelledListRes.data.some(r => r.token === regToken && r.status === 'CANCELADO'), 'Localiza o participante cancelado no filtro de CANCELADO');
+
+    // Filtro TODOS (ALL)
+    const allListRes = await request('/api/admin/registrations?status=ALL', {
+      headers: { Authorization: 'Bearer ' + adminToken }
+    });
+    assert(allListRes.data.length >= defaultListRes.data.length, 'Filtro ALL traz todos os registros');
+
+    // Busca por WhatsApp / telefone
+    const searchWhatsappRes = await request('/api/admin/registrations?status=ALL&search=999990000', {
+      headers: { Authorization: 'Bearer ' + adminToken }
+    });
+    assert(searchWhatsappRes.data.some(r => (r.whatsapp && r.whatsapp.includes('99999-0000')) || (r.phone && r.phone.includes('99999-0000'))), 'Busca por número de WhatsApp localiza participante');
+
+    // 13. Cadastro de Participante Convidado pela Organização
+    console.log('\n[Fluxo 13] Cadastro de Convidado da Organização, Bloqueio de Duplicidade e RBAC');
+    const uniqueNum = Date.now().toString().slice(-4);
+    const orgGuestEmail = 'roberto.finep.' + Date.now() + '@gov.br';
+    const guestWhatsapp = '(85) 97777-' + uniqueNum;
+    const guestPayload = {
+      name: 'Dr. Roberto Magalhães',
+      institution: 'FINEP - Financiadora de Estudos e Projetos',
+      profile: 'Governo / Financiamento',
+      email: orgGuestEmail,
+      whatsapp: guestWhatsapp,
+      badgeName: 'Roberto Magalhães',
+      role: 'Diretor de Inovação',
+      cityUf: 'Brasília / DF',
+      accessibility: 'Acessibilidade motora para primeira fileira',
+      internalNotes: 'Convidado de honra da Presidência do BNB'
+    };
+
+    // Operador de credenciamento tenta cadastrar convidado (deve ser bloqueado)
+    const credGuestRes = await request('/api/admin/guests', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + credToken },
+      body: guestPayload
+    });
+    assert(credGuestRes.status === 403, 'Operador de credenciamento NÃO tem permissão para cadastrar convidados (HTTP 403)');
+
+    // Administrador cadastra convidado
+    const addGuestRes = await request('/api/admin/guests', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + adminToken },
+      body: guestPayload
+    });
+    assert(addGuestRes.status === 201, 'Administrador cadastra convidado com sucesso (HTTP 201)');
+    assert(addGuestRes.data.registration.registrationNumber.startsWith('HUB10-'), 'Gera número de inscrição padrão HUB10-XXXX para convidado');
+    assert(addGuestRes.data.registration.origin === 'ORGANIZATION_INVITE', 'Origem registrada como ORGANIZATION_INVITE');
+    assert(addGuestRes.data.registration.status === 'CONFIRMADO', 'Status inicial do convidado é CONFIRMADO');
+    assert(addGuestRes.data.registration.invitedBy === 'Administrador Hubine', 'Registra autor do convite');
+    assert(addGuestRes.data.registration.qrCodeDataUrl.startsWith('data:image/png;base64,'), 'Gera QR Code seguro para credenciamento');
+
+    const guestId = addGuestRes.data.registration.id;
+    const guestNumber = addGuestRes.data.registration.registrationNumber;
+
+    // Tentativa de duplicidade por e-mail
+    const dupEmailRes = await request('/api/admin/guests', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + adminToken },
+      body: { ...guestPayload, whatsapp: '(85) 96666-5555' }
+    });
+    assert(dupEmailRes.status === 409 && dupEmailRes.data.error === 'DUPLICATE_EMAIL', 'Bloqueia cadastro de convidado com e-mail duplicado');
+
+    // Tentativa de duplicidade por WhatsApp
+    const dupWpRes = await request('/api/admin/guests', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + adminToken },
+      body: { ...guestPayload, email: 'outro.email.' + Date.now() + '@finep.gov.br' }
+    });
+    assert(dupWpRes.status === 409 && dupWpRes.data.error === 'DUPLICATE_WHATSAPP', 'Bloqueia cadastro de convidado com WhatsApp duplicado');
+
+    // 14. Envio de Comunicação (E-mail e WhatsApp) e Reenvio
+    console.log('\n[Fluxo 14] Comunicação com Convidado: E-mail, WhatsApp e Reenvio');
+    const sendEmailRes = await request('/api/admin/guests/' + guestId + '/send-invite', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + adminToken },
+      body: { channel: 'EMAIL' }
+    });
+    assert(sendEmailRes.status === 200, 'Envio de convite por e-mail processado com sucesso');
+    assert(sendEmailRes.data.invitationStatus.startsWith('ENVIADO'), 'Status da comunicação atualizado para ENVIADO');
+    assert(sendEmailRes.data.invitationChannel === 'EMAIL', 'Canal registrado como EMAIL');
+
+    // Envio / Preparação para WhatsApp
+    const sendWpRes = await request('/api/admin/guests/' + guestId + '/send-invite', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + adminToken },
+      body: { channel: 'WHATSAPP' }
+    });
+    assert(sendWpRes.status === 200, 'Preparação de mensagem para WhatsApp retorna sucesso');
+    assert(sendWpRes.data.whatsappMessage.includes('Hubine 10 Anos'), 'Mensagem de WhatsApp contém nome do evento');
+    assert(sendWpRes.data.whatsappMessage.includes(guestNumber), 'Mensagem de WhatsApp contém número da inscrição');
+    assert(sendWpRes.data.invitationChannel === 'WHATSAPP', 'Canal registrado como WHATSAPP');
+
+    // Reenvio de convite via endpoint de resend
+    const resendRes = await request('/api/admin/registrations/' + guestId + '/resend', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + adminToken }
+    });
+    assert(resendRes.status === 200, 'Reenvio de convite processado com sucesso');
+
+    // 15. Check-in de Participante Convidado no Credenciamento
+    console.log('\n[Fluxo 15] Check-in do Participante Convidado no Credenciamento');
+    const guestCheckinRes = await request('/api/checkin/scan', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + credToken },
+      body: { code: guestNumber }
+    });
+    assert(guestCheckinRes.status === 200, 'Check-in do convidado realizado com sucesso');
+    assert(guestCheckinRes.data.status === 'SUCCESS', 'Status de resposta do check-in é SUCCESS');
+    assert(guestCheckinRes.data.attendee.registrationNumber === guestNumber, 'Confirma dados do convidado no check-in');
+    assert(guestCheckinRes.data.attendee.status === 'PRESENTE', 'Status do convidado atualizado para PRESENTE');
+
+    // 16. Logs de Auditoria e Segurança de JWT em Produção
+    console.log('\n[Fluxo 16] Logs de Auditoria e Segurança de JWT em Produção');
+    const auditRes = await request('/api/admin/audit-logs', {
+      headers: { Authorization: 'Bearer ' + adminToken }
+    });
+    assert(auditRes.status === 200, 'Consulta aos logs de auditoria retorna status 200');
+    assert(auditRes.data.some(l => l.action === 'CONVITE_ORGANIZACAO_CRIADO'), 'Audit log contém registro de CONVITE_ORGANIZACAO_CRIADO');
+    assert(auditRes.data.some(l => l.action === 'CONVITE_ORGANIZACAO_ENVIADO_EMAIL'), 'Audit log contém registro de CONVITE_ORGANIZACAO_ENVIADO_EMAIL');
+
+    // Validação de segurança: JWT_SECRET padrão deve falhar em produção
+    const authModule = require('../server/auth');
+    const prevNodeEnv = process.env.NODE_ENV;
+    const prevJwtSecret = process.env.JWT_SECRET;
+    try {
+      process.env.NODE_ENV = 'production';
+      delete process.env.JWT_SECRET;
+      let caughtError = false;
+      try {
+        authModule.getJwtSecret();
+      } catch (e) {
+        caughtError = true;
+        assert(e.message.includes('ERRO CRÍTICO DE SEGURANÇA'), 'Bloqueia JWT_SECRET padrão em ambiente de produção');
+      }
+      assert(caughtError === true, 'getJwtSecret() lança exceção se JWT_SECRET não configurado em produção');
+    } finally {
+      process.env.NODE_ENV = prevNodeEnv;
+      if (prevJwtSecret) process.env.JWT_SECRET = prevJwtSecret;
+    }
+
     console.log('\n========================================================');
-    console.log('✅ TODOS OS 10 FLUXOS FORAM EXECUTADOS COM SUCESSO TOTAL!');
+    console.log('✅ TODOS OS 16 FLUXOS FORAM EXECUTADOS COM SUCESSO TOTAL!');
     console.log('========================================================\n');
     if (server) server.close();
     process.exit(0);
@@ -260,3 +443,4 @@ async function runTests() {
 }
 
 runTests();
+

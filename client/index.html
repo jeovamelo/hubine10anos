@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/comprovante.css">
   <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/hubine.css">
 
   <!-- HTML5 QR Code Scanner Library (Local npm or CDN fallback) -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -31,32 +32,31 @@
   </div>
 
   <!-- Main Institutional Header -->
-  <header class="site-header">
+  <header class="site-header" id="site-header">
     <div class="container header-inner">
-      <!-- Reserved Brand Marks Slots -->
-      <a href="#inicio" class="brand-group" aria-label="Página inicial do Hubine 10 Anos">
-        <div class="logo-slot" title="Espaço reservado para marca oficial Banco do Nordeste">
-          <span class="logo-slot-label">Espaço Reservado</span>
-          <span class="logo-slot-brand">Banco do Nordeste</span>
-        </div>
-        <div class="brand-separator"></div>
-        <div class="logo-slot" title="Espaço reservado para marca oficial Hubine">
-          <span class="logo-slot-label">Hub de Inovação</span>
-          <span class="logo-slot-brand">Hubine 10 Anos</span>
-        </div>
-      </a>
+      <!-- Brand Logo / Identity -->
+      <div class="header-brand-wrap">
+        <a href="#inicio" class="site-brand" aria-label="Hubine 10 Anos (2016 – 2026) - Página Inicial">
+          <span class="site-brand-badge">BNB</span>
+          <div class="site-brand-text">
+            <span class="site-brand-title">Hubine 10 Anos</span>
+            <span class="site-brand-years">(2016 – 2026)</span>
+          </div>
+        </a>
+      </div>
 
       <!-- Navigation Menu -->
-      <nav aria-label="Navegação principal">
+      <nav aria-label="Navegação principal" class="header-nav">
         <ul class="nav-menu" id="main-nav-menu">
-          <li><a href="#inicio" class="nav-link">O Evento</a></li>
-          <li><a href="#programacao" class="nav-link">Programação</a></li>
-          <li><a href="#palestrantes" class="nav-link">Palestrantes</a></li>
-          <li><a href="#local" class="nav-link">Local</a></li>
-          <li><a href="#faq" class="nav-link">Dúvidas</a></li>
-          <li><a href="#admin" class="nav-link" style="color: var(--primary);">Painel Restrito</a></li>
-          <li>
-            <a href="#inscricao" class="btn btn-primary btn-sm">Confirmar Participação</a>
+          <li><a href="#inicio" class="nav-link active" data-nav="inicio">O Evento</a></li>
+          <li><a href="#hubine" class="nav-link" data-nav="hubine" title="Conheça a trajetória e o portfólio de inovação do Hubine">Hubine 10 Anos</a></li>
+          <li><a href="#programacao" class="nav-link" data-nav="programacao">Programação</a></li>
+          <li><a href="#palestrantes" class="nav-link" data-nav="palestrantes">Palestrantes</a></li>
+          <li><a href="#local" class="nav-link" data-nav="local">Local</a></li>
+          <li><a href="#faq" class="nav-link" data-nav="faq">Dúvidas</a></li>
+          <li><a href="#admin" class="nav-link" data-nav="admin" style="color: var(--primary); font-weight: 700;">Painel Restrito</a></li>
+          <li class="nav-cta">
+            <a href="#inscricao" class="btn btn-header-cta">Confirmar Participação</a>
           </li>
         </ul>
       </nav>
@@ -109,7 +109,8 @@
 
         <div class="hero-actions">
           <a href="#inscricao" class="btn btn-primary btn-lg">Confirmar minha participação</a>
-          <a href="#programacao" class="btn btn-outline-light btn-lg">Ver Programação</a>
+          <a href="#hubine" class="btn btn-outline-light btn-lg">Conhecer os 10 Anos do Hubine</a>
+          <a href="#programacao" class="btn btn-secondary btn-lg">Ver Programação</a>
         </div>
       </div>
     </section>
@@ -127,9 +128,20 @@
             <p style="color: var(--text-muted); line-height: 1.7;">
               Este encontro comemorativo reúne convidados, dirigentes e colaboradores do BNB, empreendedores, investidores e parceiros institucionais para refletir sobre os aprendizados da primeira década e projetar as próximas fronteiras da inovação para o desenvolvimento regional sustentável.
             </p>
+            <div style="margin-top: 1.5rem; padding: 1.25rem; background: var(--bnb-red-soft, #FDF2F4); border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red, #A6193C); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+              <div>
+                <strong style="color: var(--bnb-red, #A6193C); display: block; font-size: 1rem;">Apresentação Institucional & Relatório de 10 Anos</strong>
+                <span style="font-size: 0.875rem; color: var(--text-muted);">Acesse a apresentação completa de portfólio, crédito de R$ 9,6 Bi e iniciativas do Hubine.</span>
+              </div>
+              <a href="#hubine" class="btn btn-primary btn-sm">Ver Apresentação Oficial →</a>
+            </div>
           </div>
 
           <div class="about-features">
+            <div class="hubine-media-card" style="margin-bottom: 1.25rem;">
+              <img src="/assets/hubine-coworking.jpg" alt="Hubine Coworking" class="hubine-photo" style="height: 200px; object-fit: cover;">
+              <div class="hubine-media-caption">Hub de Inovação Banco do Nordeste — Espaço Coworking & Aceleração</div>
+            </div>
             <div class="about-feature-item">
               <div class="about-feature-icon">🚀</div>
               <div>
@@ -417,6 +429,788 @@
     </section>
   </main>
 
+  <!-- ========================================================================
+       SPA VIEW: Hub de Inovação Hubine 10 Anos (Apresentação & Portfólio)
+       Conforme Livro da Marca BNB (Volume 2) e Apresentação Oficial (Abril/2026)
+       ======================================================================== -->
+  <div id="view-hubine" class="spa-view hubine-screen" style="display: none;">
+    <!-- Top Sticky Bar with Breadcrumb and Mode Switcher -->
+    <div class="hubine-topbar">
+      <div class="hubine-topbar-inner">
+        <div class="hubine-breadcrumb">
+          <a href="#inicio" title="Retornar à página inicial do evento">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Voltar ao Evento
+          </a>
+          <span>/</span>
+          <span style="font-weight: 700; color: var(--bnb-red);">Hubine 10 Anos (2016 – 2026)</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button class="hubine-mode-btn active" id="btn-mode-dashboard" onclick="switchHubineTab('oquee')">
+            📊 Painel & Relatório
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Executive Hero (Inspirado na Capa da Apresentação) -->
+    <header class="hubine-hero">
+      <div class="hubine-hero-container">
+        <div class="hubine-hero-tag">
+          <span class="tag-dot"></span>
+          <span>10 Anos de Conexões e Impacto Regional • 2016 a 2026</span>
+        </div>
+        <h1 class="hubine-hero-title">Hubine 10 Anos (2016 – 2026)</h1>
+        <p class="hubine-hero-subtitle">
+          Hub de Inovação do Banco do Nordeste — Pioneirismo público conectando o BNB às <em>startups</em>, universidades e soluções transformadoras para o desenvolvimento socioeconômico de toda a região.
+        </p>
+
+        <!-- Metrics Ribbon -->
+        <div class="hubine-metrics-grid">
+          <div class="hubine-metric-card">
+            <div class="hubine-metric-value highlight-orange">R$ 9,60 Bi</div>
+            <div class="hubine-metric-label">Crédito Inovação Contratado</div>
+          </div>
+          <div class="hubine-metric-card">
+            <div class="hubine-metric-value">2.523</div>
+            <div class="hubine-metric-label">Contratos Formalizados</div>
+          </div>
+          <div class="hubine-metric-card">
+            <div class="hubine-metric-value">30</div>
+            <div class="hubine-metric-label">Desafios no Portfólio Aberto</div>
+          </div>
+          <div class="hubine-metric-card">
+            <div class="hubine-metric-value highlight-orange">320</div>
+            <div class="hubine-metric-label">Startups Aceleradas</div>
+          </div>
+          <div class="hubine-metric-card">
+            <div class="hubine-metric-value">+93%</div>
+            <div class="hubine-metric-label">Salto Benefício Lei do Bem</div>
+          </div>
+          <div class="hubine-metric-card">
+            <div class="hubine-metric-value">163 Mil</div>
+            <div class="hubine-metric-label">Pessoas em 90 Eventos</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sticky Navigation Tabs: 6 Narrative Steps -->
+    <div class="hubine-tabs-wrapper">
+      <nav class="hubine-tabs-nav" aria-label="Navegação temática da apresentação">
+        <button class="hubine-tab-btn active" data-tab="oquee">💡 1. O que é o Hubine</button>
+        <button class="hubine-tab-btn" data-tab="historia">🏛️ 2. História & Origem</button>
+        <button class="hubine-tab-btn" data-tab="impacto">🌐 3. Impacto Regional</button>
+        <button class="hubine-tab-btn" data-tab="programas">🚀 4. Programas & Iniciativas</button>
+        <button class="hubine-tab-btn" data-tab="resultados">📊 5. Resultados</button>
+        <button class="hubine-tab-btn" data-tab="celebracao">🎉 6. Celebração dos 10 Anos</button>
+      </nav>
+    </div>
+
+    <!-- Interactive Sections Container -->
+    <div class="hubine-content-container">
+
+      <!-- ====================================================================
+           1. O que é o Hubine
+           ==================================================================== -->
+      <section id="hubine-sec-oquee" class="hubine-section active">
+        <div class="hubine-card">
+          <div class="hubine-corner-accent"></div>
+          <div class="hubine-card-header">
+            <div>
+              <h2 class="hubine-card-title">💡 1. O que é o Hub de Inovação BNB (Hubine)</h2>
+              <p class="hubine-card-desc">Pioneirismo público conectando o Banco do Nordeste às <em>startups</em>, universidades e soluções transformadoras para o desenvolvimento socioeconômico de toda a região.</p>
+            </div>
+            <span class="badge" style="background: var(--bnb-red-soft); color: var(--bnb-red); font-weight: 700;">Hub de Inovação Oficial</span>
+          </div>
+
+          <!-- Real Coworking Photo from Presentation -->
+          <div class="hubine-media-card">
+            <img src="/assets/hubine-coworking.jpg" alt="Espaço Coworking Hubine" class="hubine-photo" style="max-height: 420px;">
+            <div class="hubine-media-caption">
+              Espaço Físico do Hubine no Passaré (Fortaleza/CE) — Ambiente colaborativo com coworking gratuito, salas de mentoria e conectividade para empreendedores
+            </div>
+          </div>
+
+          <!-- 4 Pilares de Atuação -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+            <div style="background: var(--bg-page); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red);">
+              <h3 style="color: var(--bnb-red); font-size: 1.05rem; margin-bottom: 0.5rem;">🏢 Coworking Gratuito</h3>
+              <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.5; margin: 0;">
+                Infraestrutura física moderna em Fortaleza, Recife e Salvador, com internet de alta velocidade, postos de trabalho e salas de reunião para <em>startups</em> e parceiros.
+              </p>
+            </div>
+            <div style="background: var(--bg-page); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-orange);">
+              <h3 style="color: var(--bnb-orange); font-size: 1.05rem; margin-bottom: 0.5rem;">🚀 Apoio a Startups</h3>
+              <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.5; margin: 0;">
+                Aceleração, validação de hipóteses, conexão com demandas corporativas reais e orientação especializada para enquadramento em crédito para inovação.
+              </p>
+            </div>
+            <div style="background: var(--bg-page); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red);">
+              <h3 style="color: var(--bnb-red); font-size: 1.05rem; margin-bottom: 0.5rem;">🤝 Mentorias & Conexões</h3>
+              <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.5; margin: 0;">
+                Rede de mentores e articulação com centros de pesquisa, universidades, investidores de risco e lideranças do Banco do Nordeste.
+              </p>
+            </div>
+            <div style="background: var(--bg-page); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-orange);">
+              <h3 style="color: var(--bnb-orange); font-size: 1.05rem; margin-bottom: 0.5rem;">🎓 Capacitação & Cultura</h3>
+              <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.5; margin: 0;">
+                Workshops, hackathons, palestras e formação continuada para colaboradores e empreendedores em inteligência artificial, blockchain e negócios digitais.
+              </p>
+            </div>
+          </div>
+
+          <!-- Organograma Oficial da Apresentação -->
+          <div style="margin-top: 1.5rem;">
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.75rem; text-align: center;">
+              Estrutura Organizacional do Hubine (Slide 5 da Apresentação Oficial)
+            </h3>
+            
+            <div class="hubine-media-card" style="padding: 1rem; text-align: center;">
+              <img src="/assets/hubine-estrutura.png" alt="Estrutura Organizacional do Hubine" class="hubine-diagram-img">
+              <div class="hubine-media-caption">
+                Organograma do Hubine vinculado à Diretoria de Administração do BNB, dividindo-se entre atuação interna (cultura e Lei do Bem) e atuação externa (células regionais)
+              </div>
+            </div>
+
+            <div class="org-branches-grid" style="margin-top: 1.5rem;">
+              <!-- Interna -->
+              <div class="org-branch-card">
+                <div class="org-branch-title">
+                  <span>🏢</span> Atuação Interna no BNB
+                </div>
+                <div class="org-cell-pill">📌 Célula de Gestão da Inovação</div>
+                <div class="org-cell-pill">📌 Célula de Benefícios Fiscais (Lei do Bem)</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem; line-height: 1.5;">
+                  Foco em cultura de inovação corporativa, governança de processos, conformidade jurídica e aproveitamento tributário dos investimentos em P&D do Banco.
+                </p>
+              </div>
+
+              <!-- Externa -->
+              <div class="org-branch-card">
+                <div class="org-branch-title" style="color: var(--bnb-orange); border-color: var(--bnb-orange);">
+                  <span>🌐</span> Atuação Externa (Células Regionais)
+                </div>
+                <div class="org-cell-pill">📍 Célula de Inovação Fortaleza (CE)</div>
+                <div class="org-cell-pill">📍 Célula de Inovação Recife (PE)</div>
+                <div class="org-cell-pill">📍 Célula de Inovação Salvador (BA)</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem; line-height: 1.5;">
+                  Presença física direta nas principais capitais nordestinas para apoio às <em>startups</em> locais, articulação de ecossistema e estruturação de operações financeiras.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           2. História & Origem
+           ==================================================================== -->
+      <section id="hubine-sec-historia" class="hubine-section">
+        <div class="hubine-card">
+          <div class="hubine-corner-accent"></div>
+          <div class="hubine-card-header">
+            <div>
+              <h2 class="hubine-card-title">🏛️ 2. História & Origem: O BNB e a Fundação do Hubine</h2>
+              <p class="hubine-card-desc">72 anos de compromisso com o desenvolvimento socioeconômico regional e a fundação do primeiro Hub de Inovação de um banco público brasileiro em 2016.</p>
+            </div>
+            <span class="badge" style="background: var(--bnb-red-soft); color: var(--bnb-red); font-weight: 700;">Fundado em 2016</span>
+          </div>
+
+          <!-- Photo of BNB Sede -->
+          <div class="hubine-media-card">
+            <img src="/assets/bnb-sede.jpg" alt="Sede do Banco do Nordeste no Passaré" class="hubine-photo" style="max-height: 380px;">
+            <div class="hubine-media-caption">
+              Campus Central do Banco do Nordeste (Passaré, Fortaleza — CE) — Sede institucional e berço do Hubine
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="background: var(--bg-page); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red);">
+              <h3 style="color: var(--bnb-red); font-size: 1.15rem; margin-bottom: 0.75rem;">O Maior Banco Regional da América Latina</h3>
+              <p style="font-size: 0.925rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                Com 72 anos de atuação, o <strong>Banco do Nordeste (BNB)</strong> administra o Fundo Constitucional de Financiamento do Nordeste (FNE) e opera o <strong>Crediamigo</strong> e o <strong>Agroamigo</strong>, os maiores programas de microcrédito produtivo orientado da América Latina.
+              </p>
+              <p style="font-size: 0.925rem; line-height: 1.6; color: var(--text-muted); margin: 0;">
+                O BNB conta com o suporte científico do <strong>ETENE</strong> (Escritório Técnico de Estudos Econômicos do Nordeste), sendo profundo conhecedor do potencial e das demandas econômicas regionais.
+              </p>
+            </div>
+
+            <div style="background: var(--bg-page); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-orange);">
+              <h3 style="color: var(--bnb-orange); font-size: 1.15rem; margin-bottom: 0.75rem;">Presença e Capilaridade no Território</h3>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; text-align: center;">
+                <div style="background: #fff; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--bnb-red); font-size: 1.4rem; display: block;">2.074</strong>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Municípios atendidos</span>
+                </div>
+                <div style="background: #fff; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--bnb-orange); font-size: 1.4rem; display: block;">293</strong>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Agências físicas</span>
+                </div>
+                <div style="background: #fff; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--bnb-red); font-size: 1.4rem; display: block;">5,7 Mi</strong>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Clientes ativos</span>
+                </div>
+                <div style="background: #fff; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--bnb-orange); font-size: 1.4rem; display: block;">55,6%</strong>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">Crédito longo prazo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Embaixadores da Inovação -->
+          <div style="padding: 1.25rem; background: var(--bnb-red-soft); border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red);">
+            <h4 style="color: var(--bnb-red); font-size: 1rem; margin-bottom: 0.35rem;">Programa Embaixadores da Inovação (Slide 50 da Apresentação)</h4>
+            <p style="font-size: 0.875rem; color: var(--text-body); margin: 0; line-height: 1.6;">
+              Grupo qualificado de <strong>50 colaboradores</strong> da rede de agências preparados para atuar como pontos focais de inovação nos ecossistemas locais, capilarizando ideias para os processos de negócio e apoiando clientes na tomada de crédito para inovação em todo o Nordeste, Norte de Minas e Espírito Santo.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           3. Impacto Regional & Crédito
+           ==================================================================== -->
+      <section id="hubine-sec-impacto" class="hubine-section">
+        <div class="hubine-card">
+          <div class="hubine-corner-accent"></div>
+          <div class="hubine-card-header">
+            <div>
+              <h2 class="hubine-card-title">🌐 3. Impacto Regional: R$ 9,60 Bilhões em Crédito de Inovação</h2>
+              <p class="hubine-card-desc">Histórico de contratações (2020 a 2025), linhas oficiais de crédito BNB e grandes <em>cases</em> de sucesso regional.</p>
+            </div>
+            <span class="badge" style="background: var(--bnb-red); color: #fff; font-weight: 800;">2.523 Operações Formalizadas</span>
+          </div>
+
+          <!-- Linhas de Financiamento (Comparador) -->
+          <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 1rem;">
+            Linhas Oficiais de Financiamento BNB para Inovação
+          </h3>
+
+          <div class="credit-lines-grid">
+            <!-- FNE Inovação -->
+            <div class="credit-line-card featured">
+              <div class="credit-line-header">
+                <div class="credit-line-name">FNE Inovação</div>
+                <div class="credit-line-tagline">Mais desenvolvimento e competitividade para a empresa</div>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-body);">
+                Promove a inovação em produtos, serviços, processos e métodos organizacionais em empreendimentos rurais e urbanos.
+              </p>
+              <ul class="credit-feature-list">
+                <li><span class="bullet">✓</span> <span><strong>Prazo total:</strong> até 15 anos</span></li>
+                <li><span class="bullet">✓</span> <span><strong>Carência:</strong> até 5 anos</span></li>
+                <li><span class="bullet">✓</span> <span><strong>O que financia:</strong> Softwares, ensaios, TIC, laboratórios de P,D&I, agricultura de precisão (VANTs), obras civis e maquinário</span></li>
+                <li><span class="bullet">✓</span> <span><strong>Público:</strong> Empresas dos setores rural e não rural</span></li>
+              </ul>
+              <div class="credit-badges-row">
+                <span class="badge status-pill-finalizado">Longo Prazo</span>
+                <span class="badge status-pill-progresso">Até 15 Anos</span>
+              </div>
+            </div>
+
+            <!-- FNE Startup -->
+            <div class="credit-line-card">
+              <div class="credit-line-header">
+                <div class="credit-line-name" style="color: var(--bnb-orange);">FNE Startup</div>
+                <div class="credit-line-tagline">A linha de crédito que conecta sua empresa ao futuro</div>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-body);">
+                Fomenta o empreendedorismo, atraindo e mantendo na Região capital humano e modelos de negócios com alto potencial de crescimento.
+              </p>
+              <ul class="credit-feature-list">
+                <li><span class="bullet">✓</span> <span><strong>Com ou sem faturamento:</strong> Solicitado mediante apresentação de plano de negócios</span></li>
+                <li><span class="bullet">✓</span> <span><strong>Prazo de pagamento:</strong> até 8 anos</span></li>
+                <li><span class="bullet">✓</span> <span><strong>Carência:</strong> até 2 anos</span></li>
+                <li><span class="bullet">✓</span> <span><strong>O que financia:</strong> Servidores e cloud, ferramentas de IA/BI, ERPs, capacitação, estagiários e pró-labore de sócio exclusivo</span></li>
+              </ul>
+              <div class="credit-badges-row">
+                <span class="badge status-pill-espera">Startups Iniciais</span>
+                <span class="badge status-pill-cpsi">Pró-labore incluso</span>
+              </div>
+            </div>
+
+            <!-- FINEP Inovacred -->
+            <div class="credit-line-card">
+              <div class="credit-line-header">
+                <div class="credit-line-name" style="color: var(--bnb-gray-dark);">FINEP Inovacred</div>
+                <div class="credit-line-tagline">Crédito à inovação ainda mais rápido e fácil</div>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-body);">
+                Parceria estratégica BNB e FINEP para novos produtos, processos, tecnologias 4.0 e projetos de telecomunicações.
+              </p>
+              <ul class="credit-feature-list">
+                <li><span class="bullet">✓</span> <span><strong>Valor:</strong> até R$ 15 milhões por projeto</span></li>
+                <li><span class="bullet">✓</span> <span><strong>Taxas:</strong> TR + 5,154% a TR + 6,605% a.a.</span></li>
+                <li><span class="bullet">✓</span> <span><strong>Carência:</strong> até 2 anos | Prazo: até 8 anos</span></li>
+                <li><span class="bullet">✓</span> <span><strong>Modalidades:</strong> Inovacred Tradicional, Inovacred 4.0 e Inovacred Telecom</span></li>
+              </ul>
+              <div class="credit-badges-row">
+                <span class="badge status-pill-progresso">Até R$ 15 Milhões</span>
+                <span class="badge status-pill-finalizado">Qualquer Porte</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cases de Sucesso -->
+          <div style="margin-top: 2rem;">
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.5rem;">
+              Grandes Cases de Financiamento Estruturados com o Hubine (Slide 38)
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              A equipe do Hubine atua diretamente na orientação, estruturação e enquadramento dos projetos inovadores das empresas junto às agências.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: center;">
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
+                <strong style="color: var(--bnb-red); font-size: 1.25rem; display: block;">Brisanet</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Aldeota</span>
+                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-red); margin: 0.5rem 0;">R$ 309 Mi</div>
+                <span class="badge status-pill-finalizado">Contratado</span>
+              </div>
+
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
+                <strong style="color: var(--bnb-orange); font-size: 1.25rem; display: block;">Vicunha Têxtil</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Aldeota</span>
+                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-orange); margin: 0.5rem 0;">R$ 246 Mi</div>
+                <span class="badge status-pill-finalizado">Contratado</span>
+              </div>
+
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
+                <strong style="color: var(--bnb-gray-dark); font-size: 1.25rem; display: block;">Projeart</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / B. Menezes</span>
+                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-gray-dark); margin: 0.5rem 0;">R$ 110 Mi</div>
+                <span class="badge status-pill-progresso">Em Análise</span>
+              </div>
+
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
+                <strong style="color: var(--bnb-red); font-size: 1.25rem; display: block;">Vonixx</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Maracanaú / CE</span>
+                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-red); margin: 0.5rem 0;">R$ 62 Mi</div>
+                <span class="badge status-pill-progresso">Em Análise</span>
+              </div>
+
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
+                <strong style="color: var(--bnb-orange); font-size: 1.25rem; display: block;">How BE</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Montese</span>
+                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-orange); margin: 0.5rem 0;">R$ 26 Mi</div>
+                <span class="badge status-pill-finalizado">Contratado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           4. Programas & Iniciativas
+           ==================================================================== -->
+      <section id="hubine-sec-programas" class="hubine-section">
+        <div class="hubine-card">
+          <div class="hubine-corner-accent"></div>
+          <div class="hubine-card-header">
+            <div>
+              <h2 class="hubine-card-title">🚀 4. Programas & Iniciativas Estratégicas</h2>
+              <p class="hubine-card-desc">Inovação Aberta com Marco Legal do CPSI, Inovação Fechada TDS e Laboratórios de Experimentação Tecnológica.</p>
+            </div>
+            <span class="badge" style="background: var(--bnb-orange-soft); color: var(--bnb-orange); font-weight: 700;">Marco Legal & TDS</span>
+          </div>
+
+          <!-- CPSI Diagram from Presentation -->
+          <div class="hubine-media-card" style="padding: 1rem; text-align: center;">
+            <img src="/assets/hubine-cpsi-diagram.png" alt="Fluxo CPSI Contrato Público de Solução Inovadora" class="hubine-diagram-img">
+            <div class="hubine-media-caption">
+              Fluxo Oficial do CPSI (Lei Complementar nº 182/2021) — Publicação do edital, seleção, contrato de testes de 12 meses e eventual contrato de fornecimento de até 24 meses
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="background: var(--bg-page); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red);">
+              <h3 style="color: var(--bnb-red); font-size: 1.15rem; margin-bottom: 0.5rem;">O que é o CPSI?</h3>
+              <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                O <strong>Contrato Público para Solução Inovadora (CPSI)</strong> é um modelo que permite ao poder público testar e contratar soluções de <em>startups</em>, onde o teste pode resultar em sucesso ou insucesso — sendo que o insucesso é formalmente reconhecido como aprendizado institucional.
+              </p>
+              <div style="background: #fff; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.85rem;">
+                <strong>Por que é inovador?</strong> Rompe a rigidez burocrática das licitações comuns, estimula cocriação, reduz riscos tecnológicos e acelera o ecossistema regional.
+              </div>
+            </div>
+
+            <div style="background: var(--bg-page); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-orange);">
+              <h3 style="color: var(--bnb-orange); font-size: 1.15rem; margin-bottom: 0.5rem;">Prazos e Ritos Legais (Slide 9)</h3>
+              <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.875rem;">
+                <li style="display: flex; gap: 0.5rem;">
+                  <span style="color: var(--bnb-orange); font-weight: bold;">📢</span>
+                  <span><strong>Publicação do Edital:</strong> Mínimo de 30 dias corridos de antecedência do recebimento de propostas.</span>
+                </li>
+                <li style="display: flex; gap: 0.5rem;">
+                  <span style="color: var(--bnb-red); font-weight: bold;">🧪</span>
+                  <span><strong>Contrato CPSI (Fase de Testes):</strong> 12 meses de duração, prorrogável por igual período.</span>
+                </li>
+                <li style="display: flex; gap: 0.5rem;">
+                  <span style="color: var(--bnb-orange); font-weight: bold;">🚀</span>
+                  <span><strong>Contrato de Fornecimento (Pós-testes):</strong> Até 24 meses, prorrogável por igual período.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Open Innovation Methodology Diagram -->
+          <div class="hubine-media-card" style="padding: 1rem; text-align: center;">
+            <img src="/assets/hubine-inovacao-aberta.png" alt="Metodologia de Inovação Aberta" class="hubine-diagram-img">
+            <div class="hubine-media-caption">
+              Metodologia de Inovação Aberta do Hubine (Fonte: Plataforma Distrito) — Ciclo contínuo de estratégia, triagem, conexão e implementação
+            </div>
+          </div>
+
+          <!-- Inovação Fechada & TDS -->
+          <div style="margin-top: 2rem;">
+            <h3 style="color: var(--bnb-red); font-size: 1.25rem; margin-bottom: 0.75rem;">
+              Inovação Fechada & Projeto TDS (Transformação Digital)
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
+              Desenvolvimento interno de inteligência, segurança cibernética, automações de processos e a arquitetura de transformação digital do Banco.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+                <strong style="color: var(--bnb-red); display: block; margin-bottom: 0.5rem;">📦 Logística e Suprimentos</strong>
+                <ul style="font-size: 0.85rem; padding-left: 1.2rem; color: var(--text-body); display: flex; flex-direction: column; gap: 0.35rem;">
+                  <li>Sistematização do Processo de Contratações</li>
+                  <li>Gestão e Fiscalização de Contratos</li>
+                  <li>Estruturação e Governança de Dados</li>
+                  <li>Controle de Demandas da Engenharia</li>
+                </ul>
+              </div>
+
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+                <strong style="color: var(--bnb-orange); display: block; margin-bottom: 0.5rem;">🛡️ Auditoria & Segurança</strong>
+                <ul style="font-size: 0.85rem; padding-left: 1.2rem; color: var(--text-body); display: flex; flex-direction: column; gap: 0.35rem;">
+                  <li>Identificação de Cenários de Fraudes com Inteligência Artificial</li>
+                  <li>Mitigação proativa de riscos em operações financeiras</li>
+                </ul>
+              </div>
+
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+                <strong style="color: var(--bnb-red); display: block; margin-bottom: 0.5rem;">⚖️ Jurídico & Compliance</strong>
+                <ul style="font-size: 0.85rem; padding-left: 1.2rem; color: var(--text-body); display: flex; flex-direction: column; gap: 0.35rem;">
+                  <li>Dashboard Estratégico de Desempenho Jurídico — KPIs</li>
+                  <li>Automação da Gestão de Garantias Judiciais</li>
+                  <li>Automação de Minutas Contratuais de Crédito</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Laboratórios de Experimentação -->
+          <div style="margin-top: 2rem;">
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.75rem;">
+              Laboratórios de Experimentação & Parcerias Acadêmicas
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; border-top: 4px solid var(--bnb-red);">
+                <h4 style="color: var(--bnb-red); font-size: 1.05rem; margin-bottom: 0.5rem;">🔗 Blockchain & Ativos Digitais</h4>
+                <p style="font-size: 0.85rem; color: var(--text-body); line-height: 1.5; margin: 0;">
+                  Treinamento, roadshow com áreas finalísticas do BNB e desenvolvimento de protótipo funcional para validação de componentes críticos em ambiente simulado.
+                </p>
+              </div>
+              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; border-top: 4px solid var(--bnb-orange);">
+                <h4 style="color: var(--bnb-orange); font-size: 1.05rem; margin-bottom: 0.5rem;">⚛️ Computação Quântica</h4>
+                <p style="font-size: 0.85rem; color: var(--text-body); line-height: 1.5; margin: 0;">
+                  Visitas técnicas à UFPE, mediação com IBM e CESAR, e planejamento de Prova de Conceito (PoC) para cálculo de cenários complexos de crédito e risco.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           5. Resultados e Portfólio de 30 Desafios
+           ==================================================================== -->
+      <section id="hubine-sec-resultados" class="hubine-section">
+        <div class="hubine-card">
+          <div class="hubine-corner-accent"></div>
+          <div class="hubine-card-header">
+            <div>
+              <h2 class="hubine-card-title">📊 5. Resultados: Portfólio de 30 Desafios e Lei do Bem</h2>
+              <p class="hubine-card-desc">Heatmap de status oficial de projetos, tabela interativa com busca em tempo real e salto histórico de 93% na Lei do Bem.</p>
+            </div>
+            <span id="hubine-filtered-count" class="badge" style="background: var(--bnb-red-soft); color: var(--bnb-red); font-weight: 700;">
+              30 de 30 desafios
+            </span>
+          </div>
+
+          <!-- Resumo Executivo / Heatmap Mini-KPIs -->
+          <div class="portfolio-summary-bar">
+            <div class="portfolio-stat-box" style="border-top: 3px solid var(--bnb-red);">
+              <div class="portfolio-stat-num" style="color: var(--bnb-red);">30</div>
+              <div class="portfolio-stat-name">Total de Projetos</div>
+            </div>
+            <div class="portfolio-stat-box" style="border-top: 3px solid #64748B;">
+              <div class="portfolio-stat-num" style="color: #64748B;">0</div>
+              <div class="portfolio-stat-name">Slots Livres</div>
+            </div>
+            <div class="portfolio-stat-box" style="border-top: 3px solid #D97706;">
+              <div class="portfolio-stat-num" style="color: #D97706;">3</div>
+              <div class="portfolio-stat-name">Em CPSI</div>
+            </div>
+            <div class="portfolio-stat-box" style="border-top: 3px solid #2563EB;">
+              <div class="portfolio-stat-num" style="color: #2563EB;">10</div>
+              <div class="portfolio-stat-name">Progresso</div>
+            </div>
+            <div class="portfolio-stat-box" style="border-top: 3px solid #EA580C;">
+              <div class="portfolio-stat-num" style="color: #EA580C;">4</div>
+              <div class="portfolio-stat-name">Em Espera</div>
+            </div>
+            <div class="portfolio-stat-box" style="border-top: 3px solid #059669;">
+              <div class="portfolio-stat-num" style="color: #059669;">12</div>
+              <div class="portfolio-stat-name">Finalizados</div>
+            </div>
+            <div class="portfolio-stat-box" style="border-top: 3px solid #7C3AED;">
+              <div class="portfolio-stat-num" style="color: #7C3AED;">1</div>
+              <div class="portfolio-stat-name">Implementação</div>
+            </div>
+          </div>
+
+          <!-- Live Filters & Search -->
+          <div class="portfolio-controls-grid">
+            <div class="form-group" style="margin: 0;">
+              <input type="text" id="hubine-search-challenge" class="form-input" placeholder="🔍 Buscar por desafio, tecnologia, palavra-chave ou área...">
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <select id="hubine-filter-status" class="form-select">
+                <option value="all">Todos os Status</option>
+                <option value="cpsi">Em CPSI</option>
+                <option value="progresso">Em Progresso</option>
+                <option value="espera">Em Espera</option>
+                <option value="finalizado">Finalizados</option>
+                <option value="implementacao">Em Implementação</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <select id="hubine-filter-area" class="form-select">
+                <option value="all">Todas as Áreas</option>
+                <option value="Crediamigo">Crediamigo</option>
+                <option value="Agroamigo">Agroamigo</option>
+                <option value="Superintendência Jurídica">Jurídico</option>
+                <option value="Tecnologia da Informação">TI / Arquitetura</option>
+                <option value="Gestão Orçamentária e Capital">Orçamento & Capital</option>
+                <option value="Ambiente MPE e PF">Ambiente MPE & PF</option>
+                <option value="Concessão de Crédito">Concessão de Crédito</option>
+                <option value="Central Saúde Ocupacional">Saúde Ocupacional</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Table -->
+          <div class="portfolio-table-wrap">
+            <table class="portfolio-table">
+              <thead>
+                <tr>
+                  <th style="width: 18%;">Área Solicitante</th>
+                  <th style="width: 25%;">Desafio Tecnológico</th>
+                  <th style="width: 32%;">Última Atualização Registrada</th>
+                  <th style="width: 15%;">Etapa Atual</th>
+                  <th style="width: 10%;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="hubine-challenges-tbody">
+                <!-- Preenchido via hubine.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Célula da Lei do Bem -->
+          <div style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border-subtle);">
+            <div class="leibem-highlight-box">
+              <div>
+                <h3 style="color: var(--bnb-red); font-size: 1.2rem; margin-bottom: 0.25rem;">Célula da Lei do Bem (Lei nº 11.196/2005)</h3>
+                <p style="font-size: 0.9rem; color: var(--text-body); max-width: 680px; margin: 0;">
+                  O novo time da Lei do Bem estabeleceu critérios de avaliação rigorosos para garantir máxima segurança jurídica na submissão de projetos de P&D junto ao <strong>MCTI</strong>.
+                </p>
+              </div>
+              <div class="leibem-badge-jump">
+                <span style="font-size: 0.75rem; text-transform: uppercase; display: block; opacity: 0.9;">Crescimento Apurado</span>
+                <div class="jump-num">+93%</div>
+                <span style="font-size: 0.75rem;">vs Previsão Inicial</span>
+              </div>
+            </div>
+
+            <div class="history-bars-chart">
+              <div class="history-bar-col">
+                <div class="history-bar-value">R$ 11,0M</div>
+                <div class="history-bar-fill highlight" style="height: 45%;"></div>
+                <div class="history-bar-label">2019</div>
+              </div>
+              <div class="history-bar-col">
+                <div class="history-bar-value">R$ 14,9M</div>
+                <div class="history-bar-fill highlight" style="height: 55%;"></div>
+                <div class="history-bar-label">2020</div>
+              </div>
+              <div class="history-bar-col">
+                <div class="history-bar-value">R$ 23,9M</div>
+                <div class="history-bar-fill highlight" style="height: 75%;"></div>
+                <div class="history-bar-label">2021</div>
+              </div>
+              <div class="history-bar-col">
+                <div class="history-bar-value">R$ 19,3M</div>
+                <div class="history-bar-fill highlight" style="height: 65%;"></div>
+                <div class="history-bar-label">2022</div>
+              </div>
+              <div class="history-bar-col">
+                <div class="history-bar-value">R$ 13,9M</div>
+                <div class="history-bar-fill highlight" style="height: 52%;"></div>
+                <div class="history-bar-label">2023</div>
+              </div>
+              <div class="history-bar-col">
+                <div class="history-bar-value" style="color: var(--bnb-red); font-weight: 800;">R$ 25,2M 🔥</div>
+                <div class="history-bar-fill" style="height: 98%; background: linear-gradient(to top, var(--bnb-orange), var(--bnb-red));"></div>
+                <div class="history-bar-label" style="color: var(--bnb-red); font-weight: 800;">2024</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           6. Celebração dos 10 Anos
+           ==================================================================== -->
+      <section id="hubine-sec-celebracao" class="hubine-section">
+        <div class="hubine-card">
+          <div class="hubine-corner-accent"></div>
+          <div class="hubine-card-header">
+            <div>
+              <h2 class="hubine-card-title">🎉 6. Celebração dos 10 Anos (2016 – 2026)</h2>
+              <p class="hubine-card-desc">Uma década de conexões, 163 mil pessoas impactadas em 90 eventos realizados e os próximos 10 anos de transformação regional.</p>
+            </div>
+            <span class="badge" style="background: var(--bnb-red); color: #fff; font-weight: 800;">10 Anos de Conexões</span>
+          </div>
+
+          <!-- Photos from Events in Presentation -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="hubine-media-card">
+              <img src="/assets/hubine-evento-1.jpg" alt="Hackathons e Eventos Hubine" class="hubine-photo" style="height: 240px; object-fit: cover;">
+              <div class="hubine-media-caption">
+                Hackathons e encontros do ecossistema — Cocriação e tecnologia com foco em soluções de impacto regional
+              </div>
+            </div>
+            <div class="hubine-media-card">
+              <img src="/assets/hubine-evento-2.jpg" alt="Workshops e Mentorias Hubine" class="hubine-photo" style="height: 240px; object-fit: cover;">
+              <div class="hubine-media-caption">
+                Workshops e mentorias de negócios — Conectando empreendedores a investidores e dirigentes do BNB
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <!-- FUNDECI -->
+            <div style="background: var(--bg-page); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red);">
+              <h3 style="color: var(--bnb-red); font-size: 1.15rem; margin-bottom: 0.5rem;">FUNDECI: 50 Anos de Fomento</h3>
+              <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                Criado em 1971 e constituído com recursos do FNE, é instrumento pioneiro de pesquisa e difusão tecnológica. Já apoiou mais de <strong>5 mil projetos</strong> com montante superior a <strong>R$ 700 milhões</strong>.
+              </p>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">
+                Editais recentes contínuos: R$ 20M (2023), R$ 22M (2022), R$ 18M (2021).
+              </div>
+            </div>
+
+            <!-- Aceleração -->
+            <div style="background: var(--bg-page); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-orange);">
+              <h3 style="color: var(--bnb-orange); font-size: 1.15rem; margin-bottom: 0.5rem;">Aceleração para Startups (2023 - 2025)</h3>
+              <ul style="list-style: none; padding: 0; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li>• <strong>5 aceleradoras</strong> parceiras operando 5 ciclos</li>
+                <li>• <strong>738 startups inscritas</strong> e <strong>320 aceleradas</strong></li>
+                <li>• <strong>30 startups premiadas</strong> com até R$ 150 mil</li>
+                <li>• 10 estados atendidos e 67 startups do interior</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Venture Capital & FIP Nordeste -->
+          <div style="background: var(--bg-subtle); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--bnb-red); font-size: 1.2rem; margin-bottom: 0.5rem;">Venture Capital no Banco do Nordeste</h3>
+            <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+              O BNB possui em carteira ativa cerca de <strong>R$ 103,0 milhões em Venture Capital</strong> (CRIATECs I, II, III e IV, FIP Anjo e FIP Nordeste Capital Semente). Das 172 <em>startups</em> investidas, 26 estão na área do Banco (como Usix, PagCerto, Síntese, Izi App e Infleet).
+            </p>
+            <div style="background: #fff; padding: 1rem; border-radius: var(--radius-sm); border-left: 4px solid var(--bnb-orange); font-size: 0.875rem;">
+              <strong>FIP Nordeste Capital Semente:</strong> Fundo estruturado com Finep e Sebrae visando captar de <strong>R$ 120M a R$ 150 Milhões</strong> para acelerar 20 a 30 <em>startups early stage</em> com faturamento de até R$ 4,8 milhões.
+            </div>
+          </div>
+
+          <!-- Grand Call to Action -->
+          <div style="text-align: center; padding: 2.5rem 1.5rem; background: linear-gradient(135deg, var(--bnb-wine) 0%, var(--primary) 100%); color: #FFFFFF; border-radius: var(--radius-lg); margin-top: 2rem;">
+            <span class="badge" style="background: rgba(255,255,255,0.2); color: #FDE68A; margin-bottom: 0.75rem;">Evento Comemorativo Oficial</span>
+            <h3 style="font-size: 1.75rem; color: #FFFFFF; margin-bottom: 0.75rem;">Celebre Conosco os 10 Anos do Hubine</h3>
+            <p style="font-size: 1.05rem; color: #F1F5F9; max-width: 620px; margin: 0 auto 1.5rem; line-height: 1.6;">
+              Junte-se a nós em 4 de novembro de 2026 no Auditório Celso Furtado para um dia histórico de debates, homenagens e conexões para a próxima década.
+            </p>
+            <a href="#inscricao" class="btn btn-lg btn-outline-light" style="background: var(--bnb-gold); color: #000; border-color: var(--bnb-gold); font-weight: 700;">
+              Confirmar Minha Participação no Evento
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div><!-- ========================================================================
+       MODAL: Visualizador de Apresentação de Slides (Deck View 16:9)
+       Reprodução Fiel e Interativa dos Slides Oficiais
+       ======================================================================== -->
+  <div id="hubine-slide-modal" class="slide-deck-modal" role="dialog" aria-modal="true" aria-label="Visualizador de Slides Hubine 10 Anos">
+    <!-- Topbar -->
+    <div class="slide-deck-topbar">
+      <div class="slide-deck-brand">
+        <span style="background: var(--bnb-orange); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;">BNB HUBINE</span>
+        <span>Apresentação Institucional — 10 Anos</span>
+      </div>
+      <button class="slide-deck-close" onclick="closeSlideDeck()" aria-label="Fechar apresentação de slides">
+        ✕ Fechar Slides
+      </button>
+    </div>
+
+    <!-- Viewport with 16:9 Slide Card -->
+    <div class="slide-deck-viewport">
+      <div class="presentation-slide-card" id="presentation-slide-card">
+        <!-- Header -->
+        <div class="slide-header">
+          <div class="slide-title-wrap">
+            <h2 id="slide-card-title">Título do Slide</h2>
+            <h3 id="slide-card-subtitle">Subtítulo</h3>
+          </div>
+          <div class="slide-brand-mark">
+            <strong>Banco do Nordeste</strong>
+            <span>Hub de Inovação Hubine</span>
+          </div>
+        </div>
+
+        <!-- Body Canvas -->
+        <div class="slide-body" id="slide-card-body"></div>
+
+        <!-- Footer -->
+        <div class="slide-footer">
+          <div>
+            <span id="slide-card-category" style="font-weight: 700; color: var(--bnb-red);">Abertura</span> • Hubine 10 Anos (Abril/2026)
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span>Governo Federal • Brasil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Controls -->
+    <div class="slide-deck-controls">
+      <button class="slide-nav-btn" id="btn-slide-prev" onclick="prevSlide()" aria-label="Slide anterior">
+        ◀ Anterior
+      </button>
+      <span class="slide-counter-badge" id="slide-deck-counter">Slide 1 de 16</span>
+      <button class="slide-nav-btn" id="btn-slide-next" onclick="nextSlide()" aria-label="Próximo slide">
+        Próximo ▶
+      </button>
+    </div>
+  </div>
+
   <!-- SPA VIEW: Ticket / Credential Confirmation -->
   <div id="view-comprovante" class="spa-view" style="display: none;">
     <div id="comprovante-content-area"></div>
@@ -454,128 +1248,270 @@
           </button>
         </form>
 
-        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-muted);">
-          <strong>Acessos de Teste (Demonstração):</strong>
-          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
-            <button class="btn btn-sm btn-secondary" data-login-preset="admin">Administrador</button>
-            <button class="btn btn-sm btn-secondary" data-login-preset="org">Organização</button>
-            <button class="btn btn-sm btn-secondary" data-login-preset="cred">Credenciamento</button>
+        <!-- Demo Mode Profile Selector (Only shown in demonstration/development mode) -->
+        <div id="admin-demo-mode-box" style="margin-top: 1.5rem; padding: 1rem; background-color: var(--bg-subtle); border-radius: 8px; border: 1px dashed var(--bnb-orange);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <strong style="font-size: 0.85rem; color: var(--bnb-red); display: flex; align-items: center; gap: 4px;">
+              <span>🏷️</span> Modo Demonstração
+            </strong>
+            <span class="badge badge-warning" style="font-size: 0.7rem;">Ambiente de Testes</span>
           </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Selecione o perfil institucional para preenchimento automático das credenciais:
+          </p>
+          <div class="form-group" style="margin-bottom: 0.5rem;">
+            <select id="admin-demo-profile-select" class="form-select" style="font-size: 0.85rem;">
+              <option value="">-- Selecione o perfil de demonstração --</option>
+              <option value="admin">Administrador (admin@hubine10anos.bnb.gov.br)</option>
+              <option value="org">Organização (organizacao@hubine10anos.bnb.gov.br)</option>
+              <option value="cred">Credenciamento (credenciamento@hubine10anos.bnb.gov.br)</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-sm btn-secondary" data-login-preset="admin" style="font-size: 0.75rem;">Admin</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-login-preset="org" style="font-size: 0.75rem;">Organização</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-login-preset="cred" style="font-size: 0.75rem;">Credenciamento</button>
+          </div>
+          <small style="display: block; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.5rem;">
+            🔒 Em ambiente de produção, este recurso é desativado e as credenciais devem ser digitadas pelo usuário.
+          </small>
         </div>
       </div>
     </div>
 
-    <!-- Admin Dashboard (Authenticated) -->
+    <!-- Admin Dashboard (Authenticated) - Sympla-Inspired Layout -->
     <div id="admin-dashboard-view" class="admin-wrapper" style="display: none;">
-      <div class="container">
-        <div class="admin-header">
-          <div class="admin-title-wrap">
-            <h1>Painel de Gestão — Hubine 10 Anos</h1>
-            <p class="text-muted" style="margin: 0;">Auditório Celso Furtado • 4 de novembro de 2026</p>
-          </div>
-          <div class="admin-user-info">
-            <span id="admin-user-display-name" style="font-weight: 700;"></span>
-            <span id="admin-user-display-role" class="badge"></span>
-            <a href="#credenciamento" class="btn btn-sm btn-primary">📱 Abrir Credenciamento</a>
-            <button id="btn-admin-logout" class="btn btn-sm btn-secondary">Sair</button>
-          </div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div class="admin-tabs">
-          <button class="admin-tab-btn active" data-tab="overview">📊 Visão Geral</button>
-          <button class="admin-tab-btn" data-tab="registrations">👥 Participantes</button>
-          <button class="admin-tab-btn" data-tab="speakers">🎤 Palestrantes</button>
-          <button class="admin-tab-btn" data-tab="schedule">📅 Programação</button>
-          <button class="admin-tab-btn admin-only-tab" data-tab="settings">⚙️ Configurações</button>
-          <button class="admin-tab-btn admin-only-tab" data-tab="users">🔐 Usuários</button>
-          <button class="admin-tab-btn" data-tab="outbox">📬 Caixa de E-mails (Demo)</button>
-          <button class="admin-tab-btn admin-only-tab" data-tab="audit">📜 Auditoria</button>
-        </div>
-
-        <!-- Tab 1: Overview -->
-        <div id="tab-content-overview" class="admin-tab-content">
-          <div class="kpi-grid">
-            <div class="kpi-card">
-              <div class="kpi-label">Total de Inscrições</div>
-              <div id="kpi-total-val" class="kpi-value">—</div>
-              <div class="kpi-subtext">Todas as solicitações</div>
+      <div class="admin-dashboard-container">
+        
+        <!-- Left Sidebar Navigation (Sympla Organizer Style) -->
+        <aside class="admin-sidebar" id="admin-sidebar" aria-label="Menu de Gestão">
+          <div class="admin-sidebar-header">
+            <div class="admin-sidebar-brand">
+              <span class="site-brand-badge" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;">BNB</span>
+              <span style="font-size: 1.05rem;">Hubine 10 Anos</span>
             </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Confirmados</div>
-              <div id="kpi-confirmed-val" class="kpi-value" style="color: var(--color-success);">—</div>
-              <div class="kpi-subtext">Com vaga garantida</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Credenciados (Presentes)</div>
-              <div id="kpi-present-val" class="kpi-value" style="color: var(--color-info);">—</div>
-              <div class="kpi-subtext">Check-in realizado no local</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Lista de Espera</div>
-              <div id="kpi-waitlist-val" class="kpi-value" style="color: var(--color-warning);">—</div>
-              <div class="kpi-subtext">Aguardando desistências</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Cancelados</div>
-              <div id="kpi-cancelled-val" class="kpi-value" style="color: var(--color-danger);">—</div>
-              <div class="kpi-subtext">Vagas liberadas</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Taxa de Ocupação</div>
-              <div id="kpi-occupancy-val" class="kpi-value">—</div>
-              <div class="kpi-subtext">Capacidade do auditório</div>
-            </div>
+            <span class="admin-sidebar-badge">Área da Organização</span>
           </div>
 
-          <div class="card" style="margin-top: 1.5rem;">
-            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--primary);">Distribuição por Perfil de Participação</h3>
-            <div id="admin-profile-breakdown"></div>
-          </div>
-        </div>
+          <nav class="admin-sidebar-nav">
+            <button class="admin-nav-item active" data-tab="overview">
+              <span class="nav-icon">📊</span>
+              <span>Visão Geral</span>
+            </button>
+            <button class="admin-nav-item" data-tab="registrations">
+              <span class="nav-icon">👥</span>
+              <span>Participantes</span>
+            </button>
+            <button class="admin-nav-item org-only-action" data-tab="guests">
+              <span class="nav-icon">🎟️</span>
+              <span>Convidados</span>
+            </button>
+            <a href="#credenciamento" class="admin-nav-item" style="text-decoration: none;">
+              <span class="nav-icon">📱</span>
+              <span>Check-in Rápido</span>
+            </a>
+            <button class="admin-nav-item" data-tab="speakers">
+              <span class="nav-icon">🎤</span>
+              <span>Palestrantes</span>
+            </button>
+            <button class="admin-nav-item" data-tab="schedule">
+              <span class="nav-icon">📅</span>
+              <span>Programação</span>
+            </button>
+            <button class="admin-nav-item" data-tab="outbox">
+              <span class="nav-icon">📬</span>
+              <span>Comunicações</span>
+            </button>
+            <button class="admin-nav-item" data-tab="reports">
+              <span class="nav-icon">📈</span>
+              <span>Relatórios</span>
+            </button>
+            <button class="admin-nav-item admin-only-tab" data-tab="users">
+              <span class="nav-icon">🔐</span>
+              <span>Usuários</span>
+            </button>
+            <button class="admin-nav-item admin-only-tab" data-tab="settings">
+              <span class="nav-icon">⚙️</span>
+              <span>Configurações</span>
+            </button>
+            <button class="admin-nav-item admin-only-tab" data-tab="audit">
+              <span class="nav-icon">📜</span>
+              <span>Auditoria</span>
+            </button>
+          </nav>
 
-        <!-- Tab 2: Registrations Table -->
-        <div id="tab-content-registrations" class="admin-tab-content" style="display: none;">
-          <div class="filter-bar">
-            <input type="text" id="reg-filter-search" class="form-input filter-search-input" placeholder="Buscar por nome, instituição, e-mail ou código HUB10...">
-            <select id="reg-filter-status" class="form-select" style="max-width: 200px;">
-              <option value="">Todos os Status</option>
-              <option value="CONFIRMADO">Confirmados</option>
-              <option value="PRESENTE">Presentes (Check-in)</option>
-              <option value="LISTA_ESPERA">Lista de Espera</option>
-              <option value="CANCELADO">Cancelados</option>
-            </select>
-            <select id="reg-filter-profile" class="form-select" style="max-width: 200px;">
-              <option value="">Todos os Perfis</option>
-              <option value="Funcionário do BNB">Funcionários BNB</option>
-              <option value="Startup">Startups</option>
-              <option value="Empresa">Empresas</option>
-              <option value="Academia">Academia</option>
-              <option value="Investidor">Investidores</option>
-              <option value="Órgão Público">Órgãos Públicos</option>
-              <option value="Parceiro">Parceiros</option>
-            </select>
-            <button id="btn-export-csv" class="btn btn-secondary">📥 Exportar CSV (Excel)</button>
-            <span id="registrations-count-badge" class="badge badge-secondary"></span>
+          <div class="admin-sidebar-footer">
+            <strong style="display: block; color: var(--text-main);">Hubine 10 Anos</strong>
+            <span>Auditório Celso Furtado • 2026</span>
+          </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="admin-main">
+          <!-- Topbar -->
+          <div class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <button class="admin-mobile-toggle" id="admin-mobile-toggle" aria-label="Abrir menu lateral">☰</button>
+              <div class="admin-greeting-wrap">
+                <h1 id="admin-topbar-title">Painel da Organização</h1>
+                <p id="admin-topbar-sub">Gestão de participantes, convidados e credenciamento oficial</p>
+              </div>
+            </div>
+
+            <div class="admin-topbar-actions">
+              <div class="admin-user-pill">
+                <span id="admin-user-display-name" style="font-weight: 700;"></span>
+                <span id="admin-user-display-role" class="badge"></span>
+              </div>
+              <a href="#credenciamento" class="btn btn-sm btn-primary">📱 Abrir Credenciamento</a>
+              <button id="btn-admin-logout" class="btn btn-sm btn-secondary">Sair</button>
+            </div>
           </div>
 
-          <div class="data-table-container">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Nº Inscrição</th>
-                  <th>Participante</th>
-                  <th>E-mail</th>
-                  <th>Instituição</th>
-                  <th>Perfil</th>
-                  <th>Status</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="admin-registrations-tbody"></tbody>
-            </table>
-          </div>
-        </div>
+          <div class="admin-content-body">
+            
+            <!-- 6 KPI Summary Cards (Sympla Organizer Style) -->
+            <div class="admin-kpi-grid">
+              <div class="admin-kpi-card kpi-confirmed">
+                <div class="admin-kpi-label">Total de Confirmados</div>
+                <div id="kpi-confirmed-val" class="admin-kpi-val">—</div>
+                <div class="admin-kpi-sub">Vagas garantidas</div>
+              </div>
+              
+              <div class="admin-kpi-card kpi-present">
+                <div class="admin-kpi-label">Presentes (Check-in)</div>
+                <div id="kpi-present-val" class="admin-kpi-val">—</div>
+                <div class="admin-kpi-sub">Credenciados no local</div>
+              </div>
+
+              <div class="admin-kpi-card kpi-waitlist">
+                <div class="admin-kpi-label">Lista de Espera</div>
+                <div id="kpi-waitlist-val" class="admin-kpi-val">—</div>
+                <div class="admin-kpi-sub">Aguardando vaga</div>
+              </div>
+
+              <div class="admin-kpi-card kpi-cancelled">
+                <div class="admin-kpi-label">Cancelados</div>
+                <div id="kpi-cancelled-val" class="admin-kpi-val">—</div>
+                <div class="admin-kpi-sub">Desistências registradas</div>
+              </div>
+
+              <div class="admin-kpi-card kpi-guests">
+                <div class="admin-kpi-label">Convidados pela Organização</div>
+                <div id="kpi-guests-val" class="admin-kpi-val">—</div>
+                <div class="admin-kpi-sub">Convites emitidos</div>
+              </div>
+
+              <div class="admin-kpi-card kpi-remaining">
+                <div class="admin-kpi-label">Vagas Restantes</div>
+                <div id="kpi-remaining-val" class="admin-kpi-val">—</div>
+                <div class="admin-kpi-sub">Capacidade disponível</div>
+              </div>
+            </div>
+
+            <!-- Tab 1: Overview -->
+            <div id="tab-content-overview" class="admin-tab-content">
+              <div class="card" style="margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                  <h3 style="font-size: 1.15rem; margin: 0; color: var(--primary);">Ocupação do Auditório Celso Furtado</h3>
+                  <span id="kpi-occupancy-val" class="badge badge-primary" style="font-size: 0.85rem;">0% Ocupação</span>
+                </div>
+                <div style="background-color: var(--bg-subtle); height: 12px; border-radius: var(--radius-full); overflow: hidden; margin-bottom: 0.75rem;">
+                  <div id="admin-occupancy-progress-bar" style="background: linear-gradient(90deg, var(--bnb-wine), var(--primary)); height: 100%; width: 0%; transition: width 0.6s ease;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+                  <span>Total de Inscrições: <strong id="kpi-total-val" style="color: var(--text-main);">—</strong></span>
+                  <span>Comparecimento: <strong id="kpi-attendance-val" style="color: var(--text-main);">0%</strong></span>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: var(--primary);">Distribuição por Perfil de Participação</h3>
+                <div id="admin-profile-breakdown"></div>
+              </div>
+            </div>
+
+            <!-- Tab 2: Registrations Table (Sympla Style Filter & Table) -->
+            <div id="tab-content-registrations" class="admin-tab-content" style="display: none;">
+              <div class="filter-bar">
+                <div class="filter-search-input">
+                  <input type="text" id="reg-filter-search" class="form-input" placeholder="Buscar por nome, e-mail, inscrição, WhatsApp ou instituição..." style="width: 100%;">
+                </div>
+                
+                <select id="reg-filter-status" class="form-select" style="max-width: 180px;">
+                  <option value="CONFIRMADO" selected>Confirmados (Padrão)</option>
+                  <option value="ALL">Todos os Status</option>
+                  <option value="PRESENTE">Presentes (Check-in)</option>
+                  <option value="LISTA_ESPERA">Lista de Espera</option>
+                  <option value="CANCELADO">Cancelados</option>
+                </select>
+
+                <select id="reg-filter-origin" class="form-select" style="max-width: 195px;">
+                  <option value="ALL" selected>Todas as Origens</option>
+                  <option value="PUBLIC_REGISTRATION">Inscrição pública</option>
+                  <option value="ORGANIZATION_INVITE">Convidado da organização</option>
+                </select>
+
+                <select id="reg-filter-profile" class="form-select" style="max-width: 170px;">
+                  <option value="ALL">Todos os Perfis</option>
+                  <option value="Funcionário do BNB">Funcionários BNB</option>
+                  <option value="Startup">Startups</option>
+                  <option value="Empresa">Empresas</option>
+                  <option value="Academia">Academia</option>
+                  <option value="Investidor">Investidores</option>
+                  <option value="Órgão Público">Órgãos Públicos</option>
+                  <option value="Parceiro">Parceiros</option>
+                </select>
+
+                <div class="filter-actions-group">
+                  <button id="btn-reg-filter" class="btn btn-secondary btn-sm" type="button">Filtrar</button>
+                  <button id="btn-reg-reset" class="btn btn-secondary btn-sm" type="button" title="Limpar filtros e redefinir para Confirmados">Limpar Filtros</button>
+                  <button id="btn-open-guest-modal" class="btn btn-primary btn-sm org-only-action" type="button" style="white-space: nowrap;">
+                    + Adicionar Convidado
+                  </button>
+                  <button id="btn-export-csv" class="btn btn-secondary btn-sm org-only-action" type="button" style="white-space: nowrap;">📥 Exportar CSV</button>
+                  <span id="registrations-count-badge" class="badge badge-secondary" style="font-size: 0.8rem;"></span>
+                </div>
+              </div>
+
+              <div class="data-table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Status</th>
+                      <th>Participante</th>
+                      <th>Nº Inscrição</th>
+                      <th>Origem</th>
+                      <th>WhatsApp / Contato</th>
+                      <th>Instituição / Perfil</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-registrations-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab: Reports / Relatórios -->
+            <div id="tab-content-reports" class="admin-tab-content" style="display: none;">
+              <div class="card" style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Relatórios de Credenciamento e Presença</h3>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">Exportações consolidadas e estatísticas operacionais do evento Hubine 10 Anos.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                  <div style="background: var(--bg-subtle); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1rem;">Exportar Base de Participantes (Excel / CSV)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Contém todos os participantes, telefones com DDD, origem do convite e status atual com codificação UTF-8 BOM.</p>
+                    <button class="btn btn-primary btn-sm" onclick="document.getElementById('btn-export-csv').click()">Baixar Planilha CSV</button>
+                  </div>
+                  <div style="background: var(--bg-subtle); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1rem;">Lista de Presença para Recepção</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Imprima a lista em ordem alfabética para conferência na recepção física do auditório.</p>
+                    <button class="btn btn-secondary btn-sm" onclick="window.print()">Imprimir Lista de Apoio</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
         <!-- Tab 3: Speakers Management -->
         <div id="tab-content-speakers" class="admin-tab-content" style="display: none;">
@@ -746,6 +1682,8 @@
           </div>
         </div>
 
+          </div>
+        </main>
       </div>
     </div>
   </div>
@@ -1032,6 +1970,181 @@
     </div>
   </div>
 
+  <!-- Modal: Add Invited Guest (Admin & Org) -->
+  <div id="invited-guest-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <div>
+          <span class="badge badge-primary" style="margin-bottom: 0.25rem;">Ação Organizacional</span>
+          <h3 class="modal-title" style="margin: 0;">Adicionar Participante Convidado</h3>
+        </div>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <form id="invited-guest-form">
+        <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+          <div class="alert alert-info" style="font-size: 0.85rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>ℹ️</span>
+            <span>O convidado será cadastrado diretamente como <strong>CONFIRMADO</strong>, com credencial segura, QR Code e número de inscrição HUB10.</span>
+          </div>
+
+          <div id="invited-guest-alert" class="alert" style="display: none;"></div>
+
+          <div class="form-group">
+            <label class="form-label" for="guest-name">Nome Completo <span class="required-mark">*</span></label>
+            <input type="text" id="guest-name" class="form-input" placeholder="Ex: Maria Luísa Fontenele" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="guest-institution">Instituição / Empresa <span class="required-mark">*</span></label>
+              <input type="text" id="guest-institution" class="form-input" placeholder="Ex: Banco do Nordeste, FIEC, UFC..." required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="guest-profile">Tipo de Perfil <span class="required-mark">*</span></label>
+              <select id="guest-profile" class="form-select" required>
+                <option value="">Selecione o perfil...</option>
+                <option value="Funcionário do BNB">Funcionário do BNB</option>
+                <option value="Startup">Startup / Empreendedor</option>
+                <option value="Empresa">Empresa / Setor Produtivo</option>
+                <option value="Academia">Academia / Ensino e Pesquisa</option>
+                <option value="Investidor">Investidor / Venture Capital</option>
+                <option value="Órgão Público">Órgão Público / Governo</option>
+                <option value="Entidade de Apoio">Entidade de Apoio ao Ecossistema</option>
+                <option value="Parceiro">Parceiro Institucional</option>
+                <option value="Outro">Outro Convidado Especial</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="guest-email">E-mail <span class="required-mark">*</span></label>
+              <input type="email" id="guest-email" class="form-input" placeholder="convidado@instituicao.gov.br" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="guest-whatsapp">WhatsApp com DDD <span class="required-mark">*</span></label>
+              <input type="tel" id="guest-whatsapp" class="form-input" placeholder="(85) 99999-9999" required>
+            </div>
+          </div>
+
+          <div style="margin: 1.25rem 0 0.75rem 0; padding-top: 0.75rem; border-top: 1px solid var(--border-subtle);">
+            <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">
+              Campos Opcionais
+            </span>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="guest-badge-name">Nome para o Crachá</label>
+              <input type="text" id="guest-badge-name" class="form-input" placeholder="Como deve constar no crachá">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="guest-role">Cargo ou Função</label>
+              <input type="text" id="guest-role" class="form-input" placeholder="Ex: Diretor Executivo, Consultor...">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="guest-city">Cidade / UF</label>
+              <input type="text" id="guest-city" class="form-input" placeholder="Ex: Fortaleza / CE">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="guest-accessibility">Necessidade de Acessibilidade</label>
+              <input type="text" id="guest-accessibility" class="form-input" placeholder="Ex: Cadeira de rodas, Libras...">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="guest-notes">Observações Internas da Organização</label>
+            <textarea id="guest-notes" class="form-textarea" rows="2" placeholder="Notas internas visíveis apenas para a equipe organizadora..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
+          <button type="submit" id="btn-save-invited-guest" class="btn btn-primary">Cadastrar Convidado</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Guest Communication (Admin & Org) -->
+  <div id="guest-comm-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 650px;">
+      <div class="modal-header">
+        <div>
+          <span class="badge badge-info" style="margin-bottom: 0.25rem;">Comunicação Oficial</span>
+          <h3 class="modal-title" style="margin: 0;">Enviar Convite do Participante</h3>
+        </div>
+        <button class="modal-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
+        <div id="guest-comm-alert" class="alert" style="display: none;"></div>
+
+        <div style="background-color: var(--bg-subtle); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h4 id="comm-guest-name" style="margin: 0 0 0.25rem 0; font-size: 1.15rem; color: var(--text-main);"></h4>
+              <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">
+                Inscrição: <strong id="comm-guest-number" style="color: var(--primary);"></strong> • 
+                <span id="comm-guest-inst"></span>
+              </p>
+            </div>
+            <div id="comm-guest-status-badge"></div>
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.5rem;">
+            <span>E-mail: <strong id="comm-guest-email" style="color: var(--text-main);"></strong></span> • 
+            <span>WhatsApp: <strong id="comm-guest-phone" style="color: var(--text-main);"></strong></span>
+          </div>
+        </div>
+
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--text-main);">Escolha o Canal de Envio:</h4>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <!-- Option 1: Email -->
+          <div style="border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📧</div>
+              <strong style="font-size: 0.95rem;">Convite por E-mail</strong>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.25rem 0 0.75rem 0;">
+                Dispara o e-mail oficial institucional com layout comemorativo, QR Code e links seguros.
+              </p>
+            </div>
+            <button id="btn-trigger-guest-email" class="btn btn-primary btn-block">
+              Enviar por E-mail
+            </button>
+          </div>
+
+          <!-- Option 2: WhatsApp -->
+          <div style="border: 1px solid var(--border-subtle); border-radius: 8px; padding: 1rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💬</div>
+              <strong style="font-size: 0.95rem;">Convite por WhatsApp</strong>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.25rem 0 0.75rem 0;">
+                Prepara a mensagem completa com dados do evento, credenciamento e links de acesso.
+              </p>
+            </div>
+            <button id="btn-trigger-guest-whatsapp" class="btn btn-secondary btn-block">
+              Copiar / Abrir WhatsApp
+            </button>
+          </div>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="form-group" style="margin-bottom: 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <label class="form-label" style="margin: 0;">Prévia da Mensagem para WhatsApp:</label>
+            <button id="btn-copy-preview-text" class="btn btn-sm btn-secondary" style="font-size: 0.75rem;">📋 Copiar Texto</button>
+          </div>
+          <textarea id="guest-whatsapp-preview" class="form-textarea" rows="8" readonly style="font-size: 0.825rem; font-family: monospace; background: var(--bg-subtle);"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal>Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 8. Email View Modal (Demo Mailbox Inspector) -->
   <div id="email-view-modal" class="modal-overlay">
     <div class="modal-card" style="max-width: 720px; height: 85vh; display: flex; flex-direction: column;">
@@ -1056,6 +2169,7 @@
   <script src="js/palestrante.js"></script>
   <script src="js/credenciamento.js"></script>
   <script src="js/admin.js"></script>
+  <script src="js/hubine.js"></script>
 
   <script>
     // Ensure trailing slash on subpath so relative assets resolve properly
@@ -1091,6 +2205,11 @@
       } else if (hash === '#credenciamento') {
         document.getElementById('view-credenciamento').style.display = 'block';
         initCredenciamentoPage();
+      } else if (hash === '#hubine' || hash.startsWith('#hubine/')) {
+        document.getElementById('view-hubine').style.display = 'block';
+        if (typeof initHubinePage === 'function') {
+          initHubinePage(hash);
+        }
       } else {
         // Default public landing page
         document.getElementById('view-public').style.display = 'block';
@@ -1103,6 +2222,21 @@
             setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
           }
         }
+      }
+
+      // Update main navigation active state
+      try {
+        const activeHash = window.location.hash || '#inicio';
+        document.querySelectorAll('#main-nav-menu .nav-link').forEach(link => {
+          const href = link.getAttribute('href');
+          if (href === activeHash || (activeHash === '' && href === '#inicio') || (activeHash.startsWith('#hubine') && href === '#hubine')) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      } catch (err) {
+        // Safe navigation update
       }
     }
 
@@ -1126,5 +2260,8 @@
       router();
     });
   </script>
+
+  <!-- Modern Accessible Toast Notification System -->
+  <div id="toast-container" class="toast-container" aria-live="polite" role="status"></div>
 </body>
 </html>

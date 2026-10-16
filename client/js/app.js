@@ -1,3 +1,49 @@
+// Global Toast Notification Helper
+function showToast(message, type = 'info', duration = 3500) {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    container.className = 'toast-container';
+    container.setAttribute('aria-live', 'polite');
+    container.setAttribute('role', 'status');
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  const safeType = type === 'danger' ? 'error' : type;
+  toast.className = `toast toast-${safeType}`;
+  
+  let icon = 'ℹ️';
+  if (safeType === 'success') icon = '✅';
+  else if (safeType === 'error') icon = '❌';
+  else if (safeType === 'warning') icon = '⚠️';
+
+  toast.innerHTML = `
+    <div class="toast-content">
+      <span>${icon}</span>
+      <span>${message}</span>
+    </div>
+    <button class="toast-close" aria-label="Fechar notificação">&times;</button>
+  `;
+
+  const closeBtn = toast.querySelector('.toast-close');
+  const removeToast = () => {
+    toast.classList.add('toast-hiding');
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 250);
+  };
+
+  if (closeBtn) closeBtn.addEventListener('click', removeToast);
+  container.appendChild(toast);
+
+  if (duration > 0) {
+    setTimeout(removeToast, duration);
+  }
+}
+window.showToast = showToast;
+
 // Public Event Landing Page Logic
 let currentEventInfo = null;
 
@@ -323,9 +369,9 @@ function setupPrivacyModal() {
         try {
           const res = await API.resendAccess(email);
           dupModal.classList.remove('active');
-          alert(res.message);
+          showToast(res.message, 'success');
         } catch (e) {
-          alert('Erro ao reenviar: ' + e.message);
+          showToast('Erro ao reenviar: ' + e.message, 'error');
         } finally {
           resendBtn.disabled = false;
           resendBtn.textContent = 'Reenviar Comprovante por E-mail';

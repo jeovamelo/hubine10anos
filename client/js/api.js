@@ -193,6 +193,20 @@ const API = {
     });
   },
 
+  createInvitedGuest(payload) {
+    return this.request('/api/admin/guests', {
+      method: 'POST',
+      body: payload
+    });
+  },
+
+  sendGuestInvite(id, channel) {
+    return this.request('/api/admin/guests/' + id + '/send-invite', {
+      method: 'POST',
+      body: { channel }
+    });
+  },
+
   getAdminSpeakers() {
     return this.request('/api/admin/speakers');
   },

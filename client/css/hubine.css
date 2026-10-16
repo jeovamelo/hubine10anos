@@ -1,0 +1,1028 @@
+/* ==========================================================================
+   HUBINE 10 ANOS — CSS DO PORTAL INSTITUCIONAL & APRESENTAÇÃO EXECUTIVA
+   Conforme Diretrizes do Livro da Marca Banco do Nordeste (Volume 2)
+   - Cor Primária: Vermelho Banco do Nordeste (Pantone 194 C / #A6193C)
+   - Cor Complementar: Laranja Institucional (Pantone 151 C / #F68B1F)
+   - Cor Neutra: Cinza Institucional (Pantone 425 C / #646464) & Branco (#FFFFFF)
+   - Tipografia Institucional: Trebuchet MS (Regular e Bold)
+   ========================================================================== */
+
+:root {
+  --bnb-red: #A6193C;             /* Vermelho Banco do Nordeste */
+  --bnb-red-hover: #8E1432;
+  --bnb-red-dark: #6B1D2F;        /* Vinho Institucional */
+  --bnb-red-deep: #4D1220;        /* Vinho Profundo */
+  --bnb-red-soft: #FDF2F4;        /* Fundo vermelho suave */
+  --bnb-red-border: #F5CBD3;
+
+  --bnb-gold: #D97706;            /* Âmbar / Dourado comemorativo */
+  --bnb-gold-soft: #FEF3C7;
+  --bnb-gold-border: #FDE68A;
+
+  --bnb-gray: #64748B;            /* Cinza Institucional */
+  --bnb-gray-dark: #1E293B;
+  --bnb-gray-light: #F8FAFC;
+  --bnb-gray-border: #E2E8F0;
+
+  --font-institutional: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+}
+
+/* ==========================================================================
+   1. Brand Slots & Header Interactive Enhancement
+   ========================================================================== */
+.logo-slot-clickable {
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.logo-slot-clickable:hover {
+  border-color: var(--bnb-red);
+  box-shadow: 0 4px 12px rgba(166, 25, 60, 0.15);
+  transform: translateY(-1px);
+}
+
+.logo-slot-hubine {
+  border-color: var(--bnb-gold-border) !important;
+  background: linear-gradient(to right, #FFFFFF, var(--bnb-red-soft));
+}
+
+.logo-slot-hubine:hover {
+  border-color: var(--bnb-gold) !important;
+}
+
+.logo-slot-hubine .logo-slot-brand {
+  color: var(--bnb-red);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-link-hubine {
+  position: relative;
+  color: var(--bnb-red) !important;
+  font-weight: 700 !important;
+}
+
+/* ==========================================================================
+   2. Hubine Screen Layout & Presentation Shell
+   ========================================================================== */
+.hubine-screen {
+  background-color: var(--bg-page);
+  min-height: 100vh;
+  padding-bottom: 5rem;
+  font-family: var(--font-institutional);
+}
+
+/* Top Institutional Bar with Breadcrumb and Mode Switcher */
+.hubine-topbar {
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 76px;
+  z-index: 40;
+  box-shadow: var(--shadow-sm);
+}
+
+.hubine-topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hubine-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.hubine-breadcrumb a {
+  color: var(--bnb-red);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hubine-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.hubine-mode-toggle {
+  display: inline-flex;
+  background: var(--bg-subtle);
+  padding: 0.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  gap: 0.25rem;
+}
+
+.hubine-mode-btn {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-body);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hubine-mode-btn.active {
+  background: #FFFFFF;
+  color: var(--bnb-red);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   3. Hero Executivo (Inspirado na Capa da Apresentação)
+   ========================================================================== */
+.hubine-hero {
+  position: relative;
+  background: linear-gradient(135deg, #6B1D2F 0%, #A6193C 50%, #4D1220 100%);
+  color: #FFFFFF;
+  padding: 4rem 1.5rem 3.5rem;
+  overflow: hidden;
+  border-bottom: 3px solid var(--bnb-gold);
+}
+
+/* Curvas orgânicas características da identidade do BNB e da Apresentação */
+.hubine-hero::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 420px;
+  height: 420px;
+  border: 45px solid rgba(217, 119, 6, 0.12);
+  border-radius: 90px;
+  pointer-events: none;
+  transform: rotate(-15deg);
+}
+
+.hubine-hero::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  right: 180px;
+  width: 320px;
+  height: 320px;
+  border: 35px solid rgba(255, 255, 255, 0.08);
+  border-radius: 70px;
+  pointer-events: none;
+  transform: rotate(25deg);
+}
+
+.hubine-hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hubine-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(217, 119, 6, 0.4);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.25rem;
+}
+
+.hubine-hero-tag .tag-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--bnb-gold);
+  box-shadow: 0 0 8px var(--bnb-gold);
+}
+
+.hubine-hero-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  color: #FFFFFF;
+}
+
+.hubine-hero-subtitle {
+  font-size: 1.2rem;
+  font-weight: 400;
+  max-width: 780px;
+  line-height: 1.5;
+  color: #F1E5E8;
+  margin-bottom: 2.5rem;
+}
+
+/* Key Metrics Ribbon */
+.hubine-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.hubine-metric-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.hubine-metric-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--bnb-gold);
+}
+
+.hubine-metric-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.5px;
+}
+
+.hubine-metric-value.highlight-orange {
+  color: #FDE68A;
+}
+
+.hubine-metric-label {
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #F8E2E6;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   4. Navigation Tabs / Capítulos da Apresentação
+   ========================================================================== */
+.hubine-tabs-wrapper {
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 130px;
+  z-index: 35;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.hubine-tabs-nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  overflow-x: auto;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  scrollbar-width: none;
+}
+
+.hubine-tabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.hubine-tab-btn {
+  white-space: nowrap;
+  border: none;
+  background: transparent;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-body);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hubine-tab-btn:hover {
+  background: var(--bnb-red-soft);
+  color: var(--bnb-red);
+}
+
+.hubine-tab-btn.active {
+  background: var(--bnb-red);
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(166, 25, 60, 0.25);
+}
+
+/* ==========================================================================
+   5. Interactive Chapters / Sections
+   ========================================================================== */
+.hubine-content-container {
+  max-width: 1200px;
+  margin: 2.5rem auto 0;
+  padding: 0 1.5rem;
+}
+
+.hubine-section {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.hubine-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hubine-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hubine-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hubine-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--bnb-red);
+  margin-bottom: 0.25rem;
+}
+
+.hubine-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Curved corner accent for cards conforming to brand motif */
+.hubine-corner-accent {
+  display: none;
+}
+
+/* ==========================================================================
+   6. Organograma & Estrutura das Células
+   ========================================================================== */
+.org-chart-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.org-node {
+  background: #FFFFFF;
+  border: 2px solid var(--bnb-red);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.75rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  font-weight: 700;
+}
+
+.org-node-director {
+  background: var(--bnb-gray-dark);
+  color: #FFFFFF;
+  border-color: var(--bnb-gray-dark);
+  font-size: 0.95rem;
+}
+
+.org-node-hubine {
+  background: var(--bnb-red);
+  color: #FFFFFF;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 12px rgba(166, 25, 60, 0.25);
+  border: 2px solid var(--bnb-gold);
+}
+
+.org-branches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.org-branch-card {
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.org-branch-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--bnb-red);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--bnb-gold);
+  padding-bottom: 0.4rem;
+}
+
+.org-cell-pill {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+/* ==========================================================================
+   7. Metodologia de Inovação Aberta (8 Etapas com timeline)
+   ========================================================================== */
+.journey-timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.journey-step-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1rem;
+  position: relative;
+  transition: all var(--transition-fast);
+  border-top: 4px solid var(--bnb-red);
+}
+
+.journey-step-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--bnb-red);
+  box-shadow: var(--shadow-md);
+}
+
+.journey-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--bnb-red-soft);
+  color: var(--bnb-red);
+  font-weight: 800;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.journey-step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+
+.journey-step-desc {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.journey-step-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--bnb-gold);
+  margin-top: 0.5rem;
+}
+
+/* ==========================================================================
+   8. Heatmap & Tabela do Portfólio de 30 Desafios
+   ========================================================================== */
+.portfolio-summary-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.portfolio-stat-box {
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  text-align: center;
+}
+
+.portfolio-stat-num {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.portfolio-stat-name {
+  font-size: 0.725rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Heatmap Status Badge Colors (from Slide 11/13) */
+.status-pill-cpsi {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.status-pill-espera {
+  background: #FFEDD5;
+  color: #C2410C;
+  border: 1px solid #FED7AA;
+}
+
+.status-pill-progresso {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+
+.status-pill-finalizado {
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+}
+
+.status-pill-implementacao {
+  background: #F3E8FF;
+  color: #6D28D9;
+  border: 1px solid #DDD6FE;
+}
+
+.portfolio-controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 200px 200px;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .portfolio-controls-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portfolio-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.portfolio-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.portfolio-table th {
+  background: var(--bg-subtle);
+  color: var(--bnb-gray-dark);
+  font-weight: 700;
+  padding: 0.85rem 1rem;
+  border-bottom: 2px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.portfolio-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+  color: var(--text-body);
+}
+
+.portfolio-table tr:hover td {
+  background-color: var(--bnb-red-soft);
+}
+
+.portfolio-table .td-area {
+  font-weight: 700;
+  color: var(--bnb-red);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.portfolio-table .td-challenge {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   9. Linhas de Crédito & Financiamento (Comparador)
+   ========================================================================== */
+.credit-lines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.credit-line-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  position: relative;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+}
+
+.credit-line-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--bnb-orange);
+}
+
+.credit-line-card.featured {
+  border: 2px solid var(--bnb-red);
+  box-shadow: 0 4px 20px rgba(166, 25, 60, 0.1);
+}
+
+.credit-line-header {
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.credit-line-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--bnb-red);
+}
+
+.credit-line-tagline {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.credit-feature-list {
+  list-style: none;
+  margin: 1rem 0;
+  flex-grow: 1;
+}
+
+.credit-feature-list li {
+  font-size: 0.875rem;
+  padding: 0.45rem 0;
+  color: var(--text-body);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.credit-feature-list li span.bullet {
+  color: var(--bnb-orange);
+  font-weight: bold;
+}
+
+.credit-badges-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* ==========================================================================
+   10. Lei do Bem & Gráfico de Evolução (+93%)
+   ========================================================================== */
+.leibem-highlight-box {
+  background: linear-gradient(135deg, var(--bnb-red-soft) 0%, #FFFFFF 100%);
+  border: 1px solid var(--bnb-red-border);
+  border-left: 5px solid var(--bnb-red);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.leibem-badge-jump {
+  background: var(--bnb-red);
+  color: #FFFFFF;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 800;
+}
+
+.leibem-badge-jump .jump-num {
+  font-size: 1.85rem;
+  line-height: 1;
+  color: var(--bnb-orange);
+}
+
+.history-bars-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 240px;
+  padding-top: 2rem;
+  border-bottom: 2px solid var(--border-subtle);
+  gap: 0.5rem;
+}
+
+.history-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.history-bar-value {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+}
+
+.history-bar-fill {
+  width: 70%;
+  max-width: 45px;
+  background: linear-gradient(to top, var(--bnb-red-dark), var(--bnb-red));
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: height 0.6s ease-out;
+  position: relative;
+}
+
+.history-bar-fill.highlight {
+  background: linear-gradient(to top, var(--bnb-orange), #EA580C);
+}
+
+.history-bar-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+/* ==========================================================================
+   11. Interactive Presentation Slides (Deck Mode)
+   ========================================================================== */
+.slide-deck-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.slide-deck-modal.active {
+  display: flex;
+}
+
+.slide-deck-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #FFFFFF;
+}
+
+.slide-deck-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.slide-deck-close {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #FFFFFF;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.slide-deck-close:hover {
+  background: var(--bnb-red);
+}
+
+.slide-deck-viewport {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.presentation-slide-card {
+  width: 100%;
+  max-width: 1080px;
+  aspect-ratio: 16 / 9;
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 3rem;
+  font-family: var(--font-institutional);
+}
+
+/* Slide Header & Logo */
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.75rem;
+}
+
+.slide-title-wrap h2 {
+  font-size: 2rem;
+  color: var(--bnb-orange);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.slide-title-wrap h3 {
+  font-size: 1.15rem;
+  color: var(--bnb-red);
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.slide-brand-mark {
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--bnb-gray);
+}
+
+.slide-brand-mark strong {
+  color: var(--bnb-red);
+  font-size: 0.85rem;
+  display: block;
+}
+
+/* Slide Content Canvas */
+.slide-body {
+  flex-grow: 1;
+  overflow-y: auto;
+  color: var(--bnb-gray-dark);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Slide Footer & Page Number */
+.slide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  color: var(--bnb-gray);
+}
+
+.slide-deck-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.slide-nav-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.slide-nav-btn:hover:not(:disabled) {
+  background: var(--bnb-orange);
+  border-color: var(--bnb-orange);
+}
+
+.slide-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.slide-counter-badge {
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .presentation-slide-card {
+    aspect-ratio: auto;
+    height: 80vh;
+    padding: 1.5rem;
+  }
+  .slide-title-wrap h2 {
+    font-size: 1.5rem;
+  }
+  .hubine-hero-title {
+    font-size: 2rem;
+  }
+}
+
+/* Responsive Image & Diagram Styles */
+.hubine-media-card {
+  margin: 1.5rem 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+}
+
+.hubine-photo {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease;
+}
+
+.hubine-photo:hover {
+  transform: scale(1.01);
+}
+
+.hubine-diagram-img {
+  width: 100%;
+  max-width: 960px;
+  margin: 1rem auto;
+  display: block;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  background: #FFFFFF;
+  padding: 0.5rem;
+}
+
+.hubine-media-caption {
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  background: var(--bg-page);
+  border-top: 1px solid var(--border-subtle);
+}

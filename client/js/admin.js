@@ -2,6 +2,14 @@
 let currentAdminTab = 'overview';
 let cachedRegistrations = [];
 
+function notify(message, type = 'info') {
+  if (typeof window.showToast === 'function') {
+    window.showToast(message, type);
+  } else {
+    alert(message);
+  }
+}
+
 function initAdminPage() {
   const token = API.getToken();
   const user = API.getUser();
@@ -23,6 +31,18 @@ function initAdminPage() {
 function setupAdminLogin() {
   const form = document.getElementById('admin-login-form');
   if (!form) return;
+
+  // Check if server allows demo login
+  API.getEventInfo().then(info => {
+    const demoBox = document.getElementById('admin-demo-mode-box');
+    if (demoBox) {
+      if (info && info.allowDemoLogin === false) {
+        demoBox.style.display = 'none';
+      } else {
+        demoBox.style.display = 'block';
+      }
+    }
+  }).catch(() => {});
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -46,6 +66,31 @@ function setupAdminLogin() {
     }
   });
 
+  // Demo mode profile dropdown selector
+  const profileSelect = document.getElementById('admin-demo-profile-select');
+  if (profileSelect) {
+    profileSelect.addEventListener('change', () => {
+      const role = profileSelect.value;
+      const emailInput = document.getElementById('admin-login-email');
+      const passInput = document.getElementById('admin-login-password');
+      if (!emailInput || !passInput) return;
+
+      if (role === 'admin') {
+        emailInput.value = 'admin@hubine10anos.bnb.gov.br';
+        passInput.value = 'HubineAdmin2026!';
+      } else if (role === 'org') {
+        emailInput.value = 'organizacao@hubine10anos.bnb.gov.br';
+        passInput.value = 'HubineOrg2026!';
+      } else if (role === 'cred') {
+        emailInput.value = 'credenciamento@hubine10anos.bnb.gov.br';
+        passInput.value = 'Checkin2026!';
+      } else {
+        emailInput.value = '';
+        passInput.value = '';
+      }
+    });
+  }
+
   // Quick preset login helper buttons for demonstration
   const presetBtns = document.querySelectorAll('[data-login-preset]');
   presetBtns.forEach(btn => {
@@ -53,6 +98,8 @@ function setupAdminLogin() {
       const role = btn.getAttribute('data-login-preset');
       const emailInput = document.getElementById('admin-login-email');
       const passInput = document.getElementById('admin-login-password');
+      if (profileSelect) profileSelect.value = role;
+
       if (role === 'admin') {
         emailInput.value = 'admin@hubine10anos.bnb.gov.br';
         passInput.value = 'HubineAdmin2026!';
@@ -66,6 +113,8 @@ function setupAdminLogin() {
     });
   });
 }
+
+let currentGuestCommId = null;
 
 function setupAdminDashboard(user) {
   // Update user badge in header
@@ -97,19 +146,191 @@ function setupAdminDashboard(user) {
     }
   });
 
-  // Tab switching
-  const tabBtns = document.querySelectorAll('.admin-tab-btn');
+  // Hide org-only actions if user is credenciamento
+  const orgOnlyActions = document.querySelectorAll('.org-only-action');
+  orgOnlyActions.forEach(el => {
+    if (user.role === 'credenciamento') {
+      el.style.display = 'none';
+    } else {
+      el.style.display = '';
+    }
+  });
+
+  // Tab switching across sidebar and tab buttons
+  const tabBtns = document.querySelectorAll('.admin-nav-item, .admin-tab-btn');
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
       const targetTab = btn.getAttribute('data-tab');
-      switchAdminTab(targetTab);
+      if (!targetTab) return;
+
+      if (targetTab === 'guests') {
+        switchAdminTab('registrations');
+        const originFilter = document.getElementById('reg-filter-origin');
+        if (originFilter) {
+          originFilter.value = 'ORGANIZATION_INVITE';
+          originFilter.dispatchEvent(new Event('change'));
+        }
+      } else if (targetTab === 'checkin') {
+        window.location.hash = '#credenciamento';
+        return;
+      } else {
+        switchAdminTab(targetTab);
+      }
+
+      tabBtns.forEach(b => {
+        if (b.getAttribute('data-tab') === targetTab) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
+      });
     });
   });
 
+  // Mobile sidebar toggle
+  const mobileToggle = document.getElementById('admin-mobile-toggle');
+  const sidebar = document.getElementById('admin-sidebar');
+  if (mobileToggle && sidebar) {
+    mobileToggle.onclick = () => sidebar.classList.toggle('open');
+  }
+
+  // Setup Add Guest Modal
+  const openGuestBtn = document.getElementById('btn-open-guest-modal');
+  const guestModal = document.getElementById('invited-guest-modal');
+  const guestForm = document.getElementById('invited-guest-form');
+  const guestAlert = document.getElementById('invited-guest-alert');
+
+  if (openGuestBtn && guestModal) {
+    openGuestBtn.onclick = () => {
+      if (guestForm) guestForm.reset();
+      if (guestAlert) guestAlert.style.display = 'none';
+      guestModal.classList.add('active');
+    };
+  }
+
+  if (guestForm) {
+    guestForm.onsubmit = async (e) => {
+      e.preventDefault();
+      if (guestAlert) guestAlert.style.display = 'none';
+
+      const payload = {
+        name: document.getElementById('guest-name').value.trim(),
+        institution: document.getElementById('guest-institution').value.trim(),
+        profile: document.getElementById('guest-profile').value,
+        email: document.getElementById('guest-email').value.trim(),
+        whatsapp: document.getElementById('guest-whatsapp').value.trim(),
+        badgeName: document.getElementById('guest-badge-name').value.trim(),
+        role: document.getElementById('guest-role').value.trim(),
+        cityUf: document.getElementById('guest-city').value.trim(),
+        accessibility: document.getElementById('guest-accessibility').value.trim(),
+        internalNotes: document.getElementById('guest-notes').value.trim()
+      };
+
+      try {
+        const res = await API.createInvitedGuest(payload);
+        guestModal.classList.remove('active');
+        await loadAdminRegistrations();
+        await loadAdminOverview();
+
+        if (res.guest && res.guest.id) {
+          window.openGuestCommModal(res.guest.id);
+        }
+      } catch (err) {
+        if (guestAlert) {
+          guestAlert.className = 'alert alert-danger';
+          guestAlert.textContent = err.message || 'Erro ao cadastrar participante convidado.';
+          guestAlert.style.display = 'block';
+        }
+      }
+    };
+  }
+
+  // Setup Guest Communication Handlers
+  setupGuestCommHandlers();
+
   // Load initial tab
   switchAdminTab('overview');
+}
+
+function setupGuestCommHandlers() {
+  const emailBtn = document.getElementById('btn-trigger-guest-email');
+  const waBtn = document.getElementById('btn-trigger-guest-whatsapp');
+  const copyBtn = document.getElementById('btn-copy-preview-text');
+  const commAlert = document.getElementById('guest-comm-alert');
+
+  if (emailBtn) {
+    emailBtn.onclick = async () => {
+      if (!currentGuestCommId) return;
+      try {
+        emailBtn.disabled = true;
+        emailBtn.textContent = 'Enviando...';
+        const res = await API.sendGuestInvite(currentGuestCommId, 'EMAIL');
+        if (commAlert) {
+          commAlert.className = 'alert alert-success';
+          commAlert.textContent = res.message || 'Convite enviado por e-mail com sucesso!';
+          commAlert.style.display = 'block';
+        }
+        await loadAdminRegistrations();
+        const badgeEl = document.getElementById('comm-guest-status-badge');
+        if (badgeEl) badgeEl.innerHTML = `<span class="badge badge-success">Enviado por E-mail</span>`;
+      } catch (err) {
+        if (commAlert) {
+          commAlert.className = 'alert alert-danger';
+          commAlert.textContent = err.message || 'Erro ao enviar convite por e-mail.';
+          commAlert.style.display = 'block';
+        }
+      } finally {
+        emailBtn.disabled = false;
+        emailBtn.textContent = 'Enviar por E-mail';
+      }
+    };
+  }
+
+  if (waBtn) {
+    waBtn.onclick = async () => {
+      if (!currentGuestCommId) return;
+      try {
+        waBtn.disabled = true;
+        const res = await API.sendGuestInvite(currentGuestCommId, 'WHATSAPP');
+        if (res.whatsappMessage) {
+          navigator.clipboard.writeText(res.whatsappMessage).catch(() => {});
+        }
+        if (commAlert) {
+          commAlert.className = 'alert alert-success';
+          commAlert.textContent = 'Mensagem copiada para a área de transferência e aberta no WhatsApp!';
+          commAlert.style.display = 'block';
+        }
+        if (res.whatsappUrl) {
+          window.open(res.whatsappUrl, '_blank');
+        }
+        await loadAdminRegistrations();
+        const badgeEl = document.getElementById('comm-guest-status-badge');
+        if (badgeEl) badgeEl.innerHTML = `<span class="badge badge-info">Enviado por WhatsApp</span>`;
+      } catch (err) {
+        if (commAlert) {
+          commAlert.className = 'alert alert-danger';
+          commAlert.textContent = err.message || 'Erro ao preparar mensagem de WhatsApp.';
+          commAlert.style.display = 'block';
+        }
+      } finally {
+        waBtn.disabled = false;
+      }
+    };
+  }
+
+  if (copyBtn) {
+    copyBtn.onclick = () => {
+      const textarea = document.getElementById('guest-whatsapp-preview');
+      if (textarea && textarea.value) {
+        navigator.clipboard.writeText(textarea.value).then(() => {
+          copyBtn.textContent = '✓ Copiado!';
+          setTimeout(() => { copyBtn.textContent = '📋 Copiar Texto'; }, 2000);
+        }).catch(() => {
+          notify('Não foi possível copiar automaticamente. Selecione o texto e copie manualmente.', 'warning');
+        });
+      }
+    };
+  }
 }
 
 function switchAdminTab(tabName) {
@@ -135,13 +356,39 @@ async function loadAdminOverview() {
   try {
     const data = await API.getAdminOverview();
 
-    document.getElementById('kpi-total-val').textContent = data.total;
-    document.getElementById('kpi-confirmed-val').textContent = data.confirmed;
-    document.getElementById('kpi-present-val').textContent = data.present;
-    document.getElementById('kpi-waitlist-val').textContent = data.waitlist;
-    document.getElementById('kpi-cancelled-val').textContent = data.cancelled;
-    document.getElementById('kpi-occupancy-val').textContent = data.occupancyPercent + '%';
-    document.getElementById('kpi-attendance-val').textContent = data.attendancePercent + '%';
+    // 6 Sympla-style KPI Summary Cards
+    const confirmedEl = document.getElementById('kpi-confirmed-val');
+    if (confirmedEl) confirmedEl.textContent = data.confirmed ?? 0;
+
+    const presentEl = document.getElementById('kpi-present-val');
+    if (presentEl) presentEl.textContent = data.present ?? 0;
+
+    const waitlistEl = document.getElementById('kpi-waitlist-val');
+    if (waitlistEl) waitlistEl.textContent = data.waitlist ?? 0;
+
+    const cancelledEl = document.getElementById('kpi-cancelled-val');
+    if (cancelledEl) cancelledEl.textContent = data.cancelled ?? 0;
+
+    const guestsEl = document.getElementById('kpi-guests-val');
+    if (guestsEl) guestsEl.textContent = data.invitedGuests ?? 0;
+
+    const remainingEl = document.getElementById('kpi-remaining-val');
+    if (remainingEl) {
+      remainingEl.textContent = data.remainingSlots !== undefined ? data.remainingSlots : Math.max(0, (data.capacity || 250) - (data.confirmed || 0));
+    }
+
+    const occBar = document.getElementById('admin-occupancy-progress-bar');
+    if (occBar) {
+      occBar.style.width = Math.min(100, (data.occupancyPercent || 0)) + '%';
+    }
+
+    // Legacy fields if present
+    const totalEl = document.getElementById('kpi-total-val');
+    if (totalEl) totalEl.textContent = data.total;
+    const occEl = document.getElementById('kpi-occupancy-val');
+    if (occEl) occEl.textContent = (data.occupancyPercent || 0) + '%';
+    const attEl = document.getElementById('kpi-attendance-val');
+    if (attEl) attEl.textContent = (data.attendancePercent || 0) + '%';
 
     // Breakdown profiles
     const profileContainer = document.getElementById('admin-profile-breakdown');
@@ -178,11 +425,11 @@ async function loadAdminRegistrations() {
 function renderRegistrationsTable(list) {
   const container = document.getElementById('admin-registrations-tbody');
   const countEl = document.getElementById('registrations-count-badge');
-  if (countEl) countEl.textContent = list.length + ' registro(s)';
+  if (countEl) countEl.textContent = list.length + ' participante(s)';
   if (!container) return;
 
   if (list.length === 0) {
-    container.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 2rem;" class="text-muted">Nenhum participante encontrado.</td></tr>';
+    container.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 2rem;" class="text-muted">Nenhum participante encontrado para os filtros selecionados.</td></tr>';
     return;
   }
 
@@ -193,27 +440,53 @@ function renderRegistrationsTable(list) {
     else if (r.status === 'LISTA_ESPERA') statusBadge = `<span class="badge badge-warning">Lista Espera #${r.waitlistPosition || '1'}</span>`;
     else if (r.status === 'CANCELADO') statusBadge = '<span class="badge badge-danger">Cancelado</span>';
 
+    // Origin badge
+    const isGuest = r.origin === 'ORGANIZATION_INVITE';
+    const originBadge = isGuest
+      ? '<span class="badge" style="background:#e0e7ff; color:#3730a3; border:1px solid #c7d2fe; font-size:0.75rem;">Convidado pela organização</span>'
+      : '<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #e2e8f0; font-size:0.75rem;">Inscrição pública</span>';
+
+    // Cancelled styling
+    const isCancelled = r.status === 'CANCELADO';
+    const rowStyle = isCancelled
+      ? 'background-color: #fff1f2; opacity: 0.88;'
+      : '';
+    const nameDisplay = isCancelled
+      ? `<span style="text-decoration: line-through; color: #991b1b;">${escapeHtml(r.name)}</span>`
+      : `<strong>${escapeHtml(r.name)}</strong>`;
+
     return `
-      <tr>
+      <tr style="${rowStyle}">
         <td style="font-weight: 700; color: var(--primary);">${escapeHtml(r.registrationNumber)}</td>
         <td>
-          <strong>${escapeHtml(r.name)}</strong>
+          ${nameDisplay}
           ${r.badgeName && r.badgeName !== r.name ? `<br><small class="text-muted">Crachá: ${escapeHtml(r.badgeName)}</small>` : ''}
-          ${r.accessibility ? `<span title="Recurso de acessibilidade solicitado" style="margin-left:4px;">♿</span>` : ''}
+          ${r.accessibility ? `<span title="Recurso de acessibilidade solicitado (confidencial)" style="margin-left:4px;">♿</span>` : ''}
         </td>
-        <td>${escapeHtml(r.email)}</td>
-        <td>${escapeHtml(r.institution)}</td>
-        <td><span class="badge badge-secondary">${escapeHtml(r.profile)}</span></td>
+        <td>${originBadge}</td>
+        <td style="font-size: 0.85rem;">
+          <div>${escapeHtml(r.email)}</div>
+          <div class="text-muted" style="margin-top:2px;">📱 ${escapeHtml(r.whatsapp || r.phone || 'Não informado')}</div>
+        </td>
+        <td>
+          <div style="font-weight: 500;">${escapeHtml(r.institution)}</div>
+          <span class="badge badge-secondary" style="font-size:0.75rem; margin-top:2px;">${escapeHtml(r.profile)}</span>
+        </td>
         <td>${statusBadge}</td>
         <td>
-          <button class="btn btn-sm btn-secondary" onclick="viewRegistrationDetail('${r.id}')" title="Ver detalhes">🔍</button>
-          ${r.status === 'LISTA_ESPERA' ? `
-            <button class="btn btn-sm btn-primary" onclick="promoteRegistration('${r.id}')" title="Promover para Confirmado">Promover</button>
-          ` : ''}
-          ${r.status !== 'CANCELADO' ? `
-            <button class="btn btn-sm btn-secondary" onclick="resendRegistrationTicket('${r.id}')" title="Reenviar Comprovante">📧</button>
-            <button class="btn btn-sm btn-outline-danger" onclick="cancelRegistrationAdmin('${r.id}')" title="Cancelar Inscrição">✕</button>
-          ` : ''}
+          <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-secondary" onclick="viewRegistrationDetail('${r.id}')" title="Ver detalhes completos">🔍</button>
+            ${isGuest ? `
+              <button class="btn btn-sm btn-info" onclick="openGuestCommModal('${r.id}')" title="Comunicação do Convidado (E-mail / WhatsApp)">💬 Convite</button>
+            ` : ''}
+            ${r.status === 'LISTA_ESPERA' ? `
+              <button class="btn btn-sm btn-primary" onclick="promoteRegistration('${r.id}')" title="Promover para Confirmado">Promover</button>
+            ` : ''}
+            ${!isCancelled ? `
+              <button class="btn btn-sm btn-secondary" onclick="resendRegistrationTicket('${r.id}')" title="Reenviar Comprovante">📧</button>
+              <button class="btn btn-sm btn-outline-danger" onclick="cancelRegistrationAdmin('${r.id}')" title="Cancelar Inscrição">✕</button>
+            ` : ''}
+          </div>
         </td>
       </tr>
     `;
@@ -223,31 +496,75 @@ function renderRegistrationsTable(list) {
 function setupRegistrationsFilters() {
   const searchInput = document.getElementById('reg-filter-search');
   const statusFilter = document.getElementById('reg-filter-status');
+  const originFilter = document.getElementById('reg-filter-origin');
   const profileFilter = document.getElementById('reg-filter-profile');
+
+  // Default filter value is CONFIRMADO
+  if (statusFilter && !statusFilter.value) {
+    statusFilter.value = 'CONFIRMADO';
+  }
 
   function applyFilter() {
     let filtered = [...cachedRegistrations];
     const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
-    const st = statusFilter ? statusFilter.value : '';
-    const pf = profileFilter ? profileFilter.value : '';
+    const qDigits = q.replace(/\D/g, '');
+    const st = statusFilter ? statusFilter.value : 'CONFIRMADO';
+    const og = originFilter ? originFilter.value : 'ALL';
+    const pf = profileFilter ? profileFilter.value : 'ALL';
 
     if (q) {
       filtered = filtered.filter(r =>
         (r.name && r.name.toLowerCase().includes(q)) ||
         (r.email && r.email.toLowerCase().includes(q)) ||
         (r.institution && r.institution.toLowerCase().includes(q)) ||
-        (r.registrationNumber && r.registrationNumber.toLowerCase().includes(q))
+        (r.registrationNumber && r.registrationNumber.toLowerCase().includes(q)) ||
+        (r.badgeName && r.badgeName.toLowerCase().includes(q)) ||
+        (r.whatsapp && r.whatsapp.toLowerCase().includes(q)) ||
+        (r.phone && r.phone.toLowerCase().includes(q)) ||
+        (qDigits.length >= 3 && r.whatsapp && r.whatsapp.replace(/\D/g, '').includes(qDigits)) ||
+        (qDigits.length >= 3 && r.phone && r.phone.replace(/\D/g, '').includes(qDigits))
       );
     }
-    if (st) filtered = filtered.filter(r => r.status === st);
-    if (pf) filtered = filtered.filter(r => r.profile === pf);
+
+    if (st && st !== 'ALL') {
+      filtered = filtered.filter(r => r.status === st);
+    }
+
+    if (og && og !== 'ALL') {
+      filtered = filtered.filter(r => r.origin === og);
+    }
+
+    if (pf && pf !== 'ALL') {
+      filtered = filtered.filter(r => r.profile === pf);
+    }
 
     renderRegistrationsTable(filtered);
   }
 
   if (searchInput) searchInput.oninput = applyFilter;
   if (statusFilter) statusFilter.onchange = applyFilter;
+  if (originFilter) originFilter.onchange = applyFilter;
   if (profileFilter) profileFilter.onchange = applyFilter;
+
+  // Sympla-style action buttons
+  const filterBtn = document.getElementById('btn-reg-filter');
+  if (filterBtn) {
+    filterBtn.onclick = applyFilter;
+  }
+
+  const resetBtn = document.getElementById('btn-reg-reset');
+  if (resetBtn) {
+    resetBtn.onclick = () => {
+      if (searchInput) searchInput.value = '';
+      if (statusFilter) statusFilter.value = 'CONFIRMADO';
+      if (originFilter) originFilter.value = 'ALL';
+      if (profileFilter) profileFilter.value = 'ALL';
+      applyFilter();
+    };
+  }
+
+  // Apply default filter (CONFIRMADO)
+  applyFilter();
 
   // Export CSV button
   const exportBtn = document.getElementById('btn-export-csv');
@@ -259,6 +576,59 @@ function setupRegistrationsFilters() {
 }
 
 // Action helpers
+window.openGuestCommModal = function(id) {
+  const r = cachedRegistrations.find(item => item.id === id);
+  if (!r) return;
+
+  currentGuestCommId = id;
+  const modal = document.getElementById('guest-comm-modal');
+  const alertEl = document.getElementById('guest-comm-alert');
+  if (alertEl) alertEl.style.display = 'none';
+
+  document.getElementById('comm-guest-name').textContent = r.name;
+  document.getElementById('comm-guest-number').textContent = r.registrationNumber;
+  document.getElementById('comm-guest-inst').textContent = r.institution;
+  document.getElementById('comm-guest-email').textContent = r.email;
+  document.getElementById('comm-guest-phone').textContent = r.whatsapp || r.phone || 'Não informado';
+
+  const badgeEl = document.getElementById('comm-guest-status-badge');
+  if (badgeEl) {
+    if (r.invitationStatus === 'ENVIADO_EMAIL') {
+      badgeEl.innerHTML = `<span class="badge badge-success">Enviado por E-mail</span>`;
+    } else if (r.invitationStatus === 'ENVIADO_WHATSAPP') {
+      badgeEl.innerHTML = `<span class="badge badge-info">Enviado por WhatsApp</span>`;
+    } else {
+      badgeEl.innerHTML = `<span class="badge badge-warning">Convite Pendente</span>`;
+    }
+  }
+
+  // Pre-generate WhatsApp message for preview
+  const appUrl = window.location.origin + API.getBasePath();
+  const ticketUrl = `${appUrl}/#comprovante/${r.token}`;
+  const manageUrl = `${appUrl}/#gerenciar/${r.token}`;
+
+  const previewText = `*Hubine 10 Anos — Convite Especial da Organização* 🎉\n\n` +
+    `Olá, *${r.name}*!\n\n` +
+    `Você foi convidado(a) especial pela organização para participar do evento comemorativo *Hubine 10 Anos* (Hub de Inovação do Banco do Nordeste).\n\n` +
+    `📌 *Dados do Evento:*\n` +
+    `• *Evento:* Hubine 10 Anos — Conectando inovação, pessoas e desenvolvimento regional\n` +
+    `• *Data:* 4 de novembro de 2026\n` +
+    `• *Local:* Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)\n` +
+    `• *Credenciamento:* A partir das 13h\n` +
+    `• *Nº de Inscrição:* *${r.registrationNumber}*\n\n` +
+    `📋 *Orientações de Credenciamento:*\n` +
+    `Ao chegar ao auditório, dirija-se à recepção e apresente seu QR Code ou informe o número da sua inscrição (*${r.registrationNumber}*) para a retirada do seu crachá oficial.\n\n` +
+    `🎟️ *Acesse seu Comprovante Oficial com QR Code:*\n${ticketUrl}\n\n` +
+    `✏️ *Atualizar dados do crachá ou cancelar sua participação:*\n${manageUrl}\n\n` +
+    `Esperamos por você!\n` +
+    `_Banco do Nordeste do Brasil — Hubine_`;
+
+  const previewTextarea = document.getElementById('guest-whatsapp-preview');
+  if (previewTextarea) previewTextarea.value = previewText;
+
+  modal.classList.add('active');
+};
+
 window.viewRegistrationDetail = function(id) {
   const r = cachedRegistrations.find(item => item.id === id);
   if (!r) return;
@@ -267,19 +637,44 @@ window.viewRegistrationDetail = function(id) {
   const body = document.getElementById('reg-detail-modal-body');
   if (!modal || !body) return;
 
+  const isGuest = r.origin === 'ORGANIZATION_INVITE';
+
   body.innerHTML = `
     <div style="line-height: 1.8;">
-      <p><strong>Número:</strong> ${escapeHtml(r.registrationNumber)}</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+        <div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Número de Inscrição</span>
+          <h3 style="margin: 0; color: var(--primary); font-size: 1.35rem;">${escapeHtml(r.registrationNumber)}</h3>
+        </div>
+        <div>
+          ${isGuest
+            ? '<span class="badge" style="background:#e0e7ff; color:#3730a3; border:1px solid #c7d2fe;">Convidado pela organização</span>'
+            : '<span class="badge" style="background:#f1f5f9; color:#475569; border:1px solid #e2e8f0;">Inscrição pública</span>'
+          }
+        </div>
+      </div>
+
       <p><strong>Nome Completo:</strong> ${escapeHtml(r.name)}</p>
       <p><strong>Nome no Crachá:</strong> ${escapeHtml(r.badgeName || r.name)}</p>
       <p><strong>E-mail:</strong> ${escapeHtml(r.email)}</p>
+      <p><strong>WhatsApp / Telefone:</strong> ${escapeHtml(r.whatsapp || r.phone || 'Não informado')}</p>
       <p><strong>Instituição / Empresa:</strong> ${escapeHtml(r.institution)}</p>
       <p><strong>Perfil:</strong> ${escapeHtml(r.profile)}</p>
       <p><strong>Cargo / Função:</strong> ${escapeHtml(r.role || 'Não informado')}</p>
-      <p><strong>Telefone:</strong> ${escapeHtml(r.phone || 'Não informado')}</p>
       <p><strong>Cidade e UF:</strong> ${escapeHtml(r.cityUf || 'Não informado')}</p>
-      <p><strong>Status:</strong> ${escapeHtml(r.status)}</p>
+      <p><strong>Status da Inscrição:</strong> <span class="badge ${r.status === 'CONFIRMADO' ? 'badge-success' : (r.status === 'CANCELADO' ? 'badge-danger' : 'badge-warning')}">${escapeHtml(r.status)}</span></p>
       
+      ${isGuest ? `
+        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+          <h4 style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #1e293b;">Dados do Convite Organizacional</h4>
+          <p style="margin: 0 0 0.25rem 0; font-size: 0.85rem;"><strong>Convidado por:</strong> ${escapeHtml(r.invitedBy || 'Organização')}</p>
+          <p style="margin: 0 0 0.25rem 0; font-size: 0.85rem;"><strong>Data do Convite:</strong> ${r.invitedAt ? new Date(r.invitedAt).toLocaleString('pt-BR') : 'Não registrado'}</p>
+          <p style="margin: 0 0 0.25rem 0; font-size: 0.85rem;"><strong>Status da Comunicação:</strong> ${escapeHtml(r.invitationStatus || 'PENDENTE')}</p>
+          ${r.invitationSentAt ? `<p style="margin: 0; font-size: 0.85rem;"><strong>Enviado em:</strong> ${new Date(r.invitationSentAt).toLocaleString('pt-BR')} via ${escapeHtml(r.invitationChannel || 'E-mail')}</p>` : ''}
+          ${r.internalNotes ? `<p style="margin: 0.5rem 0 0 0; font-size: 0.85rem; border-top: 1px dashed #cbd5e1; padding-top: 0.5rem;"><strong>Notas Internas:</strong> ${escapeHtml(r.internalNotes)}</p>` : ''}
+        </div>
+      ` : ''}
+
       <div style="background-color: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); margin: 1rem 0;">
         <strong style="color: var(--primary);">Recurso de Acessibilidade Solicitado (Confidencial):</strong>
         <p style="margin: 0.25rem 0 0 0; color: ${r.accessibility ? 'var(--text-main)' : 'var(--text-muted)'};">
@@ -287,9 +682,8 @@ window.viewRegistrationDetail = function(id) {
         </p>
       </div>
 
-      <p><strong>Opt-in Comunicação Futura:</strong> ${r.futureEventsOptIn ? 'Sim' : 'Não'}</p>
-      <p><strong>Data de Inscrição:</strong> ${new Date(r.createdAt).toLocaleString('pt-BR')}</p>
-      ${r.checkinAt ? `<p><strong>Credenciado em:</strong> ${new Date(r.checkinAt).toLocaleString('pt-BR')} por ${escapeHtml(r.checkinOperator || 'Operador')}</p>` : ''}
+      <p><strong>Data de Cadastro:</strong> ${new Date(r.createdAt).toLocaleString('pt-BR')}</p>
+      ${r.checkinAt ? `<p style="color: #0284c7;"><strong>✓ Credenciado em:</strong> ${new Date(r.checkinAt).toLocaleString('pt-BR')} por ${escapeHtml(r.checkinOperator || 'Operador')}</p>` : ''}
     </div>
   `;
 
@@ -300,20 +694,20 @@ window.promoteRegistration = async function(id) {
   if (!confirm('Deseja promover este participante da lista de espera para CONFIRMADO? Um e-mail com o comprovante será enviado automaticamente.')) return;
   try {
     const res = await API.promoteAdminWaitlist(id);
-    alert(res.message);
+    notify(res.message || 'Participante promovido com sucesso!', 'success');
     loadAdminRegistrations();
     loadAdminOverview();
   } catch (err) {
-    alert('Erro: ' + err.message);
+    notify('Erro: ' + err.message, 'error');
   }
 };
 
 window.resendRegistrationTicket = async function(id) {
   try {
     const res = await API.resendAdminTicket(id);
-    alert(res.message);
+    notify(res.message || 'Comprovante reenviado com sucesso!', 'success');
   } catch (err) {
-    alert('Erro: ' + err.message);
+    notify('Erro: ' + err.message, 'error');
   }
 };
 
@@ -321,11 +715,11 @@ window.cancelRegistrationAdmin = async function(id) {
   if (!confirm('Tem certeza que deseja cancelar esta inscrição? Caso ela seja confirmada, uma vaga será aberta.')) return;
   try {
     const res = await API.cancelAdminRegistration(id);
-    alert(res.message);
+    notify(res.message || 'Inscrição cancelada com sucesso.', 'success');
     loadAdminRegistrations();
     loadAdminOverview();
   } catch (err) {
-    alert('Erro: ' + err.message);
+    notify('Erro: ' + err.message, 'error');
   }
 };
 
@@ -401,7 +795,7 @@ function setupNewSpeakerInviteBtn() {
         prompt('Convite criado com sucesso! Copie o link individual seguro para enviar ao palestrante:', res.inviteUrl);
         loadAdminSpeakers();
       } catch (err) {
-        alert('Erro ao gerar convite: ' + err.message);
+        notify('Erro ao gerar convite: ' + err.message, 'error');
       }
     };
   }
@@ -409,7 +803,7 @@ function setupNewSpeakerInviteBtn() {
 
 window.copySpeakerLink = function(url) {
   navigator.clipboard.writeText(url).then(() => {
-    alert('Link copiado para a área de transferência!\n\n' + url);
+    notify('Link copiado para a área de transferência!', 'success');
   }).catch(() => {
     prompt('Copie o link seguro do palestrante:', url);
   });
@@ -449,17 +843,17 @@ window.reviewSpeakerModal = async function(id) {
         try {
           await API.reviewSpeaker(spk.id, { action: 'APPROVE' });
           modal.classList.remove('active');
-          alert('Palestrante aprovado com sucesso! Já está visível na página pública.');
+          notify('Palestrante aprovado com sucesso! Já está visível na página pública.', 'success');
           loadAdminSpeakers();
         } catch (e) {
-          alert('Erro: ' + e.message);
+          notify('Erro: ' + e.message, 'error');
         }
       };
     }
 
     modal.classList.add('active');
   } catch (err) {
-    alert('Erro ao carregar dados: ' + err.message);
+    notify('Erro ao carregar dados: ' + err.message, 'error');
   }
 };
 
@@ -469,7 +863,7 @@ window.deleteSpeakerPrompt = async function(id) {
     await API.deleteSpeaker(id);
     loadAdminSpeakers();
   } catch (e) {
-    alert('Erro: ' + e.message);
+    notify('Erro: ' + e.message, 'error');
   }
 };
 
@@ -507,9 +901,9 @@ async function loadAdminSchedule() {
           saveBtn.disabled = true;
           saveBtn.textContent = 'Salvando...';
           await API.updateAdminSchedule(updated);
-          alert('Grade de programação atualizada com sucesso!');
+          notify('Grade de programação atualizada com sucesso!', 'success');
         } catch (e) {
-          alert('Erro ao salvar: ' + e.message);
+          notify('Erro ao salvar: ' + e.message, 'error');
         } finally {
           saveBtn.disabled = false;
           saveBtn.textContent = 'Salvar Alterações na Programação';
@@ -561,9 +955,9 @@ async function loadAdminSettings() {
 
         try {
           await API.updateAdminSettings(payload);
-          alert('Configurações do evento atualizadas com sucesso!');
+          notify('Configurações do evento atualizadas com sucesso!', 'success');
         } catch (err) {
-          alert('Erro ao salvar: ' + err.message);
+          notify('Erro ao salvar: ' + err.message, 'error');
         }
       };
     }
@@ -611,10 +1005,10 @@ async function loadAdminUsers() {
         try {
           await API.createAdminUser(payload);
           modal.classList.remove('active');
-          alert('Usuário criado com sucesso!');
+          notify('Usuário criado com sucesso!', 'success');
           loadAdminUsers();
         } catch (err) {
-          alert('Erro ao criar usuário: ' + err.message);
+          notify('Erro ao criar usuário: ' + err.message, 'error');
         }
       };
     }
@@ -629,7 +1023,7 @@ window.deleteUserPrompt = async function(id) {
     await API.deleteAdminUser(id);
     loadAdminUsers();
   } catch (err) {
-    alert('Erro: ' + err.message);
+    notify('Erro: ' + err.message, 'error');
   }
 };
 
@@ -696,7 +1090,7 @@ window.viewEmailModal = async function(id) {
     iframe.srcdoc = email.html;
     modal.classList.add('active');
   } catch (err) {
-    alert('Erro ao exibir e-mail: ' + err.message);
+    notify('Erro ao exibir e-mail: ' + err.message, 'error');
   }
 };
 

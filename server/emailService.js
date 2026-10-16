@@ -213,6 +213,113 @@ async function sendSpeakerInvite(speaker) {
   });
 }
 
+function formatGuestWhatsappMessage(reg, appUrl = getAppUrl()) {
+  const ticketUrl = `${appUrl}/#comprovante/${reg.token}`;
+  const manageUrl = `${appUrl}/#gerenciar/${reg.token}`;
+
+  return `*Hubine 10 Anos — Convite Especial da Organização* 🎉\n\n` +
+    `Olá, *${reg.name}*!\n\n` +
+    `Você foi convidado(a) especial pela organização para participar do evento comemorativo *Hubine 10 Anos* (Hub de Inovação do Banco do Nordeste).\n\n` +
+    `📌 *Dados do Evento:*\n` +
+    `• *Evento:* Hubine 10 Anos — Conectando inovação, pessoas e desenvolvimento regional\n` +
+    `• *Data:* 4 de novembro de 2026\n` +
+    `• *Local:* Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)\n` +
+    `• *Credenciamento:* A partir das 13h\n` +
+    `• *Nº de Inscrição:* *${reg.registrationNumber}*\n\n` +
+    `📋 *Orientações de Credenciamento:*\n` +
+    `Ao chegar ao auditório, dirija-se à recepção e apresente seu QR Code ou informe o número da sua inscrição (*${reg.registrationNumber}*) para a retirada do seu crachá oficial.\n\n` +
+    `🎟️ *Acesse seu Comprovante Oficial com QR Code:*\n${ticketUrl}\n\n` +
+    `✏️ *Atualizar dados do crachá ou cancelar sua participação:*\n${manageUrl}\n\n` +
+    `Esperamos por você!\n` +
+    `_Banco do Nordeste do Brasil — Hubine_`;
+}
+
+async function sendOrganizationGuestInvite(reg) {
+  const appUrl = getAppUrl();
+  const ticketUrl = `${appUrl}/#comprovante/${reg.token}`;
+  const manageUrl = `${appUrl}/#gerenciar/${reg.token}`;
+
+  const subject = 'Hubine 10 Anos — Convite Especial da Organização';
+  const html = `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+      <div style="background: linear-gradient(135deg, #6B1D2F 0%, #4A1220 100%); padding: 32px 24px; text-align: center; color: #ffffff;">
+        <div style="font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fbcfe8; margin-bottom: 8px;">Banco do Nordeste • Hubine 10 Anos</div>
+        <h1 style="margin: 0; font-size: 26px; font-weight: 700;">Convite de Honra</h1>
+        <p style="margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;">Conectando inovação, pessoas e desenvolvimento regional</p>
+      </div>
+
+      <div style="padding: 32px 24px; color: #1e293b; line-height: 1.6;">
+        <p style="font-size: 16px; margin-top: 0;">Olá, <strong>${escapeHtml(reg.name)}</strong>!</p>
+        
+        <div style="background-color: #fdf2f8; border-left: 4px solid #db2777; padding: 16px; border-radius: 6px; margin: 20px 0;">
+          <strong style="color: #9d174d; font-size: 15px;">Você é nosso(a) convidado(a) especial!</strong>
+          <p style="margin: 6px 0 0 0; color: #831843; font-size: 14px;">A comissão organizadora do Banco do Nordeste reservou a sua participação na celebração oficial dos 10 anos do Hubine.</p>
+        </div>
+
+        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 24px 0;">
+          <h3 style="margin: 0 0 12px 0; font-size: 15px; color: #6B1D2F; text-transform: uppercase; letter-spacing: 1px;">Informações do Evento e Credencial</h3>
+          <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; width: 140px;">Número de Inscrição:</td>
+              <td style="padding: 6px 0; font-weight: 700; color: #0f172a;">${reg.registrationNumber}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b;">Nome no Crachá:</td>
+              <td style="padding: 6px 0; font-weight: 600; color: #0f172a;">${escapeHtml(reg.badgeName || reg.name)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b;">Instituição:</td>
+              <td style="padding: 6px 0; color: #0f172a;">${escapeHtml(reg.institution)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b;">Data do Evento:</td>
+              <td style="padding: 6px 0; color: #0f172a;">4 de novembro de 2026</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b;">Credenciamento:</td>
+              <td style="padding: 6px 0; color: #0f172a;">A partir das 13h</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b;">Local:</td>
+              <td style="padding: 6px 0; color: #0f172a;">Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;">
+          <strong style="color: #166534; font-size: 14px;">Orientações para o Credenciamento:</strong>
+          <p style="margin: 6px 0 0 0; color: #15803d; font-size: 13.5px;">
+            Ao chegar ao evento, apresente o seu <strong>QR Code individual</strong> diretamente no celular ou informe seu número de inscrição (<strong>${reg.registrationNumber}</strong>) no balcão de recepção para liberação e retirada do crachá.
+          </p>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${ticketUrl}" style="background-color: #6B1D2F; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block;">
+            Visualizar Comprovante & QR Code
+          </a>
+        </div>
+
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 24px;">
+          Caso precise atualizar informações (como o nome para crachá) ou cancelar sua participação previamente, utilize o link seguro:
+          <br><a href="${manageUrl}" style="color: #6B1D2F; text-decoration: underline;">Atualizar Dados ou Cancelar Participação</a>
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+        <p style="font-size: 12px; color: #94a3b8; margin: 0;">
+          Convite institucional exclusivo do Banco do Nordeste — Hubine 10 Anos. Em caso de dúvidas, contate <a href="mailto:hubine10anos@bnb.gov.br" style="color: #64748b;">hubine10anos@bnb.gov.br</a>.
+        </p>
+      </div>
+    </div>
+  `;
+
+  return sendMail({
+    to: reg.email,
+    subject,
+    html,
+    text: `Hubine 10 Anos - Convite de Honra para ${reg.name}. Inscrição: ${reg.registrationNumber}. Acesse seu comprovante com QR Code em: ${ticketUrl}`
+  });
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   return String(str)
@@ -228,5 +335,7 @@ module.exports = {
   sendMail,
   sendRegistrationConfirmation,
   sendWaitlistPromotion,
-  sendSpeakerInvite
+  sendSpeakerInvite,
+  sendOrganizationGuestInvite,
+  formatGuestWhatsappMessage
 };

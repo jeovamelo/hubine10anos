@@ -1,12 +1,41 @@
 const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
+const qrcode = require('qrcode');
 const db = require('../db');
 const { generateToken, hashPassword, comparePassword, authMiddleware, requireRole } = require('../auth');
 const emailService = require('../emailService');
 
+// Login Rate Limiter (Max 10 failed/consecutive attempts per 15 minutes per IP)
+const loginAttempts = new Map();
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const MAX_LOGIN_ATTEMPTS = 10;
+
+function loginRateLimiter(req, res, next) {
+  const ip = req.ip || req.connection.remoteAddress || 'unknown';
+  const now = Date.now();
+  const record = loginAttempts.get(ip);
+
+  if (record) {
+    if (now - record.firstAttempt < LOGIN_WINDOW_MS) {
+      if (record.count >= MAX_LOGIN_ATTEMPTS) {
+        return res.status(429).json({
+          error: 'Muitas tentativas de login consecutivas. Por favor, aguarde 15 minutos antes de tentar novamente.'
+        });
+      }
+    } else {
+      // Reset expired window
+      loginAttempts.set(ip, { count: 0, firstAttempt: now });
+    }
+  } else {
+    loginAttempts.set(ip, { count: 0, firstAttempt: now });
+  }
+  next();
+}
+
 // POST /api/admin/login
-router.post('/login', (req, res) => {
+router.post('/login', loginRateLimiter, (req, res) => {
+  const ip = req.ip || req.connection.remoteAddress || 'unknown';
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: 'Informe e-mail e senha.' });
@@ -14,13 +43,22 @@ router.post('/login', (req, res) => {
 
   const user = db.getUserByEmail(email.trim());
   if (!user || !user.active) {
+    const rec = loginAttempts.get(ip) || { count: 0, firstAttempt: Date.now() };
+    rec.count += 1;
+    loginAttempts.set(ip, rec);
     return res.status(401).json({ error: 'Credenciais inválidas ou usuário inativo.' });
   }
 
   const isValid = comparePassword(password, user.passwordHash);
   if (!isValid) {
+    const rec = loginAttempts.get(ip) || { count: 0, firstAttempt: Date.now() };
+    rec.count += 1;
+    loginAttempts.set(ip, rec);
     return res.status(401).json({ error: 'Credenciais inválidas.' });
   }
+
+  // Successful login: reset attempts
+  loginAttempts.delete(ip);
 
   const token = generateToken(user);
 
@@ -61,6 +99,8 @@ router.get('/overview', requireRole(['administrador', 'organizacao', 'credenciam
   const cancelled = registrations.filter(r => r.status === 'CANCELADO').length;
 
   const totalActive = confirmed + present;
+  const invitedGuests = registrations.filter(r => r.origin === 'ORGANIZATION_INVITE').length;
+  const remainingSlots = Math.max(0, (settings.capacity || 0) - totalActive);
   const occupancyPercent = settings.capacity > 0 ? Math.round((totalActive / settings.capacity) * 100) : 0;
   const attendancePercent = totalActive > 0 ? Math.round((present / totalActive) * 100) : 0;
 
@@ -81,6 +121,8 @@ router.get('/overview', requireRole(['administrador', 'organizacao', 'credenciam
     present,
     waitlist,
     cancelled,
+    invitedGuests,
+    remainingSlots,
     totalActive,
     occupancyPercent,
     attendancePercent,
@@ -90,27 +132,36 @@ router.get('/overview', requireRole(['administrador', 'organizacao', 'credenciam
 
 // GET /api/admin/registrations
 router.get('/registrations', requireRole(['administrador', 'organizacao', 'credenciamento']), (req, res) => {
-  const { search, status, profile, type } = req.query;
+  const { search, status, profile, type, origin } = req.query;
   let list = db.getRegistrations();
 
-  if (status) {
-    list = list.filter(r => r.status === status);
+  const effectiveStatus = (status !== undefined && status !== '') ? status : 'CONFIRMADO';
+  if (effectiveStatus !== 'ALL') {
+    list = list.filter(r => r.status === effectiveStatus);
   }
-  if (profile) {
+  if (profile && profile !== 'ALL') {
     list = list.filter(r => r.profile === profile);
   }
   if (type) {
     list = list.filter(r => r.type === type);
   }
+  if (origin && origin !== 'ALL') {
+    list = list.filter(r => r.origin === origin);
+  }
 
   if (search && search.trim()) {
     const q = search.trim().toLowerCase();
+    const qDigits = q.replace(/\D/g, '');
     list = list.filter(r =>
       (r.name && r.name.toLowerCase().includes(q)) ||
       (r.email && r.email.toLowerCase().includes(q)) ||
       (r.institution && r.institution.toLowerCase().includes(q)) ||
       (r.registrationNumber && r.registrationNumber.toLowerCase().includes(q)) ||
-      (r.badgeName && r.badgeName.toLowerCase().includes(q))
+      (r.badgeName && r.badgeName.toLowerCase().includes(q)) ||
+      (r.whatsapp && r.whatsapp.toLowerCase().includes(q)) ||
+      (r.phone && r.phone.toLowerCase().includes(q)) ||
+      (qDigits.length >= 3 && r.whatsapp && r.whatsapp.replace(/\D/g, '').includes(qDigits)) ||
+      (qDigits.length >= 3 && r.phone && r.phone.replace(/\D/g, '').includes(qDigits))
     );
   }
 
@@ -136,7 +187,20 @@ router.put('/registrations/:id', requireRole(['administrador', 'organizacao']), 
     return res.status(404).json({ error: 'Inscrição não encontrada.' });
   }
 
-  const { name, email, badgeName, institution, profile, role, phone, cityUf, accessibility, status } = req.body;
+  const {
+    name,
+    email,
+    badgeName,
+    institution,
+    profile,
+    role,
+    phone,
+    whatsapp,
+    cityUf,
+    accessibility,
+    status,
+    internalNotes
+  } = req.body;
   const updates = {};
 
   if (name !== undefined) updates.name = name.trim();
@@ -146,9 +210,11 @@ router.put('/registrations/:id', requireRole(['administrador', 'organizacao']), 
   if (profile !== undefined) updates.profile = profile.trim();
   if (role !== undefined) updates.role = role.trim();
   if (phone !== undefined) updates.phone = phone.trim();
+  if (whatsapp !== undefined) updates.whatsapp = whatsapp.trim();
   if (cityUf !== undefined) updates.cityUf = cityUf.trim();
   if (accessibility !== undefined) updates.accessibility = accessibility.trim();
   if (status !== undefined) updates.status = status;
+  if (internalNotes !== undefined) updates.internalNotes = internalNotes.trim();
 
   const updated = await db.updateRegistration(reg.id, updates);
 
@@ -161,6 +227,217 @@ router.put('/registrations/:id', requireRole(['administrador', 'organizacao']), 
   res.json(updated);
 });
 
+// POST /api/admin/guests - Adicionar participante convidado pela organização
+router.post('/guests', requireRole(['administrador', 'organizacao']), async (req, res) => {
+  const {
+    name,
+    institution,
+    profile,
+    email,
+    whatsapp,
+    badgeName,
+    role,
+    cityUf,
+    accessibility,
+    internalNotes
+  } = req.body;
+
+  // Validate mandatory fields
+  if (!name || !name.trim()) {
+    return res.status(400).json({ error: 'O nome completo do convidado é obrigatório.' });
+  }
+  if (!institution || !institution.trim()) {
+    return res.status(400).json({ error: 'A instituição ou empresa é obrigatória.' });
+  }
+  if (!profile || !profile.trim()) {
+    return res.status(400).json({ error: 'O tipo de perfil é obrigatório.' });
+  }
+  if (!email || !email.trim() || !email.includes('@')) {
+    return res.status(400).json({ error: 'Informe um e-mail válido para o convidado.' });
+  }
+  if (!whatsapp || !whatsapp.trim()) {
+    return res.status(400).json({ error: 'O WhatsApp é obrigatório para participantes convidados.' });
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(cleanEmail)) {
+    return res.status(400).json({ error: 'Formato de e-mail inválido.' });
+  }
+
+  const cleanWhatsappDigits = whatsapp.replace(/\D/g, '');
+  if (cleanWhatsappDigits.length < 8 || cleanWhatsappDigits.length > 20) {
+    return res.status(400).json({ error: 'Informe um número de telefone/WhatsApp válido com DDD.' });
+  }
+
+  try {
+    const newGuest = await db.runLocked(async () => {
+      // Check duplicate email
+      const existingEmail = db.getRegistrationByEmail(cleanEmail);
+      if (existingEmail && existingEmail.status !== 'CANCELADO') {
+        const err = new Error('DUPLICATE_EMAIL');
+        err.status = 409;
+        err.responseBody = {
+          error: 'DUPLICATE_EMAIL',
+          message: 'Este e-mail já possui uma inscrição ou convite ativo para o evento.'
+        };
+        throw err;
+      }
+
+      // Check duplicate whatsapp
+      const existingPhone = db.getRegistrationByWhatsapp(cleanWhatsappDigits);
+      if (existingPhone && existingPhone.status !== 'CANCELADO') {
+        const err = new Error('DUPLICATE_WHATSAPP');
+        err.status = 409;
+        err.responseBody = {
+          error: 'DUPLICATE_WHATSAPP',
+          message: 'Este número de WhatsApp já possui um participante registrado no evento.'
+        };
+        throw err;
+      }
+
+      // Generate sequential registration number & tokens
+      const registrationNumber = db.getNextRegistrationNumber();
+      const token = crypto.randomBytes(24).toString('hex');
+      const qrToken = 'urn:hubine:checkin:' + crypto.randomUUID();
+
+      // Generate QR Code data URL
+      const qrCodeDataUrl = await qrcode.toDataURL(qrToken, {
+        width: 320,
+        margin: 2,
+        color: {
+          dark: '#6B1D2F',
+          light: '#FFFFFF'
+        }
+      });
+
+      const guestItem = {
+        id: 'reg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        registrationNumber,
+        token,
+        qrToken,
+        qrCodeDataUrl,
+        name: name.trim(),
+        email: cleanEmail,
+        institution: institution.trim(),
+        profile: profile.trim(),
+        badgeName: (badgeName || name).trim(),
+        role: (role || '').trim(),
+        phone: whatsapp.trim(),
+        whatsapp: whatsapp.trim(),
+        cityUf: (cityUf || '').trim(),
+        accessibility: (accessibility || '').trim(),
+        futureEventsOptIn: false,
+        origin: 'ORGANIZATION_INVITE',
+        status: 'CONFIRMADO',
+        waitlistPosition: null,
+        invitedBy: req.user.name,
+        invitedAt: new Date().toISOString(),
+        invitationSentAt: null,
+        invitationChannel: null,
+        invitationStatus: 'PENDENTE',
+        internalNotes: (internalNotes || '').trim(),
+        type: 'CONVIDADO',
+        checkinAt: null,
+        checkinOperator: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      await db.addRegistration(guestItem);
+
+      // Audit log
+      await db.addAuditLog({
+        action: 'CONVITE_ORGANIZACAO_CRIADO',
+        details: `Participante convidado criado: ${registrationNumber} (${guestItem.name}) por ${req.user.name}`,
+        user: req.user.name
+      });
+
+      return guestItem;
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Participante convidado cadastrado com sucesso!',
+      guest: newGuest,
+      registration: newGuest
+    });
+  } catch (err) {
+    if (err.status && err.responseBody) {
+      return res.status(err.status).json(err.responseBody);
+    }
+    console.error('Erro ao cadastrar convidado da organização:', err);
+    res.status(500).json({ error: 'Erro interno ao cadastrar participante convidado.' });
+  }
+});
+
+// POST /api/admin/guests/:id/send-invite - Enviar ou reenviar convite
+router.post('/guests/:id/send-invite', requireRole(['administrador', 'organizacao']), async (req, res) => {
+  const { id } = req.params;
+  const { channel } = req.body; // 'EMAIL' | 'WHATSAPP'
+
+  const reg = db.getRegistrationById(id);
+  if (!reg) {
+    return res.status(404).json({ error: 'Participante não encontrado.' });
+  }
+
+  const appUrl = process.env.APP_URL || 'http://localhost:3000';
+
+  if (channel === 'EMAIL') {
+    await emailService.sendOrganizationGuestInvite(reg);
+
+    const now = new Date().toISOString();
+    const updated = await db.updateRegistration(reg.id, {
+      invitationSentAt: now,
+      invitationChannel: 'EMAIL',
+      invitationStatus: 'ENVIADO_EMAIL'
+    });
+
+    await db.addAuditLog({
+      action: 'CONVITE_ORGANIZACAO_ENVIADO_EMAIL',
+      details: `Convite enviado por e-mail para ${reg.name} (${reg.registrationNumber}) por ${req.user.name}`,
+      user: req.user.name
+    });
+
+    return res.json({
+      success: true,
+      message: 'Convite enviado por e-mail com sucesso.',
+      invitationStatus: updated.invitationStatus,
+      invitationChannel: updated.invitationChannel,
+      guest: updated
+    });
+  } else if (channel === 'WHATSAPP') {
+    const message = emailService.formatGuestWhatsappMessage(reg, appUrl);
+    const cleanDigits = (reg.whatsapp || reg.phone || '').replace(/\D/g, '');
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanDigits}&text=${encodeURIComponent(message)}`;
+
+    const now = new Date().toISOString();
+    const updated = await db.updateRegistration(reg.id, {
+      invitationSentAt: now,
+      invitationChannel: 'WHATSAPP',
+      invitationStatus: 'ENVIADO_WHATSAPP'
+    });
+
+    await db.addAuditLog({
+      action: 'CONVITE_ORGANIZACAO_PREPARADO_WHATSAPP',
+      details: `Mensagem de WhatsApp preparada para ${reg.name} (${reg.registrationNumber}) por ${req.user.name}`,
+      user: req.user.name
+    });
+
+    return res.json({
+      success: true,
+      message: 'Mensagem de convite para WhatsApp preparada com sucesso.',
+      whatsappUrl,
+      whatsappMessage: message,
+      invitationStatus: updated.invitationStatus,
+      invitationChannel: updated.invitationChannel,
+      guest: updated
+    });
+  } else {
+    return res.status(400).json({ error: 'Canal de envio inválido. Utilize "EMAIL" ou "WHATSAPP".' });
+  }
+});
+
 // POST /api/admin/registrations/:id/resend
 router.post('/registrations/:id/resend', requireRole(['administrador', 'organizacao']), async (req, res) => {
   const reg = db.getRegistrationById(req.params.id);
@@ -168,7 +445,11 @@ router.post('/registrations/:id/resend', requireRole(['administrador', 'organiza
     return res.status(404).json({ error: 'Inscrição não encontrada.' });
   }
 
-  await emailService.sendRegistrationConfirmation(reg);
+  if (reg.origin === 'ORGANIZATION_INVITE') {
+    await emailService.sendOrganizationGuestInvite(reg);
+  } else {
+    await emailService.sendRegistrationConfirmation(reg);
+  }
 
   await db.addAuditLog({
     action: 'REENVIO_CONFIRMACAO',
@@ -234,17 +515,24 @@ router.get('/export/csv', requireRole(['administrador', 'organizacao']), (req, r
 
   const headers = [
     'Numero_Inscricao',
+    'Origem',
     'Nome_Completo',
     'Nome_Cracha',
     'Email',
+    'Telefone_WhatsApp',
     'Instituicao',
     'Perfil',
     'Cargo',
-    'Telefone',
     'Cidade_UF',
     'Status',
     'Acessibilidade',
     'OptIn_Comunicacao',
+    'Convidado_Por',
+    'Data_Convite',
+    'Status_Comunicacao',
+    'Canal_Comunicacao',
+    'Data_Envio_Comunicacao',
+    'Observacoes_Internas',
     'Data_Inscricao',
     'Checkin_Data',
     'Checkin_Operador'
@@ -258,17 +546,24 @@ router.get('/export/csv', requireRole(['administrador', 'organizacao']), (req, r
 
   const rows = registrations.map(r => [
     escapeCsv(r.registrationNumber),
+    escapeCsv(r.origin === 'ORGANIZATION_INVITE' ? 'Convidado pela organização' : 'Inscrição pública'),
     escapeCsv(r.name),
     escapeCsv(r.badgeName),
     escapeCsv(r.email),
+    escapeCsv(r.whatsapp || r.phone || ''),
     escapeCsv(r.institution),
     escapeCsv(r.profile),
     escapeCsv(r.role),
-    escapeCsv(r.phone),
     escapeCsv(r.cityUf),
     escapeCsv(r.status),
     escapeCsv(r.accessibility),
     escapeCsv(r.futureEventsOptIn ? 'SIM' : 'NÃO'),
+    escapeCsv(r.invitedBy || ''),
+    escapeCsv(r.invitedAt || ''),
+    escapeCsv(r.invitationStatus || ''),
+    escapeCsv(r.invitationChannel || ''),
+    escapeCsv(r.invitationSentAt || ''),
+    escapeCsv(r.internalNotes || ''),
     escapeCsv(r.createdAt),
     escapeCsv(r.checkinAt || ''),
     escapeCsv(r.checkinOperator || '')

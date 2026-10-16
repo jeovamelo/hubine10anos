@@ -16,100 +16,103 @@ router.post('/scan', async (req, res) => {
 
   const clean = code.trim();
 
-  // 1. Try finding by QR token (urn:hubine:checkin:...)
-  let reg = db.getRegistrationByQrToken(clean);
+  return await db.runLocked(async () => {
+    // 1. Try finding by QR token (urn:hubine:checkin:...)
+    let reg = db.getRegistrationByQrToken(clean);
 
-  // 2. If not found by QR, try by registration number (HUB10-XXXX)
-  if (!reg) {
-    reg = db.getRegistrationByNumber(clean);
-  }
+    // 2. If not found by QR, try by registration number (HUB10-XXXX)
+    if (!reg) {
+      reg = db.getRegistrationByNumber(clean);
+    }
 
-  // 3. If not found, try by email
-  if (!reg && clean.includes('@')) {
-    reg = db.getRegistrationByEmail(clean);
-  }
+    // 3. If not found, try by email
+    if (!reg && clean.includes('@')) {
+      reg = db.getRegistrationByEmail(clean);
+    }
 
-  // If still not found
-  if (!reg) {
-    return res.status(404).json({
-      status: 'NOT_FOUND',
-      message: 'Inscrição não encontrada no sistema. Verifique o código ou busque manualmente.'
+    // If still not found
+    if (!reg) {
+      return res.status(404).json({
+        status: 'NOT_FOUND',
+        message: 'Inscrição não encontrada no sistema. Verifique o código ou busque manualmente.'
+      });
+    }
+
+    // Check registration status
+    if (reg.status === 'CANCELADO') {
+      return res.status(400).json({
+        status: 'CANCELLED',
+        message: 'ATENÇÃO: Esta inscrição está CANCELADA.',
+        attendee: {
+          registrationNumber: reg.registrationNumber,
+          name: reg.name,
+          institution: reg.institution
+        }
+      });
+    }
+
+    if (reg.status === 'LISTA_ESPERA') {
+      return res.status(400).json({
+        status: 'WAITLIST',
+        message: 'ATENÇÃO: Participante registrado na LISTA DE ESPERA (vaga não confirmada).',
+        attendee: {
+          registrationNumber: reg.registrationNumber,
+          name: reg.name,
+          institution: reg.institution,
+          waitlistPosition: reg.waitlistPosition
+        }
+      });
+    }
+
+    // Check if ALREADY checked in
+    if (reg.status === 'PRESENTE') {
+      return res.status(409).json({
+        status: 'ALREADY_CHECKED_IN',
+        message: 'ATENÇÃO: Check-in JÁ REALIZADO anteriormente!',
+        checkinTime: reg.checkinAt,
+        operator: reg.checkinOperator || 'Operador',
+        attendee: {
+          registrationNumber: reg.registrationNumber,
+          name: reg.name,
+          badgeName: reg.badgeName,
+          institution: reg.institution,
+          profile: reg.profile
+        }
+      });
+    }
+
+    // SUCCESS: First-time checkin
+    const now = new Date().toISOString();
+    const operatorName = req.user.name;
+
+    await db.updateRegistration(reg.id, {
+      status: 'PRESENTE',
+      checkinAt: now,
+      checkinOperator: operatorName
     });
-  }
 
-  // Check registration status
-  if (reg.status === 'CANCELADO') {
-    return res.status(400).json({
-      status: 'CANCELLED',
-      message: 'ATENÇÃO: Esta inscrição está CANCELADA.',
-      attendee: {
-        registrationNumber: reg.registrationNumber,
-        name: reg.name,
-        institution: reg.institution
-      }
+    await db.addAuditLog({
+      action: 'CHECKIN_REALIZADO',
+      details: `Credenciamento de ${reg.name} (${reg.registrationNumber}) por ${operatorName}`,
+      user: operatorName
     });
-  }
 
-  if (reg.status === 'LISTA_ESPERA') {
-    return res.status(400).json({
-      status: 'WAITLIST',
-      message: 'ATENÇÃO: Participante registrado na LISTA DE ESPERA (vaga não confirmada).',
-      attendee: {
-        registrationNumber: reg.registrationNumber,
-        name: reg.name,
-        institution: reg.institution,
-        waitlistPosition: reg.waitlistPosition
-      }
-    });
-  }
-
-  // Check if ALREADY checked in
-  if (reg.status === 'PRESENTE') {
-    return res.status(409).json({
-      status: 'ALREADY_CHECKED_IN',
-      message: 'ATENÇÃO: Check-in JÁ REALIZADO anteriormente!',
-      checkinTime: reg.checkinAt,
-      operator: reg.checkinOperator || 'Operador',
+    return res.json({
+      status: 'SUCCESS',
+      message: 'Credenciamento realizado com sucesso!',
+      checkinTime: now,
+      operator: operatorName,
       attendee: {
         registrationNumber: reg.registrationNumber,
         name: reg.name,
         badgeName: reg.badgeName,
         institution: reg.institution,
-        profile: reg.profile
+        profile: reg.profile,
+        role: reg.role,
+        status: 'PRESENTE',
+        accessibility: reg.accessibility
       }
     });
-  }
-
-  // SUCCESS: First-time checkin
-  const now = new Date().toISOString();
-  const operatorName = req.user.name;
-
-  await db.updateRegistration(reg.id, {
-    status: 'PRESENTE',
-    checkinAt: now,
-    checkinOperator: operatorName
-  });
-
-  await db.addAuditLog({
-    action: 'CHECKIN_REALIZADO',
-    details: `Credenciamento de ${reg.name} (${reg.registrationNumber}) por ${operatorName}`,
-    user: operatorName
-  });
-
-  res.json({
-    status: 'SUCCESS',
-    message: 'Credenciamento realizado com sucesso!',
-    checkinTime: now,
-    operator: operatorName,
-    attendee: {
-      registrationNumber: reg.registrationNumber,
-      name: reg.name,
-      badgeName: reg.badgeName,
-      institution: reg.institution,
-      profile: reg.profile,
-      role: reg.role,
-      accessibility: reg.accessibility
-    }
   });
 });
 

@@ -2,7 +2,19 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('./db');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'hubine-10-anos-chave-secreta-jwt-2026';
+const DEFAULT_JWT_SECRET = 'hubine-10-anos-chave-secreta-jwt-2026';
+
+function getJwtSecret() {
+  const isProd = process.env.NODE_ENV === 'production';
+  const secret = process.env.JWT_SECRET;
+  if (isProd) {
+    if (!secret || secret === DEFAULT_JWT_SECRET || secret.length < 32) {
+      throw new Error('ERRO CRÍTICO DE SEGURANÇA: O JWT_SECRET padrão não pode ser utilizado em ambiente de produção. Configure uma chave secreta forte com no mínimo 32 caracteres.');
+    }
+    return secret;
+  }
+  return secret || DEFAULT_JWT_SECRET;
+}
 
 function generateToken(user) {
   return jwt.sign(
@@ -12,14 +24,14 @@ function generateToken(user) {
       email: user.email,
       role: user.role
     },
-    JWT_SECRET,
+    getJwtSecret(),
     { expiresIn: '12h' }
   );
 }
 
 function verifyToken(token) {
   try {
-    return jwt.verify(token, JWT_SECRET);
+    return jwt.verify(token, getJwtSecret());
   } catch (err) {
     return null;
   }
@@ -85,5 +97,8 @@ module.exports = {
   hashPassword,
   comparePassword,
   authMiddleware,
-  requireRole
+  requireRole,
+  getJwtSecret,
+  DEFAULT_JWT_SECRET
 };
+

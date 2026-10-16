@@ -40,10 +40,16 @@ async function seed() {
       createdAt: new Date().toISOString()
     });
 
-    console.log('✅ Usuários padrão criados:');
-    console.log('   - Administrador: admin@hubine10anos.bnb.gov.br (Senha: HubineAdmin2026!)');
-    console.log('   - Organização: organizacao@hubine10anos.bnb.gov.br (Senha: HubineOrg2026!)');
-    console.log('   - Credenciamento: credenciamento@hubine10anos.bnb.gov.br (Senha: Checkin2026!)');
+    console.log('✅ Usuários institucionais criados com sucesso:');
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('   - Administrador: admin@hubine10anos.bnb.gov.br (Senha: HubineAdmin2026!)');
+      console.log('   - Organização: organizacao@hubine10anos.bnb.gov.br (Senha: HubineOrg2026!)');
+      console.log('   - Credenciamento: credenciamento@hubine10anos.bnb.gov.br (Senha: Checkin2026!)');
+    } else {
+      console.log('   - Administrador: admin@hubine10anos.bnb.gov.br [perfil: administrador]');
+      console.log('   - Organização: organizacao@hubine10anos.bnb.gov.br [perfil: organizacao]');
+      console.log('   - Credenciamento: credenciamento@hubine10anos.bnb.gov.br [perfil: credenciamento]');
+    }
   }
 
   // 2. Schedule Seed (Official agenda from prompt)

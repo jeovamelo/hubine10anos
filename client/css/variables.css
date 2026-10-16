@@ -1,66 +1,94 @@
-/* Hubine 10 Anos - Design System Tokens */
+/* Hubine 10 Anos - Design System Tokens (Inspirado nas Diretrizes BNB e Melhores Práticas Sympla) */
 :root {
-  /* Color Palette: Bordô Institucional, Branco e Cinza */
-  --primary: #6B1D2F;          /* Bordô institucional BNB */
-  --primary-hover: #822238;    /* Bordô vibrante */
-  --primary-active: #521524;   /* Bordô escuro */
-  --primary-light: #FDF2F4;    /* Fundo suave bordô */
-  --primary-border: #F1D4DB;   /* Borda suave bordô */
-  --primary-gradient: linear-gradient(135deg, #6B1D2F 0%, #4D1220 100%);
-  --hero-gradient: linear-gradient(145deg, #581424 0%, #3D0D19 50%, #24080F 100%);
+  /* Paleta Institucional Principal: Bordô, Vinho, Vermelho, Branco e Cinza Neutro */
+  --primary: #6B1D2F;             /* Bordô institucional Banco do Nordeste */
+  --primary-hover: #7E2237;       /* Bordô iluminado hover */
+  --primary-active: #531624;      /* Bordô escuro active */
+  --primary-light: #FDF2F4;       /* Fundo sutil bordô para seleções e cards */
+  --primary-border: #F1D4DB;      /* Borda sutil bordô */
+  
+  --bnb-wine: #4D1220;            /* Vinho institucional profundo */
+  --bnb-red: #A6193C;             /* Vermelho institucional BNB */
+  --bnb-red-hover: #BF1E47;
+  --bnb-red-soft: #FDF2F4;
+  --bnb-red-border: #F5CBD3;
 
-  /* Neutrals */
-  --bg-page: #F8FAFC;          /* Fundo principal neutro */
-  --bg-card: #FFFFFF;          /* Fundo cartões */
-  --bg-subtle: #F1F5F9;        /* Fundo secundário cinza */
+  /* Gradientes Institucionais */
+  --hero-gradient: linear-gradient(135deg, rgba(77, 18, 32, 0.94) 0%, rgba(107, 29, 47, 0.92) 50%, rgba(131, 24, 67, 0.88) 100%);
+  --hero-gradient-solid: linear-gradient(135deg, #4D1220 0%, #6B1D2F 50%, #831843 100%);
+
+  /* Acento Comemorativo dos 10 Anos (Dourado / Âmbar de Inovação - Usado estritamente como destaque) */
+  --bnb-gold: #D97706;            /* Âmbar / Dourado 10 Anos */
+  --bnb-gold-light: #FEF3C7;
+  --bnb-gold-border: #FDE68A;
+  --bnb-gold-text: #92400E;
+
+  /* Neutros e Superfícies (Clean & Professional) */
+  --bg-page: #F8FAFC;             /* Fundo da aplicação */
+  --bg-card: #FFFFFF;             /* Cartões e tabelas */
+  --bg-subtle: #F1F5F9;           /* Cinza sutil para áreas secundárias */
+  --bg-hover: #F8FAFC;
   --bg-elevated: #FFFFFF;
-  --text-main: #0F172A;        /* Slate 900 */
-  --text-body: #334155;        /* Slate 700 */
-  --text-muted: #64748B;       /* Slate 500 */
-  --text-light: #94A3B8;       /* Slate 400 */
-  --border-subtle: #E2E8F0;    /* Slate 200 */
-  --border-focus: #6B1D2F;
+  --bg-sidebar: #FFFFFF;          /* Sidebar limpa padrão Sympla */
+  --bg-sidebar-active: #FDF2F4;
 
-  /* Accents */
-  --accent-gold: #D97706;      /* Dourado inovação 10 anos */
-  --accent-gold-light: #FEF3C7;
-  --accent-gold-text: #92400E;
+  /* Tipografia & Cores de Texto */
+  --text-main: #0F172A;           /* Títulos e dados principais (Slate 900) */
+  --text-body: #334155;           /* Textos corridos e labels (Slate 700) */
+  --text-muted: #64748B;          /* Metadados e legendas (Slate 500) */
+  --text-light: #94A3B8;          /* Desabilitados (Slate 400) */
 
-  --color-success: #059669;    /* Verde confirmação */
+  /* Linhas e Contornos */
+  --border-subtle: #E2E8F0;       /* Bordas sutis padrão Sympla (Slate 200) */
+  --border-strong: #CBD5E1;       /* Bordas de campos de entrada (Slate 300) */
+  --border-focus: #6B1D2F;        /* Foco acessível */
+
+  /* Estados Funcionais */
+  --color-success: #059669;       /* Verde confirmação */
   --color-success-bg: #ECFDF5;
+  --color-success-border: #A7F3D0;
   --color-success-text: #065F46;
 
-  --color-warning: #D97706;    /* Âmbar lista de espera */
+  --color-warning: #D97706;       /* Âmbar lista de espera */
   --color-warning-bg: #FFFBEB;
-  --color-warning-text: #B45309;
+  --color-warning-border: #FDE68A;
+  --color-warning-text: #92400E;
 
-  --color-danger: #DC2626;     /* Vermelho cancelamento/erro */
+  --color-danger: #DC2626;        /* Vermelho cancelamento/erro */
   --color-danger-bg: #FEF2F2;
+  --color-danger-border: #FECACA;
   --color-danger-text: #991B1B;
 
-  --color-info: #0284C7;       /* Azul informativo */
+  --color-info: #0284C7;          /* Azul informativo */
   --color-info-bg: #F0F9FF;
+  --color-info-border: #BAE6FD;
   --color-info-text: #075985;
 
-  /* Typography */
+  --color-purple: #7C3AED;        /* Roxo institucional para convidados de honra */
+  --color-purple-bg: #F5F3FF;
+  --color-purple-border: #DDD6FE;
+  --color-purple-text: #5B21B6;
+
+  /* Tipografia */
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Elevation & Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 4px 20px rgba(107, 29, 47, 0.06);
+  /* Elevações e Sombras (Sutis, limpas e modernas) */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.05);
 
-  /* Radius */
+  /* Arredondamento (Consistência com estilo Sympla) */
+  --radius-xs: 4px;
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
   --radius-full: 9999px;
 
-  /* Transitions */
+  /* Transições e Velocidades */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
