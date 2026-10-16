@@ -235,7 +235,7 @@
 
 /* Hero Section */
 .hero-section {
-  background: var(--hero-gradient), url('/assets/hero-bg.jpg') center/cover no-repeat;
+  background: var(--hero-gradient), url('../assets/hero-bg.jpg') center/cover no-repeat;
   color: #FFFFFF;
   padding: 4.5rem 0 4rem 0;
   position: relative;
