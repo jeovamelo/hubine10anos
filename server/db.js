@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const postgres = require('./postgres');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const DB_FILE = path.join(DATA_DIR, 'database.json');
@@ -73,6 +74,8 @@ class Database {
     this.data = null;
     this.lock = new AsyncLock();
     this.lastMtime = 0;
+    this.pg = postgres;
+    this.isPostgresReady = false;
     this.init();
   }
 
@@ -80,7 +83,37 @@ class Database {
     return this.lock.acquire(fn);
   }
 
+  async initPostgres() {
+    if (!this.pg.isEnabled()) {
+      return false;
+    }
+    const ok = await this.pg.init();
+    if (!ok) {
+      console.warn('⚠️ [Database] Falha ao conectar ao PostgreSQL. Operando com armazenamento local JSON como fallback.');
+      return false;
+    }
+
+    try {
+      const existing = await this.pg.loadAll();
+      if (existing && existing.users && existing.users.length > 0) {
+        console.log(`✓ [PostgreSQL] Carregados ${existing.registrations.length} inscritos e ${existing.users.length} usuários do banco PostgreSQL.`);
+        this.data = existing;
+        this.saveSync(); // Mantém backup local em sincronia
+      } else {
+        console.log(`[PostgreSQL] Banco PostgreSQL inicial. Migrando ${this.data.registrations.length} inscritos e ${this.data.users.length} usuários para o PostgreSQL...`);
+        await this.pg.migrateFromState(this.data);
+        console.log(`✓ [PostgreSQL] Migração para o PostgreSQL concluída com sucesso!`);
+      }
+      this.isPostgresReady = true;
+      return true;
+    } catch (e) {
+      console.error('❌ [PostgreSQL] Erro ao carregar/migrar dados:', e.message);
+      return false;
+    }
+  }
+
   reloadIfModified() {
+    if (this.isPostgresReady) return;
     try {
       if (fs.existsSync(DB_FILE)) {
         const stat = fs.statSync(DB_FILE);
@@ -160,6 +193,9 @@ class Database {
     this.reloadIfModified();
     this.data.settings = { ...this.data.settings, ...partial };
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveSettings(this.data.settings);
+    }
     return this.data.settings;
   }
 
@@ -184,6 +220,9 @@ class Database {
     this.reloadIfModified();
     this.data.users.push(user);
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveUser(user);
+    }
     return user;
   }
 
@@ -193,6 +232,9 @@ class Database {
     if (idx === -1) return null;
     this.data.users[idx] = { ...this.data.users[idx], ...updates, updatedAt: new Date().toISOString() };
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveUser(this.data.users[idx]);
+    }
     return this.data.users[idx];
   }
 
@@ -202,6 +244,9 @@ class Database {
     if (idx === -1) return false;
     this.data.users.splice(idx, 1);
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.deleteUser(id);
+    }
     return true;
   }
 
@@ -279,6 +324,9 @@ class Database {
     const formatted = formatRegistration(reg);
     this.data.registrations.push(formatted);
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveRegistration(formatted);
+    }
     return formatted;
   }
 
@@ -291,7 +339,21 @@ class Database {
       updatedAt: new Date().toISOString()
     });
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveRegistration(this.data.registrations[idx]);
+    }
     return this.data.registrations[idx];
+  }
+
+  async deleteRegistration(id) {
+    const idx = this.data.registrations.findIndex(r => r.id === id);
+    if (idx === -1) return false;
+    this.data.registrations.splice(idx, 1);
+    await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.deleteRegistration(id);
+    }
+    return true;
   }
 
   getConfirmedCount() {
@@ -322,6 +384,9 @@ class Database {
     this.reloadIfModified();
     this.data.speakers.push(speaker);
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveSpeaker(speaker);
+    }
     return speaker;
   }
 
@@ -331,6 +396,9 @@ class Database {
     if (idx === -1) return null;
     this.data.speakers[idx] = { ...this.data.speakers[idx], ...updates, updatedAt: new Date().toISOString() };
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveSpeaker(this.data.speakers[idx]);
+    }
     return this.data.speakers[idx];
   }
 
@@ -340,6 +408,9 @@ class Database {
     if (idx === -1) return false;
     this.data.speakers.splice(idx, 1);
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.deleteSpeaker(id);
+    }
     return true;
   }
 
@@ -353,6 +424,9 @@ class Database {
     this.reloadIfModified();
     this.data.schedule = items;
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveSchedule(items);
+    }
     return this.data.schedule;
   }
 
@@ -373,6 +447,9 @@ class Database {
       this.data.auditLogs = this.data.auditLogs.slice(-2000);
     }
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveAuditLog(log);
+    }
     return log;
   }
 
@@ -392,12 +469,18 @@ class Database {
       this.data.emailOutbox = this.data.emailOutbox.slice(-300);
     }
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.saveEmailOutbox(item);
+    }
     return item;
   }
 
   async clearEmailOutbox() {
     this.data.emailOutbox = [];
     await this.save();
+    if (this.isPostgresReady) {
+      await this.pg.clearEmailOutbox();
+    }
     return true;
   }
 }

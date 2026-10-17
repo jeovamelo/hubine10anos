@@ -69,15 +69,22 @@ app.use((req, res, next) => {
 });
 
 if (require.main === module) {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log('====================================================');
-    console.log('🎉 Servidor Hubine 10 Anos rodando em: http://0.0.0.0:' + PORT);
-    console.log('   Rota base alternativa: http://0.0.0.0:' + PORT + '/dezanos/');
-    console.log('====================================================');
-    console.log('Painel Administrativo: http://localhost:' + PORT + '/#admin');
-    console.log('Credenciamento Mobile:  http://localhost:' + PORT + '/#credenciamento');
-    console.log('====================================================');
-  });
+  (async () => {
+    try {
+      await db.initPostgres();
+    } catch (err) {
+      console.error('Falha ao inicializar PostgreSQL:', err);
+    }
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log('====================================================');
+      console.log('🎉 Servidor Hubine 10 Anos rodando em: http://0.0.0.0:' + PORT);
+      console.log('   Rota base alternativa: http://0.0.0.0:' + PORT + '/dezanos/');
+      console.log('====================================================');
+      console.log('Painel Administrativo: http://localhost:' + PORT + '/#admin');
+      console.log('Credenciamento Mobile:  http://localhost:' + PORT + '/#credenciamento');
+      console.log('====================================================');
+    });
+  })();
 }
 
 module.exports = app;

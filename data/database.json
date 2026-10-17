@@ -2233,6 +2233,71 @@
       "checkinOperator": "Equipe de Credenciamento",
       "createdAt": "2026-10-16T21:14:04.959Z",
       "updatedAt": "2026-10-16T21:14:05.005Z"
+    },
+    {
+      "id": "reg_1792196416453_9nhr",
+      "registrationNumber": "HUB10-1070",
+      "token": "c2c11bccddc598847b9098aba5c4f8601ce42ec8210e9fa5",
+      "qrToken": "urn:hubine:checkin:7caf3ef8-1fc0-428c-be59-49804085912e",
+      "qrCodeDataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFACAYAAADNkKWqAAAAAklEQVR4AewaftIAAAp+SURBVO3B0Y0kWY5FwdtEyEEZKBjFoWCUgYrU9O9iAX8YeJSPZ/KY/fPnXwKAhUwAsJQJAJYyAcBSJgBYygQAS5kAYCkTACxlAoClTACwlAkAljIBwFImAFjKBABLmQBgKRMALGUCgKVMALDUR1+SHtqkpvUN6aErNa1vSA/dVdO6Kz30U9S0viE9dKWm9Q3poU1qWneZAGApEwAsZQKApUwAsJQJAJYyAcBSJgBY6qOH1LR+kvTQb1LTupIeOkkPvUFN6xvSQ1fSQ99Q07qSHjqpad1V0/pJ0kN/mwkAljIBwFImAFjKBABLmQBgKRMALGUCgKVMALDURy+SHnpCTesJ6aG70kMnNa2T9NBdNa2T9NCVmtZJeuhKeugbalp3pYd+k/TQE2pab2ACgKVMALCUCQCWMgHAUiYAWMoEAEuZAGApEwAs9RH+p2pad6WHTmpad6WH7koPndS0fpP0EN7JBABLmQBgKRMALGUCgKVMALCUCQCWMgHAUh/h1dJDJzWtk/TQlZrWSU3rJD10paZ1V3ropKZ1V3oIv5sJAJYyAcBSJgBYygQAS5kAYCkTACxlAoClTACw1EcvUtPaJj10paZ1kh46qWldSQ89IT10UtP6TWpaV9JDb1HT2sQEAEuZAGApEwAsZQKApUwAsJQJAJYyAcBSJgBY6qOHpIfw/9W0rqSHTmpaJ+mhKzWtk/TQSU3rSnroLdJDV2paJ+mhnyI9hP/LBABLmQBgKRMALGUCgKVMALCUCQCWMgHAUh99SU0L/xvpoSfUtE7SQ1dqWnfVtE7SQyc1rSvpoZ+kpoX/jgkAljIBwFImAFjKBABLmQBgKRMALGUCgKVMALDUR1+SHrpS0zpJD/0UNa2TmtZb1LSupIeekB66q6b1hJrWSXroLdJDP0VN6w1MALCUCQCWMgHAUiYAWMoEAEuZAGApEwAsZQKApT76ZWpaT0gPndS0nlDTOkkPXalp/RTpoW9ID91V0zpJD12paT2hpvWE9NBJeuiumtZdJgBYygQAS5kAYCkTACxlAoClTACwlAkAlvrnz7/0Eumhk5rWXemhu2paJ+mhk5rWb5IeuqumdSU9dFLTOkkPXalp/SbpoW+oaf0WJgBYygQAS5kAYCkTACxlAoClTACwlAkAljIBwFL//PmXviA99ISa1m+SHrpS03qL9NATalp3pYeeUNM6SQ/dVdM6SQ/dVdM6SQ89oab1t5kAYCkTACxlAoClTACwlAkAljIBwFImAFjKBABL/fPnX3pAeuikpnWSHrqrpnWSHvopalqbpIdOalp3pYdOalpPSA+d1LSupIe+oaZ1V3rorprWXSYAWMoEAEuZAGApEwAsZQKApUwAsJQJAJb658+/hP9aeuikpnVXeugbalp3pYeeUNN6QnrorprWXemhk5rWSXroSk3rG9JDb1DTussEAEuZAGApEwAsZQKApUwAsJQJAJYyAcBSJgBY6qMvSQ9dqWl9Q3rorprWSXroSk3rJD10V03rJ6lp3ZUeulLTOkkPndS03qCm9ZPUtK6kh76hpvW3mQBgKRMALGUCgKVMALCUCQCWMgHAUiYAWMoEAEt99CLpobtqWt9Q09okPXRS07orPXRS07qSHnpCeugbalp3pYdOalp3pYdOalq/hQkAljIBwFImAFjKBABLmQBgKRMALGUCgKU++pKa1m+SHrpS0/qGmtZd6aG7alon6aGTmtaVmtZJeuiumtZJeuhKTeskPXSSHnqD9NA3pIeu1LRO0kNvYAKApUwAsJQJAJYyAcBSJgBYygQAS5kAYCkTACz10UPSQyc1rZP00JX00DfUtJ6QHnqD9NBPUdM6SQ+d1LTuqmmdpIeu1LS+IT10pab1Demhu2paJ+mhKzWtu0wAsJQJAJYyAcBSJgBYygQAS5kAYCkTACz1z59/6QvSQ0+oaV1JD53UtE7SQ0+oaV1JD53UtJ6QHrqrpnWSHrpS0/pN0kPfUNPCf8cEAEuZAGApEwAsZQKApUwAsJQJAJYyAcBSJgBY6qMXqWm9RU3rSnropKb1Fumhu2paJ+mhvy099A01rSvpoZOa1kl6aJP00ElN6w1MALCUCQCWMgHAUiYAWMoEAEuZAGApEwAsZQKApT56kfTQSU3rrvTQXTWtk/TQSU3rCTWtu9JDJzWtK+mhk5rWXemhu2pab1HTuis99ISa1k9hAoClTACwlAkAljIBwFImAFjKBABLmQBgqY8eUtP6hvTQlZrWE9JDJzWtk/TQlZrWW9S0TtJDV2pad6WHTmpaT0gPPSE99ISa1l3poSfUtO4yAcBSJgBYygQAS5kAYCkTACxlAoClTACwlAkAlvroh6lpXUkPndS0TtJDv0l66EpN6wnpod+kpvWE9NBdNa2T9NBJTetKTeskPXRS0/rbTACwlAkAljIBwFImAFjKBABLmQBgKRMALGUCgKU++mHSQ1dqWifpoZOa1pX00El66C1qWlfSQyc1rbtqWj9FeugbalpX0kMnNa2T9NCV9NBJTeuu9NA3pIeu1LTuMgHAUiYAWMoEAEuZAGApEwAsZQKApUwAsNRHv0x66KSmdZIeulLTOkkPndS0rqSHTmpaJ+mhKzWtJ6SH7qppnaSH7qppnaSHTtJDd6WHnpAeuqum9Q3pob/NBABLmQBgKRMALGUCgKVMALCUCQCWMgHAUiYAWOqjL6lpPaGm9YSa1hvUtJ6QHvqGmtbflh76hprWlfTQSU3rJD10V03rCemhk5rWXemhNzABwFImAFjKBABLmQBgKRMALGUCgKVMALCUCQCW+uhL0kOb1LROalq/SU3rJD10pab1hJrWE9JDb5EeulLTeoua1huYAGApEwAsZQKApUwAsJQJAJYyAcBSJgBY6qOH1LR+kvTQXemhk5rWXemhu2pa31DTupIeOqlpXalpnaSH7qppnaSHTmpaV9JD31DTekJ66A1qWneZAGApEwAsZQKApUwAsJQJAJYyAcBSJgBYygQAS330IumhJ9S03iI99ISa1pX00BNqWnelh76hpnVXTesJ6aG3qGn9FiYAWMoEAEuZAGApEwAsZQKApUwAsJQJAJYyAcBSH+F/qqZ1V3rorprWN6SHrqSHTmpaV2pab5Eeeoua1l3pobdID12pad1lAoClTACwlAkAljIBwFImAFjKBABLmQBgqY/waumhb0gPXalpnaSHTmpab5AeekJN6yQ9dFdN6yQ9dKWmdVLTuis9dFLTOqlp/W0mAFjKBABLmQBgKRMALGUCgKVMALCUCQCWMgHAUh+9SE3rN6lp3VXTekJ66KSmdVd66KSmdVdN66700El66K6a1kl66KSmdSU9dFLTOkkP/RYmAFjKBABLmQBgKRMALGUCgKVMALCUCQCWMgHAUh89JD20TXroLWpaV2paT6hpnaSHrtS0nlDTOkkPndS0rqSH3iI9dFLTuis9dFLT+ttMALCUCQCWMgHAUiYAWMoEAEuZAGApEwAs9c+ffwkAFjIBwFImAFjKBABLmQBgKRMALGUCgKVMALCUCQCWMgHAUiYAWMoEAEuZAGApEwAsZQKApUwAsJQJAJb6D8f97irwxnIBAAAAAElFTkSuQmCC",
+      "name": "Maria Clara Vasconcelos",
+      "email": "participante.teste.1792196416420@empresa.com.br",
+      "institution": "Startup InovaNordeste",
+      "profile": "Startup",
+      "badgeName": "Clara V. (InovaNordeste)",
+      "role": "CEO & Fundadora",
+      "phone": "(85) 99999-0000",
+      "whatsapp": "(85) 99999-0000",
+      "cityUf": "Fortaleza / CE",
+      "accessibility": "Rampa de acesso ao palco para painelista",
+      "futureEventsOptIn": true,
+      "origin": "PUBLIC_REGISTRATION",
+      "invitedBy": null,
+      "invitedAt": null,
+      "invitationSentAt": null,
+      "invitationChannel": null,
+      "invitationStatus": null,
+      "internalNotes": "",
+      "type": "CONVIDADO",
+      "status": "CANCELADO",
+      "waitlistPosition": null,
+      "checkinAt": "2026-10-17T00:20:16.611Z",
+      "checkinOperator": "Equipe de Credenciamento",
+      "createdAt": "2026-10-17T00:20:16.453Z",
+      "updatedAt": "2026-10-17T00:20:16.655Z",
+      "cancelledAt": "2026-10-17T00:20:16.655Z"
+    },
+    {
+      "id": "reg_1792196416812_8hrm",
+      "registrationNumber": "HUB10-1071",
+      "token": "2b46fb8da5b449dee73dd0fcdef69a862eb536170b1331d6",
+      "qrToken": "urn:hubine:checkin:c33ead25-eeb6-4593-b44e-f34a42b81ec6",
+      "qrCodeDataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFACAYAAADNkKWqAAAAAklEQVR4AewaftIAAAqZSURBVO3B0Y0d2Y5FwV1E2UEbaBjNoWG0gY5o9NuYhzxoZCr7lrgivn79JgBYyAQAS5kAYCkTACxlAoClTACwlAkAljIBwFImAFjKBABLmQBgKRMALGUCgKVMALCUCQCWMgHAUiYAWMoEAEt96yHpoU1qWk9ID12paT0hPXSlpvWG9NBJTeuu9NBJTetKeuikpnWSHrpS03pCemiTmtZdJgBYygQAS5kAYCkTACxlAoClTACwlAkAlvrWS2paP0l66BOkh05qWp8iPfQJalon6aErNa0n1LSupIdOalp31bR+kvTQn2YCgKVMALCUCQCWMgHAUiYAWMoEAEuZAGApEwAs9a0Pkh56Q03rDemhk5rWlfTQp0gP/RTpoZOa1pX00BNqWj9FeugNNa1PYAKApUwAsJQJAJYyAcBSJgBYygQAS5kAYCkTACz1Lfyn0kNXalon6aE31LRO0kNXalon6aErNa2TmtZdNa0npIeu1LTw3zABwFImAFjKBABLmQBgKRMALGUCgKVMALDUt/DR0kMnNa2T9NBd6aG70kMnNa0r6aG/SXropKaF55kAYCkTACxlAoClTACwlAkAljIBwFImAFjKBABLfeuD1LTwTzWtk/TQSU3rDTWtu9JDd9W0TtJDb6hpXUkPfYqa1iYmAFjKBABLmQBgKRMALGUCgKVMALCUCQCWMgHAUt96SXoI/19N60p66KSmdZIeulLTekN66KSmdSU99Iaa1kl66KdID+GfTACwlAkAljIBwFImAFjKBABLmQBgKRMALPWth9S08Lya1kl6aJOa1hNqWlfSQ09ID12paT2hpoV/xwQAS5kAYCkTACxlAoClTACwlAkAljIBwFImAFjqWw9JD12paZ2kh36KmtZJTetT1LSupIfeUNM6SQ9dqWk9IT10paZ1kh46qWldSQ+d1LRO0kM/RU3rE5gAYCkTACxlAoClTACwlAkAljIBwFImAFjKBABLff36TT9IeuhKTetTpIdOalpX0kOfoqZ1V3ropKZ1JT30hJrWlfTQSU3rJD10pab1hPTQlZrWG9JDb6hp3WUCgKVMALCUCQCWMgHAUiYAWMoEAEuZAGCpr1+/6UOkh36KmtYT0kNXalon6SH8U03r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",
+      "name": "Dr. Roberto Magalhães",
+      "email": "roberto.finep.1792196416801@gov.br",
+      "institution": "FINEP - Financiadora de Estudos e Projetos",
+      "profile": "Governo / Financiamento",
+      "badgeName": "Roberto Magalhães",
+      "role": "Diretor de Inovação",
+      "phone": "(85) 97777-6801",
+      "whatsapp": "(85) 97777-6801",
+      "cityUf": "Brasília / DF",
+      "accessibility": "Acessibilidade motora para primeira fileira",
+      "futureEventsOptIn": false,
+      "origin": "ORGANIZATION_INVITE",
+      "status": "PRESENTE",
+      "waitlistPosition": null,
+      "invitedBy": "Administrador Hubine",
+      "invitedAt": "2026-10-17T00:20:16.812Z",
+      "invitationSentAt": "2026-10-17T00:20:16.838Z",
+      "invitationChannel": "WHATSAPP",
+      "invitationStatus": "ENVIADO_WHATSAPP",
+      "internalNotes": "Convidado de honra da Presidência do BNB",
+      "type": "CONVIDADO",
+      "checkinAt": "2026-10-17T00:20:16.855Z",
+      "checkinOperator": "Equipe de Credenciamento",
+      "createdAt": "2026-10-17T00:20:16.812Z",
+      "updatedAt": "2026-10-17T00:20:16.855Z"
     }
   ],
   "speakers": [
@@ -2598,6 +2663,28 @@
       "submittedAt": "2026-10-16T21:14:04.790Z",
       "updatedAt": "2026-10-16T21:14:04.801Z",
       "approvedAt": "2026-10-16T21:14:04.801Z",
+      "approvedBy": "Administrador Hubine"
+    },
+    {
+      "id": "spk_1792196416621_tor8",
+      "name": "Dr. Carlos Eduardo Nogueira",
+      "email": "carlos.nogueira.1792196416620@tech.com",
+      "role": "Pesquisador Chefe de IA",
+      "institution": "Instituto de Inovação Nordestina",
+      "talkTitle": "Ecossistemas de Inovação e Inteligência Artificial no Nordeste",
+      "talkSummary": "Apresentação prática sobre casos de uso de IA na produtividade regional.",
+      "bio": "Doutor em Ciência da Computação com 15 anos de atuação.",
+      "photoUrl": "",
+      "avNeeds": "Microfone sem fio e conexão HDMI",
+      "contact": "(85) 97777-6666",
+      "authorizedPublishing": true,
+      "status": "APROVADO",
+      "isApproved": true,
+      "inviteToken": "spk_2b32338cd5cdcba7c170dafdef6cf82c6767",
+      "createdAt": "2026-10-17T00:20:16.621Z",
+      "submittedAt": "2026-10-17T00:20:16.635Z",
+      "updatedAt": "2026-10-17T00:20:16.644Z",
+      "approvedAt": "2026-10-17T00:20:16.644Z",
       "approvedBy": "Administrador Hubine"
     }
   ],
@@ -3982,6 +4069,111 @@
       "action": "LOGIN_ADMIN",
       "details": "Login efetuado por Administrador Hubine (administrador)",
       "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792196416457_u835q",
+      "timestamp": "2026-10-17T00:20:16.457Z",
+      "action": "NOVA_INSCRICAO",
+      "details": "Inscrição pública criada: HUB10-1070 (Maria Clara Vasconcelos) - Status: CONFIRMADO",
+      "user": "Público (Inscrição Web)"
+    },
+    {
+      "id": "log_1792196416473_6c920",
+      "timestamp": "2026-10-17T00:20:16.473Z",
+      "action": "AUTOATENDIMENTO_ATUALIZACAO",
+      "details": "Dados atualizados pelo próprio participante (HUB10-1070)",
+      "user": "Participante (participante.teste.1792196416420@empresa.com.br)"
+    },
+    {
+      "id": "log_1792196416542_jah7n",
+      "timestamp": "2026-10-17T00:20:16.542Z",
+      "action": "LOGIN_ADMIN",
+      "details": "Login efetuado por Administrador Hubine (administrador)",
+      "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792196416605_bwv12",
+      "timestamp": "2026-10-17T00:20:16.605Z",
+      "action": "LOGIN_ADMIN",
+      "details": "Login efetuado por Equipe de Credenciamento (credenciamento)",
+      "user": "Equipe de Credenciamento"
+    },
+    {
+      "id": "log_1792196416614_iv1un",
+      "timestamp": "2026-10-17T00:20:16.614Z",
+      "action": "CHECKIN_REALIZADO",
+      "details": "Credenciamento de Maria Clara Vasconcelos (HUB10-1070) por Equipe de Credenciamento",
+      "user": "Equipe de Credenciamento"
+    },
+    {
+      "id": "log_1792196416628_4v1qt",
+      "timestamp": "2026-10-17T00:20:16.628Z",
+      "action": "CONVITE_PALESTRANTE_GERADO",
+      "details": "Convite gerado para Carlos Eduardo Nogueira (carlos.nogueira.1792196416620@tech.com) por Administrador Hubine",
+      "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792196416638_8r4v3",
+      "timestamp": "2026-10-17T00:20:16.638Z",
+      "action": "DADOS_PALESTRANTE_SUBMETIDOS",
+      "details": "Palestrante Dr. Carlos Eduardo Nogueira preencheu formulário de convite. Aguardando revisão da organização.",
+      "user": "Palestrante (carlos.nogueira.1792196416620@tech.com)"
+    },
+    {
+      "id": "log_1792196416648_297tq",
+      "timestamp": "2026-10-17T00:20:16.648Z",
+      "action": "PALESTRANTE_APROVADO",
+      "details": "Palestrante Dr. Carlos Eduardo Nogueira aprovado para divulgação pública por Administrador Hubine",
+      "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792196416658_bnuy0",
+      "timestamp": "2026-10-17T00:20:16.658Z",
+      "action": "INSCRICAO_CANCELADA",
+      "details": "Cancelamento voluntário pelo participante: HUB10-1070 (Maria Clara Vasconcelos)",
+      "user": "Participante (participante.teste.1792196416420@empresa.com.br)"
+    },
+    {
+      "id": "log_1792196416722_lg1kh",
+      "timestamp": "2026-10-17T00:20:16.722Z",
+      "action": "LOGIN_ADMIN",
+      "details": "Login efetuado por Comissão Organizadora (organizacao)",
+      "user": "Comissão Organizadora"
+    },
+    {
+      "id": "log_1792196416815_qnf1f",
+      "timestamp": "2026-10-17T00:20:16.815Z",
+      "action": "CONVITE_ORGANIZACAO_CRIADO",
+      "details": "Participante convidado criado: HUB10-1071 (Dr. Roberto Magalhães) por Administrador Hubine",
+      "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792196416833_imn3k",
+      "timestamp": "2026-10-17T00:20:16.833Z",
+      "action": "CONVITE_ORGANIZACAO_ENVIADO_EMAIL",
+      "details": "Convite enviado por e-mail para Dr. Roberto Magalhães (HUB10-1071) por Administrador Hubine",
+      "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792196416841_vyz3g",
+      "timestamp": "2026-10-17T00:20:16.841Z",
+      "action": "CONVITE_ORGANIZACAO_PREPARADO_WHATSAPP",
+      "details": "Mensagem de WhatsApp preparada para Dr. Roberto Magalhães (HUB10-1071) por Administrador Hubine",
+      "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792196416850_sh19y",
+      "timestamp": "2026-10-17T00:20:16.850Z",
+      "action": "REENVIO_CONFIRMACAO",
+      "details": "Reenvio manual de comprovante para Dr. Roberto Magalhães (HUB10-1071)",
+      "user": "Administrador Hubine"
+    },
+    {
+      "id": "log_1792196416858_uj3cz",
+      "timestamp": "2026-10-17T00:20:16.858Z",
+      "action": "CHECKIN_REALIZADO",
+      "details": "Credenciamento de Dr. Roberto Magalhães (HUB10-1071) por Equipe de Credenciamento",
+      "user": "Equipe de Credenciamento"
     }
   ],
   "emailOutbox": [
@@ -4403,6 +4595,46 @@
       "subject": "Hubine 10 Anos — Convite Especial da Organização",
       "html": "\n    <div style=\"font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;\">\n      <div style=\"background: linear-gradient(135deg, #6B1D2F 0%, #4A1220 100%); padding: 32px 24px; text-align: center; color: #ffffff;\">\n        <div style=\"font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fbcfe8; margin-bottom: 8px;\">Banco do Nordeste • Hubine 10 Anos</div>\n        <h1 style=\"margin: 0; font-size: 26px; font-weight: 700;\">Convite de Honra</h1>\n        <p style=\"margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;\">Conectando inovação, pessoas e desenvolvimento regional</p>\n      </div>\n\n      <div style=\"padding: 32px 24px; color: #1e293b; line-height: 1.6;\">\n        <p style=\"font-size: 16px; margin-top: 0;\">Olá, <strong>Dr. Roberto Magalhães</strong>!</p>\n        \n        <div style=\"background-color: #fdf2f8; border-left: 4px solid #db2777; padding: 16px; border-radius: 6px; margin: 20px 0;\">\n          <strong style=\"color: #9d174d; font-size: 15px;\">Você é nosso(a) convidado(a) especial!</strong>\n          <p style=\"margin: 6px 0 0 0; color: #831843; font-size: 14px;\">A comissão organizadora do Banco do Nordeste reservou a sua participação na celebração oficial dos 10 anos do Hubine.</p>\n        </div>\n\n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 24px 0;\">\n          <h3 style=\"margin: 0 0 12px 0; font-size: 15px; color: #6B1D2F; text-transform: uppercase; letter-spacing: 1px;\">Informações do Evento e Credencial</h3>\n          <table style=\"width: 100%; font-size: 14px; border-collapse: collapse;\">\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b; width: 140px;\">Número de Inscrição:</td>\n              <td style=\"padding: 6px 0; font-weight: 700; color: #0f172a;\">HUB10-1069</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Nome no Crachá:</td>\n              <td style=\"padding: 6px 0; font-weight: 600; color: #0f172a;\">Roberto Magalhães</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Instituição:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">FINEP - Financiadora de Estudos e Projetos</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Data do Evento:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">4 de novembro de 2026</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Credenciamento:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">A partir das 13h</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Local:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)</td>\n            </tr>\n          </table>\n        </div>\n\n        <div style=\"background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;\">\n          <strong style=\"color: #166534; font-size: 14px;\">Orientações para o Credenciamento:</strong>\n          <p style=\"margin: 6px 0 0 0; color: #15803d; font-size: 13.5px;\">\n            Ao chegar ao evento, apresente o seu <strong>QR Code individual</strong> diretamente no celular ou informe seu número de inscrição (<strong>HUB10-1069</strong>) no balcão de recepção para liberação e retirada do crachá.\n          </p>\n        </div>\n\n        <div style=\"text-align: center; margin: 30px 0;\">\n          <a href=\"http://localhost:3000/#comprovante/842df8885084786208cbbb7b454bda1f4a52aca0f237cfb5\" style=\"background-color: #6B1D2F; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block;\">\n            Visualizar Comprovante & QR Code\n          </a>\n        </div>\n\n        <p style=\"font-size: 13px; color: #64748b; margin-bottom: 24px;\">\n          Caso precise atualizar informações (como o nome para crachá) ou cancelar sua participação previamente, utilize o link seguro:\n          <br><a href=\"http://localhost:3000/#gerenciar/842df8885084786208cbbb7b454bda1f4a52aca0f237cfb5\" style=\"color: #6B1D2F; text-decoration: underline;\">Atualizar Dados ou Cancelar Participação</a>\n        </p>\n\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;\">\n        <p style=\"font-size: 12px; color: #94a3b8; margin: 0;\">\n          Convite institucional exclusivo do Banco do Nordeste — Hubine 10 Anos. Em caso de dúvidas, contate <a href=\"mailto:hubine10anos@bnb.gov.br\" style=\"color: #64748b;\">hubine10anos@bnb.gov.br</a>.\n        </p>\n      </div>\n    </div>\n  ",
       "text": "Hubine 10 Anos - Convite de Honra para Dr. Roberto Magalhães. Inscrição: HUB10-1069. Acesse seu comprovante com QR Code em: http://localhost:3000/#comprovante/842df8885084786208cbbb7b454bda1f4a52aca0f237cfb5",
+      "mode": "DEMO"
+    },
+    {
+      "id": "mail_1792196416461_7dlfr",
+      "timestamp": "2026-10-17T00:20:16.461Z",
+      "from": "Hubine 10 Anos <hubine10anos@bnb.gov.br>",
+      "to": "participante.teste.1792196416420@empresa.com.br",
+      "subject": "Hubine 10 Anos — Confirmação de Inscrição Oficial",
+      "html": "\n    <div style=\"font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;\">\n      <div style=\"background: linear-gradient(135deg, #6B1D2F 0%, #4A1220 100%); padding: 32px 24px; text-align: center; color: #ffffff;\">\n        <div style=\"font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fbcfe8; margin-bottom: 8px;\">Banco do Nordeste • Hubine</div>\n        <h1 style=\"margin: 0; font-size: 26px; font-weight: 700;\">Hubine 10 Anos</h1>\n        <p style=\"margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;\">Conectando inovação, pessoas e desenvolvimento regional</p>\n      </div>\n\n      <div style=\"padding: 32px 24px; color: #1e293b; line-height: 1.6;\">\n        <p style=\"font-size: 16px; margin-top: 0;\">Olá, <strong>Maria Clara Vasconcelos</strong>!</p>\n        \n        \n          <div style=\"background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 16px; border-radius: 6px; margin: 20px 0;\">\n            <strong style=\"color: #065f46; font-size: 15px;\">Sua participação está confirmada!</strong>\n            <p style=\"margin: 6px 0 0 0; color: #047857; font-size: 14px;\">Seu comprovante individual foi gerado com sucesso. Apresente o QR Code no credenciamento ao chegar ao evento.</p>\n          </div>\n        \n\n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 24px 0;\">\n          <h3 style=\"margin: 0 0 12px 0; font-size: 15px; color: #6B1D2F; text-transform: uppercase; letter-spacing: 1px;\">Dados da Inscrição</h3>\n          <table style=\"width: 100%; font-size: 14px; border-collapse: collapse;\">\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b; width: 140px;\">Número:</td>\n              <td style=\"padding: 6px 0; font-weight: 700; color: #0f172a;\">HUB10-1070</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Nome no Crachá:</td>\n              <td style=\"padding: 6px 0; font-weight: 600; color: #0f172a;\">Clara Vasconcelos</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Instituição:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">Startup InovaNordeste</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Data do Evento:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">4 de novembro de 2026</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Credenciamento:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">A partir das 13h</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Local:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">Auditório Celso Furtado — Fortaleza, CE</td>\n            </tr>\n          </table>\n        </div>\n\n        <div style=\"text-align: center; margin: 30px 0;\">\n          <a href=\"http://localhost:3000/#comprovante/c2c11bccddc598847b9098aba5c4f8601ce42ec8210e9fa5\" style=\"background-color: #6B1D2F; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block;\">\n            Visualizar Comprovante & QR Code\n          </a>\n        </div>\n\n        <p style=\"font-size: 13px; color: #64748b; margin-bottom: 24px;\">\n          Caso precise atualizar informações (como o nome para crachá) ou cancelar sua participação com antecedência, utilize o link seguro:\n          <br><a href=\"http://localhost:3000/#gerenciar/c2c11bccddc598847b9098aba5c4f8601ce42ec8210e9fa5\" style=\"color: #6B1D2F; text-decoration: underline;\">Gerenciar ou Cancelar Inscrição</a>\n        </p>\n\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;\">\n        <p style=\"font-size: 12px; color: #94a3b8; margin: 0;\">\n          Este é um e-mail institucional referente ao evento Hubine 10 Anos. Em caso de dúvidas, responda para <a href=\"mailto:hubine10anos@bnb.gov.br\" style=\"color: #64748b;\">hubine10anos@bnb.gov.br</a>.\n        </p>\n      </div>\n    </div>\n  ",
+      "text": "Hubine 10 Anos - Inscrição: HUB10-1070. Acesse seu comprovante em: http://localhost:3000/#comprovante/c2c11bccddc598847b9098aba5c4f8601ce42ec8210e9fa5",
+      "mode": "DEMO"
+    },
+    {
+      "id": "mail_1792196416625_alqgm",
+      "timestamp": "2026-10-17T00:20:16.625Z",
+      "from": "Hubine 10 Anos <hubine10anos@bnb.gov.br>",
+      "to": "carlos.nogueira.1792196416620@tech.com",
+      "subject": "Hubine 10 Anos — Convite Especial para Palestrante / Painelista",
+      "html": "\n    <div style=\"font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;\">\n      <div style=\"background: linear-gradient(135deg, #6B1D2F 0%, #4A1220 100%); padding: 32px 24px; text-align: center; color: #ffffff;\">\n        <div style=\"font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fbcfe8; margin-bottom: 8px;\">Banco do Nordeste • Hubine 10 Anos</div>\n        <h1 style=\"margin: 0; font-size: 24px; font-weight: 700;\">Convite de Participação</h1>\n      </div>\n\n      <div style=\"padding: 32px 24px; color: #1e293b; line-height: 1.6;\">\n        <p style=\"font-size: 16px; margin-top: 0;\">Prezado(a) <strong>Carlos Eduardo Nogueira</strong>,</p>\n        <p>É uma honra para o Hub de Inovação do Banco do Nordeste contar com sua presença como palestrante / participante especial na comemoração dos <strong>10 anos do Hubine</strong>, no dia <strong>4 de novembro de 2026</strong>, no Auditório Celso Furtado em Fortaleza — CE.</p>\n        \n        <p>Para alinhamento das informações de divulgação e das necessidades técnicas, disponibilizamos seu link individual e seguro:</p>\n\n        <div style=\"text-align: center; margin: 30px 0;\">\n          <a href=\"http://localhost:3000/#palestrante/convite/spk_2b32338cd5cdcba7c170dafdef6cf82c6767\" style=\"background-color: #6B1D2F; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block;\">\n            Completar Dados de Palestrante\n          </a>\n        </div>\n\n        <p style=\"font-size: 13px; color: #64748b;\">\n          Nota: O envio de biografia e foto é opcional e requer autorização expressa. Nada será publicado na programação oficial sem a revisão prévia da organização.\n        </p>\n      </div>\n    </div>\n  ",
+      "text": "Hubine 10 Anos - Convite de Palestrante. Complete seus dados em: http://localhost:3000/#palestrante/convite/spk_2b32338cd5cdcba7c170dafdef6cf82c6767",
+      "mode": "DEMO"
+    },
+    {
+      "id": "mail_1792196416825_cg9g0",
+      "timestamp": "2026-10-17T00:20:16.825Z",
+      "from": "Hubine 10 Anos <hubine10anos@bnb.gov.br>",
+      "to": "roberto.finep.1792196416801@gov.br",
+      "subject": "Hubine 10 Anos — Convite Especial da Organização",
+      "html": "\n    <div style=\"font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;\">\n      <div style=\"background: linear-gradient(135deg, #6B1D2F 0%, #4A1220 100%); padding: 32px 24px; text-align: center; color: #ffffff;\">\n        <div style=\"font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fbcfe8; margin-bottom: 8px;\">Banco do Nordeste • Hubine 10 Anos</div>\n        <h1 style=\"margin: 0; font-size: 26px; font-weight: 700;\">Convite de Honra</h1>\n        <p style=\"margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;\">Conectando inovação, pessoas e desenvolvimento regional</p>\n      </div>\n\n      <div style=\"padding: 32px 24px; color: #1e293b; line-height: 1.6;\">\n        <p style=\"font-size: 16px; margin-top: 0;\">Olá, <strong>Dr. Roberto Magalhães</strong>!</p>\n        \n        <div style=\"background-color: #fdf2f8; border-left: 4px solid #db2777; padding: 16px; border-radius: 6px; margin: 20px 0;\">\n          <strong style=\"color: #9d174d; font-size: 15px;\">Você é nosso(a) convidado(a) especial!</strong>\n          <p style=\"margin: 6px 0 0 0; color: #831843; font-size: 14px;\">A comissão organizadora do Banco do Nordeste reservou a sua participação na celebração oficial dos 10 anos do Hubine.</p>\n        </div>\n\n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 24px 0;\">\n          <h3 style=\"margin: 0 0 12px 0; font-size: 15px; color: #6B1D2F; text-transform: uppercase; letter-spacing: 1px;\">Informações do Evento e Credencial</h3>\n          <table style=\"width: 100%; font-size: 14px; border-collapse: collapse;\">\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b; width: 140px;\">Número de Inscrição:</td>\n              <td style=\"padding: 6px 0; font-weight: 700; color: #0f172a;\">HUB10-1071</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Nome no Crachá:</td>\n              <td style=\"padding: 6px 0; font-weight: 600; color: #0f172a;\">Roberto Magalhães</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Instituição:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">FINEP - Financiadora de Estudos e Projetos</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Data do Evento:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">4 de novembro de 2026</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Credenciamento:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">A partir das 13h</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Local:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)</td>\n            </tr>\n          </table>\n        </div>\n\n        <div style=\"background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;\">\n          <strong style=\"color: #166534; font-size: 14px;\">Orientações para o Credenciamento:</strong>\n          <p style=\"margin: 6px 0 0 0; color: #15803d; font-size: 13.5px;\">\n            Ao chegar ao evento, apresente o seu <strong>QR Code individual</strong> diretamente no celular ou informe seu número de inscrição (<strong>HUB10-1071</strong>) no balcão de recepção para liberação e retirada do crachá.\n          </p>\n        </div>\n\n        <div style=\"text-align: center; margin: 30px 0;\">\n          <a href=\"http://localhost:3000/#comprovante/2b46fb8da5b449dee73dd0fcdef69a862eb536170b1331d6\" style=\"background-color: #6B1D2F; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block;\">\n            Visualizar Comprovante & QR Code\n          </a>\n        </div>\n\n        <p style=\"font-size: 13px; color: #64748b; margin-bottom: 24px;\">\n          Caso precise atualizar informações (como o nome para crachá) ou cancelar sua participação previamente, utilize o link seguro:\n          <br><a href=\"http://localhost:3000/#gerenciar/2b46fb8da5b449dee73dd0fcdef69a862eb536170b1331d6\" style=\"color: #6B1D2F; text-decoration: underline;\">Atualizar Dados ou Cancelar Participação</a>\n        </p>\n\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;\">\n        <p style=\"font-size: 12px; color: #94a3b8; margin: 0;\">\n          Convite institucional exclusivo do Banco do Nordeste — Hubine 10 Anos. Em caso de dúvidas, contate <a href=\"mailto:hubine10anos@bnb.gov.br\" style=\"color: #64748b;\">hubine10anos@bnb.gov.br</a>.\n        </p>\n      </div>\n    </div>\n  ",
+      "text": "Hubine 10 Anos - Convite de Honra para Dr. Roberto Magalhães. Inscrição: HUB10-1071. Acesse seu comprovante com QR Code em: http://localhost:3000/#comprovante/2b46fb8da5b449dee73dd0fcdef69a862eb536170b1331d6",
+      "mode": "DEMO"
+    },
+    {
+      "id": "mail_1792196416846_28vnw",
+      "timestamp": "2026-10-17T00:20:16.846Z",
+      "from": "Hubine 10 Anos <hubine10anos@bnb.gov.br>",
+      "to": "roberto.finep.1792196416801@gov.br",
+      "subject": "Hubine 10 Anos — Convite Especial da Organização",
+      "html": "\n    <div style=\"font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;\">\n      <div style=\"background: linear-gradient(135deg, #6B1D2F 0%, #4A1220 100%); padding: 32px 24px; text-align: center; color: #ffffff;\">\n        <div style=\"font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #fbcfe8; margin-bottom: 8px;\">Banco do Nordeste • Hubine 10 Anos</div>\n        <h1 style=\"margin: 0; font-size: 26px; font-weight: 700;\">Convite de Honra</h1>\n        <p style=\"margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;\">Conectando inovação, pessoas e desenvolvimento regional</p>\n      </div>\n\n      <div style=\"padding: 32px 24px; color: #1e293b; line-height: 1.6;\">\n        <p style=\"font-size: 16px; margin-top: 0;\">Olá, <strong>Dr. Roberto Magalhães</strong>!</p>\n        \n        <div style=\"background-color: #fdf2f8; border-left: 4px solid #db2777; padding: 16px; border-radius: 6px; margin: 20px 0;\">\n          <strong style=\"color: #9d174d; font-size: 15px;\">Você é nosso(a) convidado(a) especial!</strong>\n          <p style=\"margin: 6px 0 0 0; color: #831843; font-size: 14px;\">A comissão organizadora do Banco do Nordeste reservou a sua participação na celebração oficial dos 10 anos do Hubine.</p>\n        </div>\n\n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 24px 0;\">\n          <h3 style=\"margin: 0 0 12px 0; font-size: 15px; color: #6B1D2F; text-transform: uppercase; letter-spacing: 1px;\">Informações do Evento e Credencial</h3>\n          <table style=\"width: 100%; font-size: 14px; border-collapse: collapse;\">\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b; width: 140px;\">Número de Inscrição:</td>\n              <td style=\"padding: 6px 0; font-weight: 700; color: #0f172a;\">HUB10-1071</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Nome no Crachá:</td>\n              <td style=\"padding: 6px 0; font-weight: 600; color: #0f172a;\">Roberto Magalhães</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Instituição:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">FINEP - Financiadora de Estudos e Projetos</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Data do Evento:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">4 de novembro de 2026</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Credenciamento:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">A partir das 13h</td>\n            </tr>\n            <tr>\n              <td style=\"padding: 6px 0; color: #64748b;\">Local:</td>\n              <td style=\"padding: 6px 0; color: #0f172a;\">Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)</td>\n            </tr>\n          </table>\n        </div>\n\n        <div style=\"background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;\">\n          <strong style=\"color: #166534; font-size: 14px;\">Orientações para o Credenciamento:</strong>\n          <p style=\"margin: 6px 0 0 0; color: #15803d; font-size: 13.5px;\">\n            Ao chegar ao evento, apresente o seu <strong>QR Code individual</strong> diretamente no celular ou informe seu número de inscrição (<strong>HUB10-1071</strong>) no balcão de recepção para liberação e retirada do crachá.\n          </p>\n        </div>\n\n        <div style=\"text-align: center; margin: 30px 0;\">\n          <a href=\"http://localhost:3000/#comprovante/2b46fb8da5b449dee73dd0fcdef69a862eb536170b1331d6\" style=\"background-color: #6B1D2F; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; display: inline-block;\">\n            Visualizar Comprovante & QR Code\n          </a>\n        </div>\n\n        <p style=\"font-size: 13px; color: #64748b; margin-bottom: 24px;\">\n          Caso precise atualizar informações (como o nome para crachá) ou cancelar sua participação previamente, utilize o link seguro:\n          <br><a href=\"http://localhost:3000/#gerenciar/2b46fb8da5b449dee73dd0fcdef69a862eb536170b1331d6\" style=\"color: #6B1D2F; text-decoration: underline;\">Atualizar Dados ou Cancelar Participação</a>\n        </p>\n\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;\">\n        <p style=\"font-size: 12px; color: #94a3b8; margin: 0;\">\n          Convite institucional exclusivo do Banco do Nordeste — Hubine 10 Anos. Em caso de dúvidas, contate <a href=\"mailto:hubine10anos@bnb.gov.br\" style=\"color: #64748b;\">hubine10anos@bnb.gov.br</a>.\n        </p>\n      </div>\n    </div>\n  ",
+      "text": "Hubine 10 Anos - Convite de Honra para Dr. Roberto Magalhães. Inscrição: HUB10-1071. Acesse seu comprovante com QR Code em: http://localhost:3000/#comprovante/2b46fb8da5b449dee73dd0fcdef69a862eb536170b1331d6",
       "mode": "DEMO"
     }
   ]

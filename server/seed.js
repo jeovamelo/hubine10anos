@@ -3,6 +3,7 @@ const { hashPassword } = require('./auth');
 const crypto = require('crypto');
 
 async function seed() {
+  await db.initPostgres();
   console.log('--- Iniciando Seed do Hubine 10 Anos ---');
 
   // 1. Initial Users (Admin, Org, Credenciamento)
