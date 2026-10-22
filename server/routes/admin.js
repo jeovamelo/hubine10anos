@@ -5,6 +5,14 @@ const qrcode = require('qrcode');
 const db = require('../db');
 const { generateToken, hashPassword, comparePassword, authMiddleware, requireRole } = require('../auth');
 const emailService = require('../emailService');
+const registrationService = require('../registrationService');
+const whatsappService = require('../whatsappService');
+const {
+  validateGuestCreation,
+  validateSpeakerInput,
+  validatePhotoUrl,
+  sanitizeRegistrationForRole
+} = require('../middleware/validation');
 
 // Login Rate Limiter (Max 10 failed/consecutive attempts per 15 minutes per IP)
 const loginAttempts = new Map();
@@ -96,7 +104,8 @@ router.get('/overview', requireRole(['administrador', 'organizacao', 'credenciam
   const confirmed = registrations.filter(r => r.status === 'CONFIRMADO').length;
   const present = registrations.filter(r => r.status === 'PRESENTE').length;
   const waitlist = registrations.filter(r => r.status === 'LISTA_ESPERA').length;
-  const cancelled = registrations.filter(r => r.status === 'CANCELADO').length;
+  const pending = registrations.filter(r => r.status === 'PENDENTE').length;
+  const cancelled = registrations.filter(r => r.status === 'CANCELADO' || r.status === 'DESISTIU' || r.status === 'NAO_VEM').length;
 
   const totalActive = confirmed + present;
   const invitedGuests = registrations.filter(r => r.origin === 'ORGANIZATION_INVITE').length;
@@ -107,7 +116,7 @@ router.get('/overview', requireRole(['administrador', 'organizacao', 'credenciam
   // Breakdown by profile
   const profileBreakdown = {};
   for (const r of registrations) {
-    if (r.status !== 'CANCELADO') {
+    if (r.status !== 'CANCELADO' && r.status !== 'DESISTIU' && r.status !== 'NAO_VEM') {
       const p = r.profile || 'Outro';
       profileBreakdown[p] = (profileBreakdown[p] || 0) + 1;
     }
@@ -120,6 +129,7 @@ router.get('/overview', requireRole(['administrador', 'organizacao', 'credenciam
     confirmed,
     present,
     waitlist,
+    pending,
     cancelled,
     invitedGuests,
     remainingSlots,
@@ -135,7 +145,9 @@ router.get('/registrations', requireRole(['administrador', 'organizacao', 'crede
   const { search, status, profile, type, origin } = req.query;
   let list = db.getRegistrations();
 
-  const effectiveStatus = (status !== undefined && status !== '') ? status : 'CONFIRMADO';
+  const effectiveStatus = (status !== undefined && status !== '')
+    ? status
+    : (origin === 'ORGANIZATION_INVITE' ? 'ALL' : 'CONFIRMADO');
   if (effectiveStatus !== 'ALL') {
     list = list.filter(r => r.status === effectiveStatus);
   }
@@ -168,7 +180,9 @@ router.get('/registrations', requireRole(['administrador', 'organizacao', 'crede
   // Sort by newest first, or waitlist sequence
   list = [...list].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  res.json(list);
+  // Sanitize fields based on caller role (RBAC data minimization)
+  const sanitized = list.map(r => sanitizeRegistrationForRole(r, req.user.role));
+  res.json(sanitized);
 });
 
 // GET /api/admin/registrations/:id
@@ -177,7 +191,7 @@ router.get('/registrations/:id', requireRole(['administrador', 'organizacao', 'c
   if (!reg) {
     return res.status(404).json({ error: 'Inscrição não encontrada.' });
   }
-  res.json(reg);
+  res.json(sanitizeRegistrationForRole(reg, req.user.role));
 });
 
 // PUT /api/admin/registrations/:id
@@ -216,6 +230,12 @@ router.put('/registrations/:id', requireRole(['administrador', 'organizacao']), 
   if (status !== undefined) updates.status = status;
   if (internalNotes !== undefined) updates.internalNotes = internalNotes.trim();
 
+  if (updates.status === 'CANCELADO' || updates.status === 'DESISTIU' || updates.status === 'NAO_VEM') {
+    updates.cancelledAt = new Date().toISOString();
+  } else if (updates.status && updates.status !== 'CANCELADO') {
+    updates.cancelledAt = null;
+  }
+
   const updated = await db.updateRegistration(reg.id, updates);
 
   await db.addAuditLog({
@@ -227,141 +247,27 @@ router.put('/registrations/:id', requireRole(['administrador', 'organizacao']), 
   res.json(updated);
 });
 
-// POST /api/admin/guests - Adicionar participante convidado pela organização
-router.post('/guests', requireRole(['administrador', 'organizacao']), async (req, res) => {
-  const {
-    name,
-    institution,
-    profile,
-    email,
-    whatsapp,
-    badgeName,
-    role,
-    cityUf,
-    accessibility,
-    internalNotes
-  } = req.body;
-
-  // Validate mandatory fields
-  if (!name || !name.trim()) {
-    return res.status(400).json({ error: 'O nome completo do convidado é obrigatório.' });
-  }
-  if (!institution || !institution.trim()) {
-    return res.status(400).json({ error: 'A instituição ou empresa é obrigatória.' });
-  }
-  if (!profile || !profile.trim()) {
-    return res.status(400).json({ error: 'O tipo de perfil é obrigatório.' });
-  }
-  if (!email || !email.trim() || !email.includes('@')) {
-    return res.status(400).json({ error: 'Informe um e-mail válido para o convidado.' });
-  }
-  if (!whatsapp || !whatsapp.trim()) {
-    return res.status(400).json({ error: 'O WhatsApp é obrigatório para participantes convidados.' });
-  }
-
-  const cleanEmail = email.trim().toLowerCase();
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(cleanEmail)) {
-    return res.status(400).json({ error: 'Formato de e-mail inválido.' });
-  }
-
-  const cleanWhatsappDigits = whatsapp.replace(/\D/g, '');
-  if (cleanWhatsappDigits.length < 8 || cleanWhatsappDigits.length > 20) {
-    return res.status(400).json({ error: 'Informe um número de telefone/WhatsApp válido com DDD.' });
-  }
-
+// PUT /api/admin/registrations/:id/status - Alteração Interativa de Status via Serviço Unificado
+router.put('/registrations/:id/status', requireRole(['administrador', 'organizacao']), async (req, res) => {
   try {
-    const newGuest = await db.runLocked(async () => {
-      // Check duplicate email
-      const existingEmail = db.getRegistrationByEmail(cleanEmail);
-      if (existingEmail && existingEmail.status !== 'CANCELADO') {
-        const err = new Error('DUPLICATE_EMAIL');
-        err.status = 409;
-        err.responseBody = {
-          error: 'DUPLICATE_EMAIL',
-          message: 'Este e-mail já possui uma inscrição ou convite ativo para o evento.'
-        };
-        throw err;
-      }
+    const { id } = req.params;
+    const { status } = req.body;
+    const result = await registrationService.updateRegistrationStatus(id, status, req.user.name);
+    res.json(result);
+  } catch (err) {
+    if (err.status && err.responseBody) {
+      return res.status(err.status).json(err.responseBody);
+    }
+    console.error('Erro ao atualizar status do participante:', err);
+    res.status(500).json({ error: 'Erro interno ao atualizar status do participante.' });
+  }
+});
 
-      // Check duplicate whatsapp
-      const existingPhone = db.getRegistrationByWhatsapp(cleanWhatsappDigits);
-      if (existingPhone && existingPhone.status !== 'CANCELADO') {
-        const err = new Error('DUPLICATE_WHATSAPP');
-        err.status = 409;
-        err.responseBody = {
-          error: 'DUPLICATE_WHATSAPP',
-          message: 'Este número de WhatsApp já possui um participante registrado no evento.'
-        };
-        throw err;
-      }
-
-      // Generate sequential registration number & tokens
-      const registrationNumber = db.getNextRegistrationNumber();
-      const token = crypto.randomBytes(24).toString('hex');
-      const qrToken = 'urn:hubine:checkin:' + crypto.randomUUID();
-
-      // Generate QR Code data URL
-      const qrCodeDataUrl = await qrcode.toDataURL(qrToken, {
-        width: 320,
-        margin: 2,
-        color: {
-          dark: '#6B1D2F',
-          light: '#FFFFFF'
-        }
-      });
-
-      const guestItem = {
-        id: 'reg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
-        registrationNumber,
-        token,
-        qrToken,
-        qrCodeDataUrl,
-        name: name.trim(),
-        email: cleanEmail,
-        institution: institution.trim(),
-        profile: profile.trim(),
-        badgeName: (badgeName || name).trim(),
-        role: (role || '').trim(),
-        phone: whatsapp.trim(),
-        whatsapp: whatsapp.trim(),
-        cityUf: (cityUf || '').trim(),
-        accessibility: (accessibility || '').trim(),
-        futureEventsOptIn: false,
-        origin: 'ORGANIZATION_INVITE',
-        status: 'CONFIRMADO',
-        waitlistPosition: null,
-        invitedBy: req.user.name,
-        invitedAt: new Date().toISOString(),
-        invitationSentAt: null,
-        invitationChannel: null,
-        invitationStatus: 'PENDENTE',
-        internalNotes: (internalNotes || '').trim(),
-        type: 'CONVIDADO',
-        checkinAt: null,
-        checkinOperator: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-
-      await db.addRegistration(guestItem);
-
-      // Audit log
-      await db.addAuditLog({
-        action: 'CONVITE_ORGANIZACAO_CRIADO',
-        details: `Participante convidado criado: ${registrationNumber} (${guestItem.name}) por ${req.user.name}`,
-        user: req.user.name
-      });
-
-      return guestItem;
-    });
-
-    res.status(201).json({
-      success: true,
-      message: 'Participante convidado cadastrado com sucesso!',
-      guest: newGuest,
-      registration: newGuest
-    });
+// POST /api/admin/guests - Adicionar participante convidado pela organização (Status Inicial: PENDENTE)
+router.post('/guests', requireRole(['administrador', 'organizacao']), validateGuestCreation, async (req, res) => {
+  try {
+    const result = await registrationService.createOrganizationGuest(req.body, req.user.name);
+    res.status(201).json(result);
   } catch (err) {
     if (err.status && err.responseBody) {
       return res.status(err.status).json(err.responseBody);
@@ -371,10 +277,10 @@ router.post('/guests', requireRole(['administrador', 'organizacao']), async (req
   }
 });
 
-// POST /api/admin/guests/:id/send-invite - Enviar ou reenviar convite
+// POST /api/admin/guests/:id/send-invite - Enviar ou preparar convite com estados estritos
 router.post('/guests/:id/send-invite', requireRole(['administrador', 'organizacao']), async (req, res) => {
   const { id } = req.params;
-  const { channel } = req.body; // 'EMAIL' | 'WHATSAPP'
+  const { channel, mode = 'MANUAL' } = req.body; // channel: 'EMAIL' | 'WHATSAPP', mode: 'MANUAL' | 'AUTO'
 
   const reg = db.getRegistrationById(id);
   if (!reg) {
@@ -384,50 +290,109 @@ router.post('/guests/:id/send-invite', requireRole(['administrador', 'organizaca
   const appUrl = process.env.APP_URL || 'http://localhost:3000';
 
   if (channel === 'EMAIL') {
-    await emailService.sendOrganizationGuestInvite(reg);
+    const emailResult = await emailService.sendOrganizationGuestInvite(reg);
 
     const now = new Date().toISOString();
+    let statusLabel = 'FALHA_EMAIL';
+    let success = false;
+    let userMsg = 'Falha ao despachar e-mail via servidor.';
+
+    if (emailResult.success) {
+      success = true;
+      statusLabel = emailResult.mode === 'SMTP' ? 'ENVIADO_EMAIL' : 'DEMO_EMAIL';
+      userMsg = emailResult.mode === 'SMTP'
+        ? 'Convite enviado com sucesso por e-mail.'
+        : 'Convite registrado na Caixa de Demonstração (servidor SMTP não configurado).';
+    } else {
+      userMsg = 'Falha no envio SMTP: ' + (emailResult.error || 'Erro desconhecido');
+    }
+
     const updated = await db.updateRegistration(reg.id, {
-      invitationSentAt: now,
+      invitationSentAt: success ? now : reg.invitationSentAt,
       invitationChannel: 'EMAIL',
-      invitationStatus: 'ENVIADO_EMAIL'
+      invitationStatus: statusLabel
     });
 
     await db.addAuditLog({
-      action: 'CONVITE_ORGANIZACAO_ENVIADO_EMAIL',
-      details: `Convite enviado por e-mail para ${reg.name} (${reg.registrationNumber}) por ${req.user.name}`,
+      action: success ? 'CONVITE_ORGANIZACAO_ENVIADO_EMAIL' : 'FALHA_ENVIO_EMAIL',
+      details: `${userMsg} Destinatário: ${reg.email} (${reg.registrationNumber}) por ${req.user.name}`,
       user: req.user.name
     });
 
+    if (!success) {
+      return res.status(502).json({
+        success: false,
+        error: userMsg,
+        invitationStatus: statusLabel,
+        guest: updated
+      });
+    }
+
     return res.json({
       success: true,
-      message: 'Convite enviado por e-mail com sucesso.',
+      message: userMsg,
+      mode: emailResult.mode,
       invitationStatus: updated.invitationStatus,
       invitationChannel: updated.invitationChannel,
       guest: updated
     });
   } else if (channel === 'WHATSAPP') {
     const message = emailService.formatGuestWhatsappMessage(reg, appUrl);
-    const cleanDigits = (reg.whatsapp || reg.phone || '').replace(/\D/g, '');
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanDigits}&text=${encodeURIComponent(message)}`;
-
     const now = new Date().toISOString();
+
+    // Se solicitado envio direto automático via Evolution API
+    if (mode === 'AUTO' && whatsappService.isConfigured()) {
+      const waResult = await whatsappService.sendTextMessage(reg.whatsapp || reg.phone, message, {
+        registrationId: reg.id,
+        operatorName: req.user.name,
+        registrationNumber: reg.registrationNumber
+      });
+
+      const waStatus = waResult.success ? `WHATSAPP_${waResult.status}` : 'WHATSAPP_FALHOU';
+      const updated = await db.updateRegistration(reg.id, {
+        invitationSentAt: waResult.success ? now : reg.invitationSentAt,
+        invitationChannel: 'WHATSAPP',
+        invitationStatus: waStatus
+      });
+
+      await db.addAuditLog({
+        action: waResult.success ? 'CONVITE_WHATSAPP_ENVIADO_EVOLUTION' : 'FALHA_WHATSAPP_EVOLUTION',
+        details: `Envio WhatsApp via Evolution API para ${reg.name} (${reg.registrationNumber}): ${waStatus}`,
+        user: req.user.name
+      });
+
+      return res.json({
+        success: waResult.success,
+        message: waResult.success ? 'Mensagem de WhatsApp enviada via Evolution API.' : ('Falha Evolution API: ' + (waResult.error || '')),
+        whatsappStatus: waStatus,
+        invitationStatus: updated.invitationStatus,
+        invitationChannel: updated.invitationChannel,
+        guest: updated
+      });
+    }
+
+    // Preparação manual de link (WhatsApp Web / API link) - NUNCA marca como enviado!
+    const waResult = await whatsappService.sendTextMessage(reg.whatsapp || reg.phone, message, {
+      registrationId: reg.id,
+      operatorName: req.user.name,
+      isManualPreparation: true
+    });
+
     const updated = await db.updateRegistration(reg.id, {
-      invitationSentAt: now,
       invitationChannel: 'WHATSAPP',
-      invitationStatus: 'ENVIADO_WHATSAPP'
+      invitationStatus: 'LINK_PREPARADO_WHATSAPP' // Distingue explicitamente link preparado de mensagem enviada
     });
 
     await db.addAuditLog({
-      action: 'CONVITE_ORGANIZACAO_PREPARADO_WHATSAPP',
-      details: `Mensagem de WhatsApp preparada para ${reg.name} (${reg.registrationNumber}) por ${req.user.name}`,
+      action: 'CONVITE_ORGANIZACAO_LINK_WHATSAPP_PREPARADO',
+      details: `Link de WhatsApp preparado para ${reg.name} (${reg.registrationNumber}) por ${req.user.name}`,
       user: req.user.name
     });
 
     return res.json({
       success: true,
-      message: 'Mensagem de convite para WhatsApp preparada com sucesso.',
-      whatsappUrl,
+      message: 'Link de WhatsApp gerado. Abra para enviar a mensagem.',
+      whatsappUrl: waResult.whatsappUrl,
       whatsappMessage: message,
       invitationStatus: updated.invitationStatus,
       invitationChannel: updated.invitationChannel,
@@ -460,53 +425,34 @@ router.post('/registrations/:id/resend', requireRole(['administrador', 'organiza
   res.json({ success: true, message: 'Comprovante reenviado com sucesso.' });
 });
 
-// POST /api/admin/registrations/:id/promote
+// POST /api/admin/registrations/:id/promote - Promoção manual com verificação de capacidade
 router.post('/registrations/:id/promote', requireRole(['administrador', 'organizacao']), async (req, res) => {
-  const reg = db.getRegistrationById(req.params.id);
-  if (!reg) {
-    return res.status(404).json({ error: 'Inscrição não encontrada.' });
+  try {
+    const { id } = req.params;
+    const result = await registrationService.promoteWaitlistParticipant(id, req.user.name);
+    res.json(result);
+  } catch (err) {
+    if (err.status && err.responseBody) {
+      return res.status(err.status).json(err.responseBody);
+    }
+    console.error('Erro ao promover participante:', err);
+    res.status(500).json({ error: 'Erro interno ao promover participante.' });
   }
-
-  if (reg.status !== 'LISTA_ESPERA') {
-    return res.status(400).json({ error: 'Esta inscrição não está na lista de espera.' });
-  }
-
-  const updated = await db.updateRegistration(reg.id, {
-    status: 'CONFIRMADO',
-    waitlistPosition: null,
-    promotedAt: new Date().toISOString()
-  });
-
-  await emailService.sendWaitlistPromotion(updated);
-
-  await db.addAuditLog({
-    action: 'PROMOCAO_MANUAL_LISTA_ESPERA',
-    details: `Participante ${reg.name} (${reg.registrationNumber}) promovido manualmente para CONFIRMADO por ${req.user.name}`,
-    user: req.user.name
-  });
-
-  res.json({ success: true, message: 'Participante promovido para CONFIRMADO com sucesso.', registration: updated });
 });
 
-// POST /api/admin/registrations/:id/cancel
+// POST /api/admin/registrations/:id/cancel - Cancelamento com promoção automática da fila
 router.post('/registrations/:id/cancel', requireRole(['administrador', 'organizacao']), async (req, res) => {
-  const reg = db.getRegistrationById(req.params.id);
-  if (!reg) {
-    return res.status(404).json({ error: 'Inscrição não encontrada.' });
+  try {
+    const { id } = req.params;
+    const result = await registrationService.cancelRegistration(id, req.user.name);
+    res.json(result);
+  } catch (err) {
+    if (err.status && err.responseBody) {
+      return res.status(err.status).json(err.responseBody);
+    }
+    console.error('Erro ao cancelar participante:', err);
+    res.status(500).json({ error: 'Erro interno ao cancelar participante.' });
   }
-
-  await db.updateRegistration(reg.id, {
-    status: 'CANCELADO',
-    cancelledAt: new Date().toISOString()
-  });
-
-  await db.addAuditLog({
-    action: 'CANCELAMENTO_ADMIN',
-    details: `Inscrição ${reg.registrationNumber} (${reg.name}) cancelada pela organização (${req.user.name})`,
-    user: req.user.name
-  });
-
-  res.json({ success: true, message: 'Inscrição cancelada com sucesso.' });
 });
 
 // GET /api/admin/export/csv (Excel compatible with UTF-8 BOM)
@@ -540,7 +486,13 @@ router.get('/export/csv', requireRole(['administrador', 'organizacao']), (req, r
 
   function escapeCsv(val) {
     if (val === null || val === undefined) return '""';
-    const s = String(val).replace(/"/g, '""');
+    let s = String(val);
+    // Neutralize CSV formula injection: if first non-whitespace char is =, +, -, @, \t, \r
+    const trimmed = s.trimStart();
+    if (/^[=+\-@\t\r]/.test(trimmed)) {
+      s = "'" + s;
+    }
+    s = s.replace(/"/g, '""');
     return `"${s}"`;
   }
 
@@ -582,6 +534,116 @@ router.get('/export/csv', requireRole(['administrador', 'organizacao']), (req, r
 router.get('/speakers', requireRole(['administrador', 'organizacao']), (req, res) => {
   const speakers = db.getSpeakers();
   res.json(speakers);
+});
+
+// POST /api/admin/speakers - Cadastro Direto pela Organiza??o
+router.post('/speakers', requireRole(['administrador', 'organizacao']), async (req, res) => {
+  const { name, email, institution, role, talkTitle, talkSummary, bio, photoUrl, avNeeds, contact } = req.body;
+
+  if (!name || !name.trim()) {
+    return res.status(400).json({ error: 'O nome do palestrante / profissional ? obrigat?rio.' });
+  }
+  if (!institution || !institution.trim()) {
+    return res.status(400).json({ error: 'A institui??o ou empresa ? obrigat?ria.' });
+  }
+
+  if (photoUrl && photoUrl.trim()) {
+    const photoCheck = validatePhotoUrl(photoUrl.trim());
+    if (!photoCheck.valid) {
+      return res.status(400).json({ error: photoCheck.error });
+    }
+  }
+
+  const newSpeaker = {
+    id: 'spk_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+    name: name.trim(),
+    email: (email || '').trim().toLowerCase(), // E-mail opcional
+    institution: institution.trim(),
+    role: (role || '').trim(),
+    talkTitle: (talkTitle || '').trim(),
+    talkSummary: (talkSummary || '').trim(),
+    bio: (bio || '').trim(),
+    photoUrl: (photoUrl || '').trim(),
+    avNeeds: (avNeeds || '').trim(),
+    contact: (contact || '').trim(),
+    authorizedPublishing: true,
+    status: 'APROVADO',
+    isApproved: true,
+    approvedAt: new Date().toISOString(),
+    approvedBy: req.user.name,
+    createdAt: new Date().toISOString()
+  };
+
+  await db.addSpeaker(newSpeaker);
+
+  await db.addAuditLog({
+    action: 'PALESTRANTE_CADASTRADO',
+    details: `Palestrante ${newSpeaker.name} (${newSpeaker.institution}) cadastrado diretamente pela organiza??o por ${req.user.name}`,
+    user: req.user.name
+  });
+
+  res.status(201).json({
+    success: true,
+    message: 'Palestrante cadastrado com sucesso e publicado na programa??o oficial.',
+    speaker: newSpeaker
+  });
+});
+
+// PUT /api/admin/speakers/:id - Edi??o Direta pela Organiza??o
+router.put('/speakers/:id', requireRole(['administrador', 'organizacao']), async (req, res) => {
+  const { id } = req.params;
+  const speaker = db.getSpeakerById(id);
+  if (!speaker) {
+    return res.status(404).json({ error: 'Palestrante n?o encontrado.' });
+  }
+
+  const { name, email, institution, role, talkTitle, talkSummary, bio, photoUrl, avNeeds, contact } = req.body;
+
+  if (name !== undefined && !name.trim()) {
+    return res.status(400).json({ error: 'O nome do palestrante / profissional ? obrigat?rio.' });
+  }
+  if (institution !== undefined && !institution.trim()) {
+    return res.status(400).json({ error: 'A institui??o ou empresa ? obrigat?ria.' });
+  }
+
+  if (photoUrl !== undefined && photoUrl.trim()) {
+    const photoCheck = validatePhotoUrl(photoUrl.trim());
+    if (!photoCheck.valid) {
+      return res.status(400).json({ error: photoCheck.error });
+    }
+  }
+
+  const updates = {};
+  if (name !== undefined) updates.name = name.trim();
+  if (email !== undefined) updates.email = email.trim().toLowerCase();
+  if (institution !== undefined) updates.institution = institution.trim();
+  if (role !== undefined) updates.role = role.trim();
+  if (talkTitle !== undefined) updates.talkTitle = talkTitle.trim();
+  if (talkSummary !== undefined) updates.talkSummary = talkSummary.trim();
+  if (bio !== undefined) updates.bio = bio.trim();
+  if (photoUrl !== undefined) updates.photoUrl = photoUrl.trim();
+  if (avNeeds !== undefined) updates.avNeeds = avNeeds.trim();
+  if (contact !== undefined) updates.contact = contact.trim();
+
+  // Preserva aprova??o e publica??o imediata
+  updates.status = 'APROVADO';
+  updates.isApproved = true;
+  updates.authorizedPublishing = true;
+  updates.updatedAt = new Date().toISOString();
+
+  const updated = await db.updateSpeaker(id, updates);
+
+  await db.addAuditLog({
+    action: 'PALESTRANTE_ATUALIZADO',
+    details: `Dados do palestrante ${updated.name} atualizados por ${req.user.name}`,
+    user: req.user.name
+  });
+
+  res.json({
+    success: true,
+    message: 'Dados do palestrante atualizados com sucesso.',
+    speaker: updated
+  });
 });
 
 // POST /api/admin/speakers/invite
@@ -849,6 +911,30 @@ router.get('/outbox', requireRole(['administrador', 'organizacao']), (req, res) 
 router.delete('/outbox', requireRole(['administrador']), async (req, res) => {
   await db.clearEmailOutbox();
   res.json({ success: true, message: 'Caixa de demonstração limpa.' });
+});
+
+// WHATSAPP OUTBOX
+// GET /api/admin/whatsapp-outbox
+router.get('/whatsapp-outbox', requireRole(['administrador', 'organizacao']), async (req, res) => {
+  const outbox = db.getWhatsappOutbox(100);
+  const status = await whatsappService.checkInstanceStatus();
+  res.json({
+    instanceStatus: status,
+    messages: outbox
+  });
+});
+
+// DIAGNOSTICS
+// GET /api/admin/diagnostics/email
+router.get('/diagnostics/email', requireRole(['administrador']), async (req, res) => {
+  const result = await emailService.verifyConnection();
+  res.json(result);
+});
+
+// GET /api/admin/diagnostics/whatsapp
+router.get('/diagnostics/whatsapp', requireRole(['administrador']), async (req, res) => {
+  const result = await whatsappService.checkInstanceStatus();
+  res.json(result);
 });
 
 module.exports = router;

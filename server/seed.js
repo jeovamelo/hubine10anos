@@ -6,50 +6,69 @@ async function seed() {
   await db.initPostgres();
   console.log('--- Iniciando Seed do Hubine 10 Anos ---');
 
-  // 1. Initial Users (Admin, Org, Credenciamento)
+  // 1. Initial Users Bootstrap
   const existingUsers = db.getUsers();
   if (existingUsers.length === 0) {
-    console.log('Criando usuários institucionais padrão...');
+    const isProd = process.env.NODE_ENV === 'production';
+    if (isProd) {
+      console.log('Ambiente de PRODUÇÃO detectado: inicialização segura de credenciais...');
+      const adminEmail = process.env.INITIAL_ADMIN_EMAIL || 'admin@hubine10anos.bnb.gov.br';
+      let adminPass = process.env.INITIAL_ADMIN_PASSWORD;
 
-    await db.addUser({
-      id: 'usr_admin_01',
-      name: 'Administrador Hubine',
-      email: 'admin@hubine10anos.bnb.gov.br',
-      passwordHash: hashPassword('HubineAdmin2026!'),
-      role: 'administrador',
-      active: true,
-      createdAt: new Date().toISOString()
-    });
+      if (!adminPass) {
+        adminPass = crypto.randomBytes(16).toString('hex') + 'A1!';
+        console.warn('⚠️ [SEGURANÇA] INITIAL_ADMIN_PASSWORD não foi informada via .env.');
+        console.warn(`🔑 [SEGURANÇA] Senha provisória gerada para ${adminEmail}: ${adminPass}`);
+        console.warn('   Altere esta senha imediatamente após o primeiro acesso via painel administrativo.');
+      }
 
-    await db.addUser({
-      id: 'usr_org_01',
-      name: 'Comissão Organizadora',
-      email: 'organizacao@hubine10anos.bnb.gov.br',
-      passwordHash: hashPassword('HubineOrg2026!'),
-      role: 'organizacao',
-      active: true,
-      createdAt: new Date().toISOString()
-    });
+      await db.addUser({
+        id: 'usr_admin_prod',
+        name: 'Administrador Hubine',
+        email: adminEmail,
+        passwordHash: hashPassword(adminPass),
+        role: 'administrador',
+        active: true,
+        createdAt: new Date().toISOString()
+      });
+      console.log(`✅ [Produção] Usuário administrador inicial configurado para: ${adminEmail}`);
+    } else {
+      console.log('Criando usuários institucionais de demonstração/desenvolvimento...');
 
-    await db.addUser({
-      id: 'usr_cred_01',
-      name: 'Equipe de Credenciamento',
-      email: 'credenciamento@hubine10anos.bnb.gov.br',
-      passwordHash: hashPassword('Checkin2026!'),
-      role: 'credenciamento',
-      active: true,
-      createdAt: new Date().toISOString()
-    });
+      await db.addUser({
+        id: 'usr_admin_01',
+        name: 'Administrador Hubine',
+        email: 'admin@hubine10anos.bnb.gov.br',
+        passwordHash: hashPassword('HubineAdmin2026!'),
+        role: 'administrador',
+        active: true,
+        createdAt: new Date().toISOString()
+      });
 
-    console.log('✅ Usuários institucionais criados com sucesso:');
-    if (process.env.NODE_ENV !== 'production') {
+      await db.addUser({
+        id: 'usr_org_01',
+        name: 'Comissão Organizadora',
+        email: 'organizacao@hubine10anos.bnb.gov.br',
+        passwordHash: hashPassword('HubineOrg2026!'),
+        role: 'organizacao',
+        active: true,
+        createdAt: new Date().toISOString()
+      });
+
+      await db.addUser({
+        id: 'usr_cred_01',
+        name: 'Equipe de Credenciamento',
+        email: 'credenciamento@hubine10anos.bnb.gov.br',
+        passwordHash: hashPassword('Checkin2026!'),
+        role: 'credenciamento',
+        active: true,
+        createdAt: new Date().toISOString()
+      });
+
+      console.log('✅ Usuários de demonstração criados com sucesso:');
       console.log('   - Administrador: admin@hubine10anos.bnb.gov.br (Senha: HubineAdmin2026!)');
       console.log('   - Organização: organizacao@hubine10anos.bnb.gov.br (Senha: HubineOrg2026!)');
       console.log('   - Credenciamento: credenciamento@hubine10anos.bnb.gov.br (Senha: Checkin2026!)');
-    } else {
-      console.log('   - Administrador: admin@hubine10anos.bnb.gov.br [perfil: administrador]');
-      console.log('   - Organização: organizacao@hubine10anos.bnb.gov.br [perfil: organizacao]');
-      console.log('   - Credenciamento: credenciamento@hubine10anos.bnb.gov.br [perfil: credenciamento]');
     }
   }
 

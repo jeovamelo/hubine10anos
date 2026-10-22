@@ -38,12 +38,15 @@ function renderTicket(reg) {
   const isPresent = reg.status === 'PRESENTE';
   const isWaitlist = reg.status === 'LISTA_ESPERA';
   const isCancelled = reg.status === 'CANCELADO';
+  const isPending = reg.status === 'PENDENTE';
 
   let statusBadgeHtml = '';
   if (isPresent) {
     statusBadgeHtml = '<span class="badge badge-info" style="font-size: 0.9rem; padding: 0.4rem 1rem;">🎉 Credenciamento Concluído (Presente)</span>';
   } else if (isConfirmed) {
     statusBadgeHtml = '<span class="badge badge-success" style="font-size: 0.9rem; padding: 0.4rem 1rem;">✅ Inscrição Confirmada</span>';
+  } else if (isPending) {
+    statusBadgeHtml = '<span class="badge badge-warning" style="font-size: 0.9rem; padding: 0.4rem 1rem; background-color: #fef3c7; color: #92400e; border: 1px solid #fcd34d;">⏳ Convite Pendente de Confirmação</span>';
   } else if (isWaitlist) {
     statusBadgeHtml = `<span class="badge badge-warning" style="font-size: 0.9rem; padding: 0.4rem 1rem;">⏳ Lista de Espera • Posição #${reg.waitlistPosition || '1'}</span>`;
   } else if (isCancelled) {
@@ -68,6 +71,19 @@ function renderTicket(reg) {
         </div>
 
         <div class="ticket-body">
+          ${isPending ? `
+            <div style="background-color: #fffbeb; border: 2px solid #f59e0b; border-radius: 10px; padding: 1.25rem; margin-bottom: 1.75rem; text-align: center;">
+              <div style="font-size: 1.15rem; font-weight: 700; color: #92400e; margin-bottom: 0.5rem;">
+                👋 Olá, ${escapeHtml(reg.name)}! Seu convite institucional foi reservado.
+              </div>
+              <p style="color: #78350f; font-size: 0.95rem; margin-bottom: 1.25rem;">
+                Para garantir seu assento confirmado no Auditório Celso Furtado e habilitar seu credenciamento oficial, confirme sua participação:
+              </p>
+              <button id="btn-confirm-guest-attendance" class="btn btn-success btn-lg" onclick="handleConfirmGuestAttendance()" style="background-color: #059669; border-color: #059669; font-weight: 700; padding: 0.75rem 2rem; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(5,150,105,0.3);">
+                ✅ Confirmar Minha Presença no Evento
+              </button>
+            </div>
+          ` : ''}
           ${!isCancelled ? `
             <div class="ticket-qr-container">
               <img src="${reg.qrCodeDataUrl}" alt="QR Code de Credenciamento" class="ticket-qr-img">
@@ -206,3 +222,23 @@ function setupSelfServiceHandlers() {
     });
   }
 }
+
+window.handleConfirmGuestAttendance = async function() {
+  if (!currentTicketToken) return;
+  const btn = document.getElementById('btn-confirm-guest-attendance');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Confirmando presença...';
+  }
+  try {
+    const res = await API.confirmRegistration(currentTicketToken);
+    alert(res.message || 'Presença confirmada com sucesso! Sua vaga no auditório está garantida.');
+    await initComprovantePage(currentTicketToken);
+  } catch (err) {
+    alert('Não foi possível confirmar: ' + err.message);
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '✅ Confirmar Minha Presença no Evento';
+    }
+  }
+};

@@ -1,4 +1,12 @@
 node_modules
 .git
 .env
+.env.local
 npm-debug.log
+backups
+scratch
+data/*.tmp*
+data/*.backup*
+data/*.corrupted*
+upload/*
+!upload/.gitkeep

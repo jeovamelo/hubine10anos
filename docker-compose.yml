@@ -4,13 +4,13 @@ services:
     container_name: hubine10anos-db
     restart: always
     environment:
-      POSTGRES_DB: hubine10anos
-      POSTGRES_USER: hubine
-      POSTGRES_PASSWORD: hubine_secure_pass_2026
+      POSTGRES_DB: ${POSTGRES_DB:-hubine10anos}
+      POSTGRES_USER: ${POSTGRES_USER:-hubine}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Variavel POSTGRES_PASSWORD obrigatoria no .env}
     volumes:
       - hubine10anos_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U hubine -d hubine10anos"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hubine} -d ${POSTGRES_DB:-hubine10anos}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -21,13 +21,22 @@ services:
     container_name: hubine10anos-app
     restart: always
     ports:
-      - "127.0.0.1:3010:3000"
+      - "${HOST_BIND_IP:-127.0.0.1}:${HOST_PORT:-3010}:3000"
     environment:
       - PORT=3000
       - NODE_ENV=production
-      - APP_URL=http://eventos.hubine.org/dezanos
-      - JWT_SECRET=hubine-10-anos-chave-secreta-jwt-2026-vps
-      - DATABASE_URL=postgres://hubine:hubine_secure_pass_2026@hubine10anos-db:5432/hubine10anos
+      - APP_URL=${APP_URL:-https://eventos.hubine.org/dezanos}
+      - JWT_SECRET=${JWT_SECRET:?Variavel JWT_SECRET obrigatoria no .env (minimo 32 caracteres)}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-hubine}:${POSTGRES_PASSWORD}@hubine10anos-db:5432/${POSTGRES_DB:-hubine10anos}
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_SECURE=${SMTP_SECURE:-false}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - SMTP_FROM=${SMTP_FROM:-Hubine Eventos <eventos@hubine.org>}
+      - EVOLUTION_API_URL=${EVOLUTION_API_URL:-}
+      - EVOLUTION_API_KEY=${EVOLUTION_API_KEY:-}
+      - EVOLUTION_INSTANCE_NAME=${EVOLUTION_INSTANCE_NAME:-hubine10anos}
     depends_on:
       hubine10anos-db:
         condition: service_healthy

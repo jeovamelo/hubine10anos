@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { validatePhotoUrl } = require('../middleware/validation');
 
 // GET /api/speakers/invite/:token
 router.get('/invite/:token', (req, res) => {
@@ -67,9 +68,12 @@ router.post('/invite/:token/submit', async (req, res) => {
     });
   }
 
-  // Max photo size check if base64 provided
-  if (photoUrl && photoUrl.startsWith('data:image') && photoUrl.length > 3 * 1024 * 1024) {
-    return res.status(400).json({ error: 'A foto enviada excede o limite máximo permitido (2MB).' });
+  // Strict photoUrl validation: protocol, format, size, XSS prevention
+  if (photoUrl) {
+    const photoValidation = validatePhotoUrl(photoUrl);
+    if (!photoValidation.valid) {
+      return res.status(400).json({ error: photoValidation.error });
+    }
   }
 
   const updated = await db.updateSpeaker(speaker.id, {

@@ -10,8 +10,6 @@ RUN npm ci
 COPY . .
 
 # Run initial seed to prepare default accounts and schedule
-RUN node server/seed.js
-
 EXPOSE 3000
 
 ENV NODE_ENV=production

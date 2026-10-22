@@ -124,6 +124,12 @@ const API = {
     });
   },
 
+  confirmRegistration(token) {
+    return this.request('/api/public/registration/' + token + '/confirm', {
+      method: 'POST'
+    });
+  },
+
   // Speaker Invite Endpoints
   getSpeakerInvite(token) {
     return this.request('/api/speakers/invite/' + token);
@@ -175,6 +181,13 @@ const API = {
     });
   },
 
+  updateRegistrationStatus(id, status) {
+    return this.request('/api/admin/registrations/' + id + '/status', {
+      method: 'PUT',
+      body: { status }
+    });
+  },
+
   resendAdminTicket(id) {
     return this.request('/api/admin/registrations/' + id + '/resend', {
       method: 'POST'
@@ -209,6 +222,20 @@ const API = {
 
   getAdminSpeakers() {
     return this.request('/api/admin/speakers');
+  },
+
+  createSpeaker(payload) {
+    return this.request('/api/admin/speakers', {
+      method: 'POST',
+      body: payload
+    });
+  },
+
+  updateSpeaker(id, payload) {
+    return this.request('/api/admin/speakers/' + id, {
+      method: 'PUT',
+      body: payload
+    });
   },
 
   createSpeakerInvite(payload) {

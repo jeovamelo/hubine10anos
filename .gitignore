@@ -1,7 +1,12 @@
 node_modules/
 .env
+.env.local
 .DS_Store
 Thumbs.db
-data/*.tmp
+data/*.tmp*
 data/*.backup*
+data/*.corrupted*
+backups/
 scratch/
+upload/*
+!upload/.gitkeep

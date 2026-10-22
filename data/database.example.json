@@ -1,0 +1,139 @@
+{
+  "settings": {
+    "eventName": "Hubine 10 Anos",
+    "theme": "Conectando inovação, pessoas e desenvolvimento regional",
+    "eventDate": "2026-11-04",
+    "eventDateFormatted": "4 de novembro de 2026",
+    "checkinStartTime": "13:00",
+    "eventEndTime": "18:00",
+    "locationName": "Auditório Celso Furtado",
+    "locationCity": "Fortaleza — CE",
+    "locationAddress": "Av. Dr. Silas Munguba, 5700 - Passaré (Campus Banco do Nordeste)",
+    "locationMapUrl": "https://maps.google.com/?q=Banco+do+Nordeste+Passare+Fortaleza",
+    "capacity": 220,
+    "registrationsOpen": true,
+    "contactEmail": "hubine10anos@bnb.gov.br",
+    "privacyNotice": {
+      "controller": "Banco do Nordeste do Brasil S.A. — Hub de Inovação (Hubine)",
+      "purpose": "Credenciamento, emissão de comprovantes, organização logística, segurança predial e controle de acesso ao evento comemorativo Hubine 10 Anos.",
+      "legalBasis": "Execução de procedimentos preliminares a pedido do titular e legítimo interesse institucional (Art. 7º, incisos V e IX da Lei Geral de Proteção de Dados - LGPD).",
+      "retentionPeriod": "90 dias após o encerramento do evento para fins de auditoria e emissão de certificados, após os quais os dados cadastrais serão eliminados ou anonimizados, exceto comunicações expressamente autorizadas.",
+      "dpoContact": "privacidade@bnb.gov.br"
+    }
+  },
+  "users": [
+    {
+      "id": "usr_admin_example",
+      "name": "Administrador Hubine",
+      "email": "admin@hubine10anos.bnb.gov.br",
+      "passwordHash": "$2b$10$JrzE6RV/4KeZxVbW0GqXOuMJkJDo4wWdrpxasVLzT8K0TYDHdAG0m",
+      "role": "administrador",
+      "active": true,
+      "createdAt": "2026-10-15T16:52:12.223Z"
+    }
+  ],
+  "registrations": [],
+  "speakers": [
+    {
+      "id": "spk_1",
+      "name": "Roberta Fernandes Damasceno",
+      "role": "Especialista em Inovação e Cultura Organizacional",
+      "institution": "CESAR",
+      "talkTitle": "Do conflito à criação — o poder das diferentes gerações na inovação organizacional",
+      "talkSummary": "Exploração prática de como conectar gerações distintas para impulsionar a criatividade e a inovação nas empresas contemporâneas.",
+      "bio": "Atua com design estratégico, cultura de inovação e desenvolvimento de lideranças no CESAR.",
+      "photoUrl": "",
+      "inviteToken": "spk_token_roberta_cesar_2026",
+      "status": "APROVADO",
+      "avNeeds": "Microfone auricular, apresentador de slides e conexão HDMI.",
+      "email": "roberta.damasceno@cesar.org.br",
+      "authorizedPublishing": true,
+      "isApproved": true,
+      "createdAt": "2026-10-15T16:52:12.490Z"
+    },
+    {
+      "id": "spk_2",
+      "name": "Márcia Tereza Almeida",
+      "role": "Executiva de Transformação e Inovação",
+      "institution": "Banco do Brasil",
+      "talkTitle": "O futuro é agora!",
+      "talkSummary": "Visão de vanguarda sobre tecnologias emergentes, IA aplicada e o futuro do ecossistema financeiro.",
+      "bio": "Lidera projetos de inovação aberta e aceleração corporativa.",
+      "photoUrl": "",
+      "inviteToken": "spk_token_marcia_bb_2026",
+      "status": "APROVADO",
+      "avNeeds": "Microfone de mão e áudio do notebook.",
+      "email": "marcia.almeida@bb.com.br",
+      "authorizedPublishing": true,
+      "isApproved": true,
+      "createdAt": "2026-10-15T16:52:12.490Z"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "sch_1",
+      "time": "13:00",
+      "title": "Credenciamento e entrega do mural artístico Cultura & Inovação",
+      "speaker": "Recepção e Acolhimento",
+      "institution": "Hubine / Banco do Nordeste",
+      "type": "credenciamento",
+      "description": "Início do credenciamento dos convidados, recepção no foyer do Auditório Celso Furtado e entrega da intervenção artística comemorativa."
+    },
+    {
+      "id": "sch_2",
+      "time": "14:00",
+      "title": "Momento Institucional de Abertura",
+      "speaker": "Ana Teresa Barbosa de Carvalho e Alexandre Silva Cavalcante",
+      "institution": "Banco do Nordeste",
+      "type": "institucional",
+      "description": "Abertura oficial comemorativa dos 10 anos do Hubine, boas-vindas aos participantes e pronunciamento dos dirigentes."
+    },
+    {
+      "id": "sch_3",
+      "time": "14:20",
+      "title": "Painel: Conectando ideias e soluções — o papel do Hubine no ecossistema de inovação",
+      "speaker": "Lideranças do Ecossistema e Gestão Hubine",
+      "institution": "Hubine e Parceiros Regionais",
+      "type": "painel",
+      "description": "Debate estratégico sobre o impacto regional das ações do Hubine na aceleração de startups, incubação e desenvolvimento socioeconômico."
+    },
+    {
+      "id": "sch_4",
+      "time": "15:00",
+      "title": "Palestra: Do conflito à criação — o poder das diferentes gerações na inovação organizacional",
+      "speaker": "Roberta Fernandes Damasceno",
+      "institution": "CESAR",
+      "type": "palestra",
+      "description": "Reflexões sobre colaboração intergeracional, sinergia cultural e aceleração de novos modelos mentais nas organizações."
+    },
+    {
+      "id": "sch_5",
+      "time": "16:00",
+      "title": "Palestra: O futuro é agora!",
+      "speaker": "Márcia Tereza Almeida",
+      "institution": "Banco do Brasil",
+      "type": "palestra",
+      "description": "Transformação digital, governança de inovação aberta e as fronteiras do setor financeiro no Brasil."
+    },
+    {
+      "id": "sch_6",
+      "time": "17:00",
+      "title": "Reconhecimento e homenagens a funcionários, parceiros e iniciativas",
+      "speaker": "Comissão Especial Hubine 10 Anos",
+      "institution": "Banco do Nordeste",
+      "type": "homenagem",
+      "description": "Cerimônia de premiação e tributo às trajetórias que construíram a primeira década do Hub de Inovação."
+    },
+    {
+      "id": "sch_7",
+      "time": "17:20",
+      "title": "Encerramento, agradecimentos e coquetel de confraternização",
+      "speaker": "Equipe Hubine",
+      "institution": "Hubine / BNB",
+      "type": "encerramento",
+      "description": "Momento de networking, confraternização e celebração entre os convidados e representantes do ecossistema."
+    }
+  ],
+  "auditLogs": [],
+  "emailOutbox": []
+}

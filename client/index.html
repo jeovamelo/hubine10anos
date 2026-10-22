@@ -80,20 +80,22 @@
         <p class="hero-theme">Conectando inovação, pessoas e desenvolvimento regional</p>
 
         <div class="hero-meta-grid">
-          <div class="hero-meta-card">
+          <div class="hero-meta-card hero-meta-card-interactive" id="hero-card-date" role="button" tabindex="0" title="Clique para salvar na sua agenda (Google Calendar, Outlook ou .ics)" aria-label="Salvar na agenda: 4 de novembro de 2026">
             <span class="hero-meta-icon">📅</span>
-            <div>
+            <div style="flex: 1;">
               <div class="hero-meta-label">Data</div>
               <div class="hero-meta-value">4 de novembro de 2026</div>
             </div>
+            <span class="hero-meta-action-badge" title="Salvar na agenda" aria-hidden="true">🗓️</span>
           </div>
-          <div class="hero-meta-card">
+          <a href="https://maps.google.com/?q=Banco+do+Nordeste+Passare+Fortaleza" target="_blank" rel="noopener noreferrer" class="hero-meta-card hero-meta-card-interactive" id="hero-card-location" title="Abrir localização do Auditório Celso Furtado no Google Maps" aria-label="Abrir localização do Auditório Celso Furtado no Google Maps (abre em nova aba)">
             <span class="hero-meta-icon">📍</span>
-            <div>
+            <div style="flex: 1;">
               <div class="hero-meta-label">Local</div>
               <div class="hero-meta-value">Auditório Celso Furtado</div>
             </div>
-          </div>
+            <span class="hero-meta-action-badge" title="Abrir no Google Maps" aria-hidden="true">↗</span>
+          </a>
           <div class="hero-meta-card">
             <span class="hero-meta-icon">⏰</span>
             <div>
@@ -391,14 +393,6 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label" for="reg-accessibility">Solicitação de Recurso de Acessibilidade</label>
-              <textarea id="reg-accessibility" class="form-textarea" rows="2" placeholder="Ex: Intérprete de Libras, espaço para cadeira de rodas, material adaptado..."></textarea>
-              <span class="form-hint" style="color: var(--primary); font-weight: 500;">
-                🔒 Nota: A equipe organizadora entrará em contato de forma reservada para alinhar os detalhes e acolhimento.
-              </span>
-            </div>
-
             <!-- Privacy Notice and Consents -->
             <div class="privacy-box">
               <h4>Aviso de Privacidade e Tratamento de Dados (LGPD)</h4>
@@ -613,7 +607,7 @@
           <div class="hubine-card-header">
             <div>
               <h2 class="hubine-card-title">🏛️ 2. História & Origem: O BNB e a Fundação do Hubine</h2>
-              <p class="hubine-card-desc">72 anos de compromisso com o desenvolvimento socioeconômico regional e a fundação do primeiro Hub de Inovação de um banco público brasileiro em 2016.</p>
+              <p class="hubine-card-desc">74 anos de compromisso com o desenvolvimento socioeconômico regional e a fundação do primeiro Hub de Inovação de um banco público brasileiro em 2016.</p>
             </div>
             <span class="badge" style="background: var(--bnb-red-soft); color: var(--bnb-red); font-weight: 700;">Fundado em 2016</span>
           </div>
@@ -630,7 +624,7 @@
             <div style="background: var(--bg-page); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red);">
               <h3 style="color: var(--bnb-red); font-size: 1.15rem; margin-bottom: 0.75rem;">O Maior Banco Regional da América Latina</h3>
               <p style="font-size: 0.925rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                Com 72 anos de atuação, o <strong>Banco do Nordeste (BNB)</strong> administra o Fundo Constitucional de Financiamento do Nordeste (FNE) e opera o <strong>Crediamigo</strong> e o <strong>Agroamigo</strong>, os maiores programas de microcrédito produtivo orientado da América Latina.
+                Com 74 anos de atuação, o <strong>Banco do Nordeste (BNB)</strong> administra o Fundo Constitucional de Financiamento do Nordeste (FNE) e opera o <strong>Crediamigo</strong> e o <strong>Agroamigo</strong>, os maiores programas de microcrédito produtivo orientado da América Latina.
               </p>
               <p style="font-size: 0.925rem; line-height: 1.6; color: var(--text-muted); margin: 0;">
                 O BNB conta com o suporte científico do <strong>ETENE</strong> (Escritório Técnico de Estudos Econômicos do Nordeste), sendo profundo conhecedor do potencial e das demandas econômicas regionais.
@@ -662,7 +656,7 @@
 
           <!-- Embaixadores da Inovação -->
           <div style="padding: 1.25rem; background: var(--bnb-red-soft); border-radius: var(--radius-md); border-left: 4px solid var(--bnb-red);">
-            <h4 style="color: var(--bnb-red); font-size: 1rem; margin-bottom: 0.35rem;">Programa Embaixadores da Inovação (Slide 50 da Apresentação)</h4>
+            <h4 style="color: var(--bnb-red); font-size: 1rem; margin-bottom: 0.35rem;">Programa Embaixadores da Inovação</h4>
             <p style="font-size: 0.875rem; color: var(--text-body); margin: 0; line-height: 1.6;">
               Grupo qualificado de <strong>50 colaboradores</strong> da rede de agências preparados para atuar como pontos focais de inovação nos ecossistemas locais, capilarizando ideias para os processos de negócio e apoiando clientes na tomada de crédito para inovação em todo o Nordeste, Norte de Minas e Espírito Santo.
             </p>
@@ -754,52 +748,7 @@
             </div>
           </div>
 
-          <!-- Cases de Sucesso -->
-          <div style="margin-top: 2rem;">
-            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.5rem;">
-              Grandes Cases de Financiamento Estruturados com o Hubine (Slide 38)
-            </h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-              A equipe do Hubine atua diretamente na orientação, estruturação e enquadramento dos projetos inovadores das empresas junto às agências.
-            </p>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: center;">
-              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
-                <strong style="color: var(--bnb-red); font-size: 1.25rem; display: block;">Brisanet</strong>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Aldeota</span>
-                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-red); margin: 0.5rem 0;">R$ 309 Mi</div>
-                <span class="badge status-pill-finalizado">Contratado</span>
-              </div>
-
-              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
-                <strong style="color: var(--bnb-orange); font-size: 1.25rem; display: block;">Vicunha Têxtil</strong>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Aldeota</span>
-                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-orange); margin: 0.5rem 0;">R$ 246 Mi</div>
-                <span class="badge status-pill-finalizado">Contratado</span>
-              </div>
-
-              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
-                <strong style="color: var(--bnb-gray-dark); font-size: 1.25rem; display: block;">Projeart</strong>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / B. Menezes</span>
-                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-gray-dark); margin: 0.5rem 0;">R$ 110 Mi</div>
-                <span class="badge status-pill-progresso">Em Análise</span>
-              </div>
-
-              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
-                <strong style="color: var(--bnb-red); font-size: 1.25rem; display: block;">Vonixx</strong>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Maracanaú / CE</span>
-                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-red); margin: 0.5rem 0;">R$ 62 Mi</div>
-                <span class="badge status-pill-progresso">Em Análise</span>
-              </div>
-
-              <div style="background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
-                <strong style="color: var(--bnb-orange); font-size: 1.25rem; display: block;">How BE</strong>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Montese</span>
-                <div style="font-size: 1.4rem; font-weight: 800; color: var(--bnb-orange); margin: 0.5rem 0;">R$ 26 Mi</div>
-                <span class="badge status-pill-finalizado">Contratado</span>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </section>
 
@@ -837,7 +786,7 @@
             </div>
 
             <div style="background: var(--bg-page); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--bnb-orange);">
-              <h3 style="color: var(--bnb-orange); font-size: 1.15rem; margin-bottom: 0.5rem;">Prazos e Ritos Legais (Slide 9)</h3>
+              <h3 style="color: var(--bnb-orange); font-size: 1.15rem; margin-bottom: 0.5rem;">Prazos e Ritos Legais</h3>
               <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.875rem;">
                 <li style="display: flex; gap: 0.5rem;">
                   <span style="color: var(--bnb-orange); font-weight: bold;">📢</span>
@@ -1008,11 +957,8 @@
             <table class="portfolio-table">
               <thead>
                 <tr>
-                  <th style="width: 18%;">Área Solicitante</th>
-                  <th style="width: 25%;">Desafio Tecnológico</th>
-                  <th style="width: 32%;">Última Atualização Registrada</th>
-                  <th style="width: 15%;">Etapa Atual</th>
-                  <th style="width: 10%;">Status</th>
+                  <th style="width: 35%;">Área Solicitante</th>
+                  <th style="width: 65%;">Desafio Tecnológico</th>
                 </tr>
               </thead>
               <tbody id="hubine-challenges-tbody">
@@ -1164,7 +1110,7 @@
         <span style="background: var(--bnb-orange); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;">BNB HUBINE</span>
         <span>Apresentação Institucional — 10 Anos</span>
       </div>
-      <button class="slide-deck-close" onclick="closeSlideDeck()" aria-label="Fechar apresentação de slides">
+      <button type="button" class="slide-deck-close modal-close" data-close-modal onclick="closeSlideDeck()" aria-label="Fechar apresentação de slides">
         ✕ Fechar Slides
       </button>
     </div>
@@ -1304,7 +1250,7 @@
             </button>
             <button class="admin-nav-item org-only-action" data-tab="guests">
               <span class="nav-icon">🎟️</span>
-              <span>Convidados</span>
+              <span>Convidados Inscritos</span>
             </button>
             <a href="#credenciamento" class="admin-nav-item" style="text-decoration: none;">
               <span class="nav-icon">📱</span>
@@ -1431,28 +1377,32 @@
               </div>
             </div>
 
-            <!-- Tab 2: Registrations Table (Sympla Style Filter & Table) -->
+            <!-- Tab 2: Registrations Table (Participantes Inscritos via Web) -->
             <div id="tab-content-registrations" class="admin-tab-content" style="display: none;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <h2 style="font-size: 1.35rem; margin-bottom: 0.25rem; color: var(--primary);">Gestão de Participantes Inscritos (Web)</h2>
+                  <p class="text-muted" style="margin: 0; font-size: 0.875rem;">Participantes que se inscreveram diretamente através do formulário público do site oficial.</p>
+                </div>
+              </div>
+
               <div class="filter-bar">
                 <div class="filter-search-input">
-                  <input type="text" id="reg-filter-search" class="form-input" placeholder="Buscar por nome, e-mail, inscrição, WhatsApp ou instituição..." style="width: 100%;">
+                  <input type="text" id="reg-filter-search" class="form-input" placeholder="Buscar por Nº Inscrição, participante, e-mail, WhatsApp ou instituição..." style="width: 100%;">
                 </div>
                 
-                <select id="reg-filter-status" class="form-select" style="max-width: 180px;">
-                  <option value="CONFIRMADO" selected>Confirmados (Padrão)</option>
+                <select id="reg-filter-status" class="form-select" style="max-width: 185px;">
                   <option value="ALL">Todos os Status</option>
+                  <option value="CONFIRMADO" selected>Confirmados (Padrão)</option>
+                  <option value="PENDENTE">Pendentes</option>
                   <option value="PRESENTE">Presentes (Check-in)</option>
-                  <option value="LISTA_ESPERA">Lista de Espera</option>
+                  <option value="DESISTIU">Desistiram</option>
+                  <option value="NAO_VEM">Não Vêm</option>
                   <option value="CANCELADO">Cancelados</option>
+                  <option value="LISTA_ESPERA">Lista de Espera</option>
                 </select>
 
-                <select id="reg-filter-origin" class="form-select" style="max-width: 195px;">
-                  <option value="ALL" selected>Todas as Origens</option>
-                  <option value="PUBLIC_REGISTRATION">Inscrição pública</option>
-                  <option value="ORGANIZATION_INVITE">Convidado da organização</option>
-                </select>
-
-                <select id="reg-filter-profile" class="form-select" style="max-width: 170px;">
+                <select id="reg-filter-profile" class="form-select" style="max-width: 175px;">
                   <option value="ALL">Todos os Perfis</option>
                   <option value="Funcionário do BNB">Funcionários BNB</option>
                   <option value="Startup">Startups</option>
@@ -1465,11 +1415,8 @@
 
                 <div class="filter-actions-group">
                   <button id="btn-reg-filter" class="btn btn-secondary btn-sm" type="button">Filtrar</button>
-                  <button id="btn-reg-reset" class="btn btn-secondary btn-sm" type="button" title="Limpar filtros e redefinir para Confirmados">Limpar Filtros</button>
-                  <button id="btn-open-guest-modal" class="btn btn-primary btn-sm org-only-action" type="button" style="white-space: nowrap;">
-                    + Adicionar Convidado
-                  </button>
-                  <button id="btn-export-csv" class="btn btn-secondary btn-sm org-only-action" type="button" style="white-space: nowrap;">📥 Exportar CSV</button>
+                  <button id="btn-reg-reset" class="btn btn-secondary btn-sm" type="button" title="Limpar filtros e redefinir">Limpar Filtros</button>
+                  <button id="btn-export-csv" class="btn btn-secondary btn-sm" type="button" style="white-space: nowrap;">📥 Exportar CSV</button>
                   <span id="registrations-count-badge" class="badge badge-secondary" style="font-size: 0.8rem;"></span>
                 </div>
               </div>
@@ -1478,16 +1425,79 @@
                 <table class="data-table">
                   <thead>
                     <tr>
-                      <th>Status</th>
+                      <th style="width: 140px;">Nº Inscrição</th>
                       <th>Participante</th>
-                      <th>Nº Inscrição</th>
-                      <th>Origem</th>
-                      <th>WhatsApp / Contato</th>
+                      <th>Contato</th>
                       <th>Instituição / Perfil</th>
-                      <th>Ações</th>
+                      <th>Status</th>
+                      <th style="text-align: right; min-width: 150px;">Ações</th>
                     </tr>
                   </thead>
                   <tbody id="admin-registrations-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab: Dedicated Convidados Inscritos Table (Cadastrados pela Organização) -->
+            <div id="tab-content-guests" class="admin-tab-content" style="display: none;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <h2 style="font-size: 1.35rem; margin-bottom: 0.25rem; color: var(--primary);">Gestão de Convidados Inscritos</h2>
+                  <p class="text-muted" style="margin: 0; font-size: 0.875rem;">Convidados institucionais cadastrados diretamente pela comissão organizadora do evento.</p>
+                </div>
+                <button id="btn-open-guest-modal-tab" class="btn btn-primary" type="button" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                  <span style="font-size: 1.1rem; line-height: 1;">+</span> Cadastrar Novo Convidado
+                </button>
+              </div>
+
+              <div class="filter-bar">
+                <div class="filter-search-input">
+                  <input type="text" id="guest-filter-search" class="form-input" placeholder="Buscar convidado por Nº Inscrição, nome, e-mail, WhatsApp ou instituição..." style="width: 100%;">
+                </div>
+                
+                <select id="guest-filter-status" class="form-select" style="max-width: 195px;">
+                  <option value="ALL" selected>Todos os Status (Padrão)</option>
+                  <option value="PENDENTE">Pendentes (Não Confirmados)</option>
+                  <option value="CONFIRMADO">Confirmados</option>
+                  <option value="PRESENTE">Presentes (Check-in)</option>
+                  <option value="DESISTIU">Desistiram</option>
+                  <option value="NAO_VEM">Não Vêm</option>
+                  <option value="CANCELADO">Cancelados</option>
+                </select>
+
+                <select id="guest-filter-profile" class="form-select" style="max-width: 175px;">
+                  <option value="ALL">Todos os Perfis</option>
+                  <option value="Funcionário do BNB">Funcionários BNB</option>
+                  <option value="Startup">Startups</option>
+                  <option value="Empresa">Empresas</option>
+                  <option value="Academia">Academia</option>
+                  <option value="Investidor">Investidores</option>
+                  <option value="Órgão Público">Órgãos Públicos</option>
+                  <option value="Parceiro">Parceiros</option>
+                  <option value="Entidade de Apoio">Entidade de Apoio</option>
+                </select>
+
+                <div class="filter-actions-group">
+                  <button id="btn-guest-filter" class="btn btn-secondary btn-sm" type="button">Filtrar</button>
+                  <button id="btn-guest-reset" class="btn btn-secondary btn-sm" type="button" title="Limpar filtros e exibir todos os convidados">Limpar Filtros</button>
+                  <button id="btn-export-guest-csv" class="btn btn-secondary btn-sm" type="button" style="white-space: nowrap;">📥 Exportar CSV</button>
+                  <span id="guests-count-badge" class="badge badge-secondary" style="font-size: 0.8rem;"></span>
+                </div>
+              </div>
+
+              <div class="data-table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 140px;">Nº Inscrição</th>
+                      <th>Participante</th>
+                      <th>Contato</th>
+                      <th>Instituição / Perfil</th>
+                      <th>Status</th>
+                      <th style="text-align: right; min-width: 170px;">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-guests-tbody"></tbody>
                 </table>
               </div>
             </div>
@@ -1515,24 +1525,28 @@
 
         <!-- Tab 3: Speakers Management -->
         <div id="tab-content-speakers" class="admin-tab-content" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
             <div>
               <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Gestão de Palestrantes e Painelistas</h2>
-              <p class="text-muted" style="margin: 0;">Gere links individuais seguros de convite e revise as submissões antes de publicar.</p>
+              <p class="text-muted" style="margin: 0;">Cadastre diretamente palestrantes e painelistas para exibição imediata na programação oficial do evento.</p>
             </div>
-            <button id="btn-new-speaker-invite" class="btn btn-primary">+ Gerar Novo Convite</button>
+            <button id="btn-new-speaker" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              + Cadastrar Novo Palestrante
+            </button>
           </div>
 
           <div class="data-table-container">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Palestrante</th>
+                  <th style="min-width: 220px;">Palestrante</th>
+                  <th>Instituição / Empresa</th>
+                  <th>Cargo / Função</th>
                   <th>E-mail</th>
-                  <th>Instituição</th>
                   <th>Título da Participação</th>
                   <th>Status</th>
-                  <th>Ações</th>
+                  <th style="text-align: right; min-width: 170px;">Ações</th>
                 </tr>
               </thead>
               <tbody id="admin-speakers-tbody"></tbody>
@@ -1779,12 +1793,105 @@
 
   <!-- MODALS -->
 
+  <!-- Modal: Salvar na Agenda -->
+  <div id="calendar-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="calendar-modal-title">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <span style="font-size: 1.4rem;" aria-hidden="true">🗓️</span>
+          <div>
+            <h3 id="calendar-modal-title" class="modal-title" style="margin: 0; font-size: 1.2rem; font-weight: 700; color: var(--primary);">Salvar na Agenda</h3>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Hubine 10 Anos (2016–2026)</span>
+          </div>
+        </div>
+        <button class="modal-close" data-close-modal aria-label="Fechar modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="calendar-event-preview">
+          <div class="calendar-preview-title">
+            <span aria-hidden="true">✨</span> Hubine 10 Anos (2016–2026)
+          </div>
+          <div class="calendar-preview-item">
+            <span class="calendar-preview-icon" aria-hidden="true">📅</span>
+            <div>
+              <strong>Quarta-feira, 4 de novembro de 2026</strong>
+              <div style="color: var(--text-muted); font-size: 0.85rem;">13:00 às 18:00 (Credenciamento a partir das 13h)</div>
+            </div>
+          </div>
+          <div class="calendar-preview-item">
+            <span class="calendar-preview-icon" aria-hidden="true">📍</span>
+            <div>
+              <strong>Auditório Celso Furtado</strong>
+              <div style="color: var(--text-muted); font-size: 0.85rem;">Campus Banco do Nordeste, Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza - CE</div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.9rem; color: var(--text-body); margin: 1.25rem 0 0.85rem 0; font-weight: 600;">
+          Selecione sua plataforma de calendário:
+        </p>
+
+        <div class="calendar-options-grid">
+          <!-- Google Calendar -->
+          <a id="btn-google-calendar" href="#" target="_blank" rel="noopener noreferrer" class="calendar-option-card">
+            <div class="calendar-option-icon gcal-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4" width="18" height="18" rx="3" fill="#4285F4"/>
+                <rect x="3" y="4" width="18" height="5.5" fill="#1A73E8"/>
+                <text x="12" y="17.5" fill="#FFFFFF" font-size="9" font-weight="bold" text-anchor="middle" font-family="sans-serif">4</text>
+              </svg>
+            </div>
+            <div class="calendar-option-info">
+              <span class="calendar-option-name">Google Agenda</span>
+              <span class="calendar-option-desc">Salvar no Google Calendar pessoal ou institucional</span>
+            </div>
+            <span class="calendar-option-action">Abrir ↗</span>
+          </a>
+
+          <!-- Outlook Calendar (Web / Microsoft 365) -->
+          <a id="btn-outlook-calendar" href="#" target="_blank" rel="noopener noreferrer" class="calendar-option-card">
+            <div class="calendar-option-icon outlook-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4" width="18" height="18" rx="3" fill="#0078D4"/>
+                <rect x="3" y="4" width="18" height="5.5" fill="#005A9E"/>
+                <path d="M7 11.5h10v1.8H7zM7 15h6v1.8H7z" fill="#FFFFFF"/>
+              </svg>
+            </div>
+            <div class="calendar-option-info">
+              <span class="calendar-option-name">Outlook / Microsoft 365</span>
+              <span class="calendar-option-desc">Salvar no Outlook Web, Live ou conta Microsoft corporativa</span>
+            </div>
+            <span class="calendar-option-action">Abrir ↗</span>
+          </a>
+
+          <!-- Baixar Arquivo .ICS -->
+          <button type="button" id="btn-download-ics" class="calendar-option-card">
+            <div class="calendar-option-icon ics-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4" width="18" height="18" rx="3" fill="#6B1D2F"/>
+                <path d="M12 8v8m0 0l-3-3m3 3l3-3M7 19h10" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="calendar-option-info">
+              <span class="calendar-option-name">Baixar Arquivo .ICS</span>
+              <span class="calendar-option-desc">Compatível com Outlook Desktop, Apple Agenda (Mac/iPhone) e Android</span>
+            </div>
+            <span class="calendar-option-action">Baixar 📥</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" data-close-modal>Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 1. Privacy Policy Modal -->
   <div id="privacy-policy-modal" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title">Aviso de Privacidade e Tratamento de Dados</h3>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
       <div class="modal-body" style="font-size: 0.9rem;">
         <p><strong>Controlador:</strong> <span id="privacy-modal-controller">Banco do Nordeste do Brasil S.A. — Hubine</span></p>
@@ -1808,7 +1915,7 @@
     <div class="modal-card" style="max-width: 500px;">
       <div class="modal-header">
         <h3 class="modal-title" style="color: var(--primary);">Inscrição Já Registrada</h3>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
       <div class="modal-body">
         <p>O e-mail <strong id="duplicate-modal-email"></strong> já possui uma inscrição cadastrada para o evento Hubine 10 Anos.</p>
@@ -1828,7 +1935,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title">Atualizar Dados ou Cancelar Inscrição</h3>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -1874,7 +1981,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title">Detalhes da Inscrição</h3>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
       <div id="reg-detail-modal-body" class="modal-body"></div>
       <div class="modal-footer">
@@ -1883,51 +1990,111 @@
     </div>
   </div>
 
-  <!-- 5. Speaker Invite Modal (Admin) -->
-  <div id="speaker-invite-modal" class="modal-overlay">
-    <div class="modal-card">
+  <!-- 5. Speaker Direct Registration & Edit Modal (Admin) -->
+  <div id="speaker-form-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="speaker-form-modal-title">
+    <div class="modal-card" style="max-width: 680px; max-height: 90vh; overflow-y: auto;">
       <div class="modal-header">
-        <h3 class="modal-title">Novo Convite Individual de Palestrante</h3>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">🎤</span>
+          <h3 id="speaker-form-modal-title" class="modal-title">Cadastrar Novo Palestrante / Painelista</h3>
+        </div>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
-      <form id="speaker-invite-form">
+      <form id="speaker-form">
+        <input type="hidden" id="spk-form-id" value="">
         <div class="modal-body">
-          <div class="form-group">
-            <label class="form-label" for="invite-spk-name">Nome do Palestrante / Painelista <span class="required-mark">*</span></label>
-            <input type="text" id="invite-spk-name" class="form-input" required>
+          <div style="background: rgba(184, 51, 42, 0.06); border-left: 4px solid var(--bnb-red); padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1.25rem;">
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-body);">
+              <strong>Cadastro Direto pela Organização:</strong> Os dados inseridos serão validados e refletidos imediatamente na programação pública do evento.
+            </p>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="invite-spk-email">E-mail <span class="required-mark">*</span></label>
-            <input type="email" id="invite-spk-email" class="form-input" required>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="spk-form-name">Nome do Palestrante / Profissional <span class="required-mark">*</span></label>
+              <input type="text" id="spk-form-name" class="form-input" required placeholder="Ex: Roberta Fernandes Damasceno">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="spk-form-email">E-mail <span style="font-size: 0.75rem; font-weight: normal; color: var(--text-muted);">(Opcional)</span></label>
+              <input type="email" id="spk-form-email" class="form-input" placeholder="contato@empresa.com.br">
+            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="invite-spk-institution">Instituição</label>
-            <input type="text" id="invite-spk-institution" class="form-input" placeholder="Ex: CESAR, BNB...">
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="spk-form-institution">Instituição ou Empresa <span class="required-mark">*</span></label>
+              <input type="text" id="spk-form-institution" class="form-input" required placeholder="Ex: CESAR, Banco do Nordeste, IFCE">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="spk-form-role">Cargo ou Função</label>
+              <input type="text" id="spk-form-role" class="form-input" placeholder="Ex: Especialista em Inovação e Cultura">
+            </div>
           </div>
+
           <div class="form-group">
-            <label class="form-label" for="invite-spk-talk">Título Previsto da Participação</label>
-            <input type="text" id="invite-spk-talk" class="form-input">
+            <label class="form-label" for="spk-form-talk">Título da Participação ou Palestra</label>
+            <input type="text" id="spk-form-talk" class="form-input" placeholder="Ex: Do conflito à criação — o poder das diferentes gerações na inovação">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="spk-form-summary">Resumo / Sinopse da Participação</label>
+            <textarea id="spk-form-summary" class="form-textarea" rows="2" placeholder="Exploração prática de como conectar gerações distintas para impulsionar a criatividade e a inovação..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="spk-form-bio">Minibio / Biografia Curta <span style="font-size: 0.75rem; font-weight: normal; color: var(--bnb-red);">(Exibição Institucional)</span></label>
+            <textarea id="spk-form-bio" class="form-textarea" rows="3" placeholder="Mini biografia institucional para apresentação ao público no site oficial do evento..."></textarea>
+            <small class="text-muted" style="display: block; margin-top: 4px; font-size: 0.75rem;">Texto utilizado pelo mestre de cerimônias e nos cartões de divulgação pública.</small>
+          </div>
+
+          <!-- Foto Profissional: Upload / URL com preview -->
+          <div class="form-group" style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px dashed var(--border-subtle);">
+            <label class="form-label" style="margin-bottom: 0.5rem; font-weight: 600;">Foto Profissional</label>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+              <div id="spk-photo-preview-wrap" style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; background: #e2e8f0; border: 2px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <span id="spk-photo-placeholder" style="font-size: 1.8rem; color: var(--text-muted);">👤</span>
+                <img id="spk-photo-preview-img" src="" alt="Foto do palestrante" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+              </div>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 0.4rem;">
+                <input type="file" id="spk-photo-file" accept="image/*" class="form-input" style="font-size: 0.8rem; padding: 0.35rem 0.5rem;">
+                <input type="url" id="spk-photo-url" class="form-input" placeholder="Ou cole a URL direta da foto (https://...)" style="font-size: 0.8rem;">
+                <input type="hidden" id="spk-photo-val" value="">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <small class="text-muted" style="font-size: 0.75rem;">Formatos suportados: PNG, JPG ou WebP.</small>
+                  <button type="button" id="btn-remove-photo" class="btn btn-sm btn-link" style="color: var(--bnb-red); padding: 0; font-size: 0.75rem; display: none;">✕ Remover Foto</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="spk-form-av">Tópicos de Necessidades Audiovisuais (AV) <span style="font-size: 0.75rem; font-weight: normal; color: var(--text-muted);">(Opcional)</span></label>
+            <input type="text" id="spk-form-av" class="form-input" placeholder="Ex: Microfone auricular, passador de slides e conexão HDMI">
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
           <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
-          <button type="submit" class="btn btn-primary">Gerar Convite e Enviar</button>
+          <button type="submit" id="btn-save-speaker-submit" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+            <span>Salvar e Publicar</span>
+          </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 6. Speaker Review Modal (Admin) -->
-  <div id="speaker-review-modal" class="modal-overlay">
-    <div class="modal-card">
+  <!-- 6. Speaker Detail Modal (Admin) -->
+  <div id="speaker-detail-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="speaker-detail-modal-title">
+    <div class="modal-card" style="max-width: 620px; max-height: 90vh; overflow-y: auto;">
       <div class="modal-header">
-        <h3 class="modal-title">Revisão de Dados do Palestrante</h3>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <h3 id="speaker-detail-modal-title" class="modal-title">Ficha Completa do Palestrante</h3>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
-      <div id="speaker-review-modal-body" class="modal-body"></div>
-      <div class="modal-footer">
+      <div id="speaker-detail-modal-body" class="modal-body"></div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
         <button type="button" class="btn btn-secondary" data-close-modal>Fechar</button>
-        <button type="button" id="btn-approve-speaker" class="btn btn-primary">Aprovar e Publicar no Site</button>
+        <button type="button" id="btn-detail-edit-speaker" class="btn btn-primary">✏️ Editar Palestrante</button>
       </div>
     </div>
   </div>
@@ -1937,7 +2104,7 @@
     <div class="modal-card" style="max-width: 480px;">
       <div class="modal-header">
         <h3 class="modal-title">Novo Usuário do Painel</h3>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
       <form id="admin-user-form">
         <div class="modal-body">
@@ -1978,13 +2145,13 @@
           <span class="badge badge-primary" style="margin-bottom: 0.25rem;">Ação Organizacional</span>
           <h3 class="modal-title" style="margin: 0;">Adicionar Participante Convidado</h3>
         </div>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
       <form id="invited-guest-form">
         <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
           <div class="alert alert-info" style="font-size: 0.85rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
             <span>ℹ️</span>
-            <span>O convidado será cadastrado diretamente como <strong>CONFIRMADO</strong>, com credencial segura, QR Code e número de inscrição HUB10.</span>
+            <span>O convidado inicia com o status <strong>PENDENTE</strong>. Ele só abaterá das vagas disponíveis e passará a constar como confirmado quando o status for alterado para <strong>CONFIRMADO</strong>.</span>
           </div>
 
           <div id="invited-guest-alert" class="alert" style="display: none;"></div>
@@ -2076,7 +2243,7 @@
           <span class="badge badge-info" style="margin-bottom: 0.25rem;">Comunicação Oficial</span>
           <h3 class="modal-title" style="margin: 0;">Enviar Convite do Participante</h3>
         </div>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
       <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
         <div id="guest-comm-alert" class="alert" style="display: none;"></div>
@@ -2150,7 +2317,7 @@
     <div class="modal-card" style="max-width: 720px; height: 85vh; display: flex; flex-direction: column;">
       <div class="modal-header">
         <h3 class="modal-title">Inspeção de E-mail Enviado</h3>
-        <button class="modal-close" aria-label="Fechar">&times;</button>
+        <button class="modal-close" data-close-modal aria-label="Fechar">&times;</button>
       </div>
       <div id="email-modal-header-info" style="padding: 0.75rem 1.5rem; background: var(--bg-subtle); border-bottom: 1px solid var(--border-subtle); font-size: 0.9rem;"></div>
       <div style="flex-grow: 1; padding: 0;">
@@ -2249,13 +2416,10 @@
         toggle.addEventListener('click', () => menu.classList.toggle('open'));
       }
 
-      // Generic modal close handler
-      document.querySelectorAll('.modal-overlay').forEach(modal => {
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) modal.classList.remove('active');
-        });
-      });
-
+      // Universal Modal and Self Service Handlers
+      if (typeof setupUniversalModalCloseHandlers === 'function') {
+        setupUniversalModalCloseHandlers();
+      }
       setupSelfServiceHandlers();
       router();
     });

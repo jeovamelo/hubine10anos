@@ -325,7 +325,7 @@ const HUBINE_DATA = {
             <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem;">
               <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
                 <span style="background: var(--bnb-red); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0;">🏛️</span>
-                <span><strong>72 anos de atuação</strong> como instituição financeira múltipla de desenvolvimento regional.</span>
+                <span><strong>74 anos de atuação</strong> como instituição financeira múltipla de desenvolvimento regional.</span>
               </li>
               <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
                 <span style="background: var(--bnb-orange); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0;">🌎</span>
@@ -726,46 +726,6 @@ const HUBINE_DATA = {
       `
     },
     {
-      id: 13,
-      title: "Grandes Cases de Financiamento do Hubine",
-      subtitle: "Apoio Técnico, Enquadramento e Estruturação de Projetos Inovadores",
-      category: "Cases",
-      content: `
-        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; text-align: center;">
-          <div style="background: var(--bnb-red-soft); padding: 1rem; border-radius: var(--radius-md); border-top: 4px solid var(--bnb-red);">
-            <strong style="color: var(--bnb-red); display: block; font-size: 1.1rem;">Brisanet</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Aldeota</span>
-            <div style="font-weight: 800; font-size: 1.15rem; color: var(--bnb-red); margin: 0.5rem 0;">R$ 309M</div>
-            <span style="background: #ECFDF5; color: #047857; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">Contratado</span>
-          </div>
-          <div style="background: var(--bnb-red-soft); padding: 1rem; border-radius: var(--radius-md); border-top: 4px solid var(--bnb-orange);">
-            <strong style="color: var(--bnb-orange); display: block; font-size: 1.1rem;">Vicunha Têxtil</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Aldeota</span>
-            <div style="font-weight: 800; font-size: 1.15rem; color: var(--bnb-orange); margin: 0.5rem 0;">R$ 246M</div>
-            <span style="background: #ECFDF5; color: #047857; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">Contratado</span>
-          </div>
-          <div style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); border-top: 4px solid var(--bnb-gray-dark);">
-            <strong style="color: var(--bnb-gray-dark); display: block; font-size: 1.1rem;">Projeart</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / B. Menezes</span>
-            <div style="font-weight: 800; font-size: 1.15rem; color: var(--bnb-gray-dark); margin: 0.5rem 0;">R$ 110M</div>
-            <span style="background: #EFF6FF; color: #1D4ED8; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">Em Análise</span>
-          </div>
-          <div style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); border-top: 4px solid var(--bnb-red);">
-            <strong style="color: var(--bnb-red); display: block; font-size: 1.1rem;">Vonixx</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Maracanaú / CE</span>
-            <div style="font-weight: 800; font-size: 1.15rem; color: var(--bnb-red); margin: 0.5rem 0;">R$ 62M</div>
-            <span style="background: #EFF6FF; color: #1D4ED8; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">Em Análise</span>
-          </div>
-          <div style="background: var(--bnb-red-soft); padding: 1rem; border-radius: var(--radius-md); border-top: 4px solid var(--bnb-orange);">
-            <strong style="color: var(--bnb-orange); display: block; font-size: 1.1rem;">How BE</strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Fortaleza / Montese</span>
-            <div style="font-weight: 800; font-size: 1.15rem; color: var(--bnb-orange); margin: 0.5rem 0;">R$ 26M</div>
-            <span style="background: #ECFDF5; color: #047857; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">Contratado</span>
-          </div>
-        </div>
-      `
-    },
-    {
       id: 14,
       title: "FUNDECI (50 Anos) & Aceleração de Startups",
       subtitle: "Mais de 5 Mil Projetos Apoiados e R$ 700 Milhões em Subvenção",
@@ -980,7 +940,7 @@ function renderPortfolioTable() {
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+        <td colspan="2" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
           Nenhum desafio encontrado para os filtros selecionados. Tente ajustar os termos de busca.
         </td>
       </tr>
@@ -989,28 +949,11 @@ function renderPortfolioTable() {
   }
 
   tbody.innerHTML = filtered.map(item => {
-    let pillClass = 'status-pill-progresso';
-    if (item.status === 'cpsi') pillClass = 'status-pill-cpsi';
-    if (item.status === 'espera') pillClass = 'status-pill-espera';
-    if (item.status === 'finalizado') pillClass = 'status-pill-finalizado';
-    if (item.status === 'implementacao') pillClass = 'status-pill-implementacao';
-
     return `
       <tr>
         <td class="td-area">${escapeHtml(item.area)}</td>
         <td class="td-challenge">
           <strong>${escapeHtml(item.challenge)}</strong>
-        </td>
-        <td style="font-size: 0.85rem; color: var(--text-muted); max-width: 380px;">
-          ${escapeHtml(item.update)}
-        </td>
-        <td style="font-size: 0.85rem; font-weight: 600;">
-          ${escapeHtml(item.stage)}
-        </td>
-        <td>
-          <span class="badge ${pillClass}" style="text-transform: uppercase; font-size: 0.7rem; font-weight: 700;">
-            ${escapeHtml(item.statusLabel)}
-          </span>
         </td>
       </tr>
     `;

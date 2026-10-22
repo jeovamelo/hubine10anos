@@ -8,9 +8,27 @@ const publicRoutes = require('./routes/public');
 const speakerRoutes = require('./routes/speakers');
 const checkinRoutes = require('./routes/checkin');
 const adminRoutes = require('./routes/admin');
+const webhookRoutes = require('./routes/webhooks');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Trust proxy only if explicitly configured or running in standard container
+if (process.env.TRUST_PROXY === 'true') {
+  app.set('trust proxy', 1);
+}
+
+// Security Headers Middleware
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self'; frame-src 'self' data:;"
+  );
+  next();
+});
 
 // Security & Parsing Middlewares: Restrict CORS to authorized domains
 const allowedOrigins = process.env.ALLOWED_ORIGINS
@@ -47,6 +65,7 @@ function mountApiRoutes(prefix = '') {
   app.use(prefix + '/api/speakers', speakerRoutes);
   app.use(prefix + '/api/checkin', checkinRoutes);
   app.use(prefix + '/api/admin', adminRoutes);
+  app.use(prefix + '/api/webhooks', webhookRoutes);
 }
 
 mountApiRoutes('/dezanos');
@@ -66,6 +85,22 @@ app.use((req, res, next) => {
     return res.status(404).json({ error: 'Endpoint da API não encontrado.' });
   }
   res.sendFile(path.join(clientPath, 'index.html'));
+});
+
+// Final Error Handling Middleware: No stack traces in production
+app.use((err, req, res, next) => {
+  const status = err.status || 500;
+  const isProd = process.env.NODE_ENV === 'production';
+  if (!isProd) {
+    console.error('Unhandled server error:', err);
+  } else {
+    console.error(`[SERVER ERROR] ${req.method} ${req.url} - Status ${status}: ${err.message}`);
+  }
+
+  res.status(status).json({
+    error: isProd ? 'Ocorreu um erro interno no servidor.' : err.message,
+    code: err.code || undefined
+  });
 });
 
 if (require.main === module) {

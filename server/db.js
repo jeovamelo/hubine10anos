@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const postgres = require('./postgres');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-const DB_FILE = path.join(DATA_DIR, 'database.json');
-const TMP_FILE = path.join(DATA_DIR, 'database.json.tmp');
+const DATA_DIR = process.env.HUBINE_DATA_DIR || path.join(__dirname, '..', 'data');
+const DB_FILE = process.env.HUBINE_DB_PATH || path.join(DATA_DIR, 'database.json');
+const EXAMPLE_DB_FILE = path.join(__dirname, '..', 'data', 'database.example.json');
 
 const DEFAULT_STATE = {
   settings: {
@@ -35,7 +35,8 @@ const DEFAULT_STATE = {
   speakers: [],
   schedule: [],
   auditLogs: [],
-  emailOutbox: []
+  emailOutbox: [],
+  whatsappOutbox: []
 };
 
 class AsyncLock {
@@ -89,7 +90,10 @@ class Database {
     }
     const ok = await this.pg.init();
     if (!ok) {
-      console.warn('⚠️ [Database] Falha ao conectar ao PostgreSQL. Operando com armazenamento local JSON como fallback.');
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('FALHA CRÍTICA DE PERSISTÊNCIA: PostgreSQL configurado via DATABASE_URL não está acessível no ambiente de produção. Operação interrompida para evitar divergência de dados.');
+      }
+      console.warn('⚠️ [Database] Falha ao conectar ao PostgreSQL. Operando com armazenamento local JSON como fallback em ambiente de desenvolvimento/teste.');
       return false;
     }
 
@@ -100,14 +104,21 @@ class Database {
         this.data = existing;
         this.saveSync(); // Mantém backup local em sincronia
       } else {
-        console.log(`[PostgreSQL] Banco PostgreSQL inicial. Migrando ${this.data.registrations.length} inscritos e ${this.data.users.length} usuários para o PostgreSQL...`);
-        await this.pg.migrateFromState(this.data);
-        console.log(`✓ [PostgreSQL] Migração para o PostgreSQL concluída com sucesso!`);
+        if (process.env.AUTO_MIGRATE_FROM_JSON === 'true') {
+          console.log(`[PostgreSQL] Banco PostgreSQL vazio e AUTO_MIGRATE_FROM_JSON=true. Migrando ${this.data.registrations.length} inscritos e ${this.data.users.length} usuários para o PostgreSQL...`);
+          await this.pg.migrateFromState(this.data);
+          console.log(`✓ [PostgreSQL] Migração para o PostgreSQL concluída com sucesso!`);
+        } else {
+          console.log(`[PostgreSQL] Banco PostgreSQL inicializado vazio.`);
+        }
       }
       this.isPostgresReady = true;
       return true;
     } catch (e) {
-      console.error('❌ [PostgreSQL] Erro ao carregar/migrar dados:', e.message);
+      console.error('❌ [PostgreSQL] Erro ao carregar dados do PostgreSQL:', e.message);
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error(`FALHA CRÍTICA DE PERSISTÊNCIA: Erro ao carregar dados do PostgreSQL em produção: ${e.message}`);
+      }
       return false;
     }
   }
@@ -117,10 +128,12 @@ class Database {
     try {
       if (fs.existsSync(DB_FILE)) {
         const stat = fs.statSync(DB_FILE);
-        if (stat.mtimeMs > this.lastMtime + 50) {
+        if (stat.mtimeMs !== this.lastMtime || stat.size !== this.lastSize) {
           const raw = fs.readFileSync(DB_FILE, 'utf-8');
           this.data = JSON.parse(raw);
+        if (!this.data.whatsappOutbox) this.data.whatsappOutbox = [];
           this.lastMtime = stat.mtimeMs;
+          this.lastSize = stat.size;
         }
       }
     } catch (err) {
@@ -142,6 +155,44 @@ class Database {
     return false;
   }
 
+  _writeAtomic(filePath, content) {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const tmp = `${filePath}.tmp.${process.pid}.${Date.now()}`;
+    const fd = fs.openSync(tmp, 'w');
+    fs.writeFileSync(fd, content, 'utf-8');
+    try { fs.fsyncSync(fd); } catch (e) {}
+    fs.closeSync(fd);
+
+    let attempts = 0;
+    while (true) {
+      try {
+        fs.renameSync(tmp, filePath);
+        break;
+      } catch (err) {
+        attempts++;
+        if (attempts > 5) {
+          try {
+            fs.copyFileSync(tmp, filePath);
+            fs.unlinkSync(tmp);
+            break;
+          } catch (copyErr) {
+            try { fs.unlinkSync(tmp); } catch (e) {}
+            throw err;
+          }
+        }
+        const start = Date.now();
+        while (Date.now() - start < 15) {}
+      }
+    }
+
+    // Maintain a rotating backup copy of the valid DB
+    try {
+      const backupPath = `${filePath}.backup`;
+      fs.copyFileSync(filePath, backupPath);
+    } catch (e) {}
+  }
+
   init() {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -151,13 +202,53 @@ class Database {
       try {
         const raw = fs.readFileSync(DB_FILE, 'utf-8');
         this.data = JSON.parse(raw);
-        this.lastMtime = fs.statSync(DB_FILE).mtimeMs;
+        const stat = fs.statSync(DB_FILE);
+        this.lastMtime = stat.mtimeMs;
+        this.lastSize = stat.size;
       } catch (err) {
-        console.error("Erro ao ler banco de dados existente, restaurando padrão:", err);
-        this.data = JSON.parse(JSON.stringify(DEFAULT_STATE));
-        this.saveSync();
+        console.error("❌ [Database] Arquivo JSON corrompido ou ilegível:", err.message);
+        // Preserva arquivo corrompido para perícia forense
+        const corruptedPath = `${DB_FILE}.corrupted.${Date.now()}`;
+        try {
+          fs.copyFileSync(DB_FILE, corruptedPath);
+          console.warn(`⚠️ [Database] Arquivo corrompido preservado em: ${corruptedPath}`);
+        } catch (e) {}
+
+        // Tenta recuperar do backup
+        const backupPath = `${DB_FILE}.backup`;
+        let recovered = false;
+        if (fs.existsSync(backupPath)) {
+          try {
+            const rawBackup = fs.readFileSync(backupPath, 'utf-8');
+            this.data = JSON.parse(rawBackup);
+            this.saveSync();
+            console.log(`✓ [Database] Recuperado com sucesso a partir de backup validado (${backupPath}).`);
+            recovered = true;
+          } catch (bErr) {
+            console.error("❌ [Database] Backup também está corrompido:", bErr.message);
+          }
+        }
+
+        if (!recovered) {
+          if (process.env.NODE_ENV === 'production') {
+            throw new Error(`FALHA CRÍTICA DE PERSISTÊNCIA: Banco de dados JSON corrompido e sem backup válido. Processo interrompido para evitar perda silenciosa de dados. Arquivo: ${corruptedPath}`);
+          } else {
+            console.warn("⚠️ [Database] Modo de teste/dev: restaurando estado inicial a partir do template.");
+            this.data = JSON.parse(JSON.stringify(DEFAULT_STATE));
+            this.saveSync();
+          }
+        }
       }
     } else {
+      if (fs.existsSync(EXAMPLE_DB_FILE)) {
+        try {
+          const rawExample = fs.readFileSync(EXAMPLE_DB_FILE, 'utf-8');
+          this.data = JSON.parse(rawExample);
+          this.saveSync();
+          console.log('✓ [Database] Inicializado com sucesso a partir de database.example.json.');
+          return;
+        } catch (e) {}
+      }
       this.data = JSON.parse(JSON.stringify(DEFAULT_STATE));
       this.saveSync();
     }
@@ -165,22 +256,28 @@ class Database {
 
   saveSync() {
     const json = JSON.stringify(this.data, null, 2);
-    fs.writeFileSync(DB_FILE, json, 'utf-8');
+    this._writeAtomic(DB_FILE, json);
     try {
-      this.lastMtime = fs.statSync(DB_FILE).mtimeMs;
+      const stat = fs.statSync(DB_FILE);
+      this.lastMtime = stat.mtimeMs;
+      this.lastSize = stat.size;
     } catch (e) {}
   }
 
   async save() {
     return new Promise((resolve, reject) => {
-      const json = JSON.stringify(this.data, null, 2);
-      fs.writeFile(DB_FILE, json, 'utf-8', (err) => {
-        if (err) return reject(err);
+      try {
+        const json = JSON.stringify(this.data, null, 2);
+        this._writeAtomic(DB_FILE, json);
         try {
-          this.lastMtime = fs.statSync(DB_FILE).mtimeMs;
+          const stat = fs.statSync(DB_FILE);
+          this.lastMtime = stat.mtimeMs;
+          this.lastSize = stat.size;
         } catch (e) {}
         resolve();
-      });
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
@@ -274,6 +371,32 @@ class Database {
     return formatRegistration(reg);
   }
 
+
+  // Helper para buscar inscrição ATIVA (exclui CANCELADO, DESISTIU, NAO_VEM)
+  getActiveRegistrationByEmail(email) {
+    this.reloadIfModified();
+    if (!email) return null;
+    const clean = String(email).trim().toLowerCase();
+    const found = (this.data.registrations || []).find(r => 
+      r.email && r.email.trim().toLowerCase() === clean && !['CANCELADO', 'DESISTIU', 'NAO_VEM'].includes(r.status)
+    );
+    return formatRegistration(found);
+  }
+
+  // Helper para buscar inscrição ATIVA por telefone/whatsapp
+  getActiveRegistrationByPhone(phone) {
+    this.reloadIfModified();
+    if (!phone) return null;
+    const digits = normalizeDigits(phone);
+    if (!digits) return null;
+    const found = (this.data.registrations || []).find(r => {
+      if (['CANCELADO', 'DESISTIU', 'NAO_VEM'].includes(r.status)) return false;
+      const rDigits = normalizeDigits(r.whatsapp || r.phone);
+      return rDigits === digits || (digits.length >= 10 && rDigits.endsWith(digits.slice(-10)));
+    });
+    return formatRegistration(found);
+  }
+
   getRegistrationByEmail(email) {
     this.reloadIfModified();
     if (!email) return null;
@@ -318,6 +441,22 @@ class Database {
       }
     }
     return `HUB10-${maxSeq + 1}`;
+  }
+
+  generateRegistrationNumber() {
+    return this.getNextRegistrationNumber();
+  }
+
+  async generateQrCode(text) {
+    const qrcode = require('qrcode');
+    return qrcode.toDataURL(text, {
+      width: 320,
+      margin: 2,
+      color: {
+        dark: '#6B1D2F',
+        light: '#FFFFFF'
+      }
+    });
   }
 
   async addRegistration(reg) {
@@ -481,6 +620,53 @@ class Database {
     if (this.isPostgresReady) {
       await this.pg.clearEmailOutbox();
     }
+    return true;
+  }
+
+  // WhatsApp Outbox
+  getWhatsappOutbox(limit = 100) {
+    if (!this.data.whatsappOutbox) this.data.whatsappOutbox = [];
+    return this.data.whatsappOutbox.slice(-limit).reverse();
+  }
+
+  async addWhatsappOutbox(msg) {
+    if (!this.data.whatsappOutbox) this.data.whatsappOutbox = [];
+    const item = {
+      id: 'wa_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+      timestamp: new Date().toISOString(),
+      ...msg
+    };
+    this.data.whatsappOutbox.push(item);
+    if (this.data.whatsappOutbox.length > 300) {
+      this.data.whatsappOutbox = this.data.whatsappOutbox.slice(-300);
+    }
+    await this.save();
+    return item;
+  }
+
+  async updateWhatsappOutbox(id, updates) {
+    if (!this.data.whatsappOutbox) this.data.whatsappOutbox = [];
+    const idx = this.data.whatsappOutbox.findIndex(m => m.id === id || m.providerMessageId === id);
+    if (idx !== -1) {
+      this.data.whatsappOutbox[idx] = {
+        ...this.data.whatsappOutbox[idx],
+        ...updates,
+        updatedAt: new Date().toISOString()
+      };
+      await this.save();
+      return this.data.whatsappOutbox[idx];
+    }
+    return null;
+  }
+
+  getWhatsappOutboxByProviderId(providerId) {
+    if (!this.data.whatsappOutbox) return null;
+    return this.data.whatsappOutbox.find(m => m.providerMessageId === providerId) || null;
+  }
+
+  async clearWhatsappOutbox() {
+    this.data.whatsappOutbox = [];
+    await this.save();
     return true;
   }
 }

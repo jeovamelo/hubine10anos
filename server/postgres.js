@@ -17,9 +17,13 @@ class PostgresStorage {
     }
 
     try {
+      const sslConfig = process.env.DATABASE_SSL === 'true'
+        ? { rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false' }
+        : false;
+
       this.pool = new Pool({
         connectionString: process.env.DATABASE_URL,
-        ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
+        ssl: sslConfig,
         max: 20,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 10000
@@ -87,6 +91,7 @@ class PostgresStorage {
 
       CREATE INDEX IF NOT EXISTS idx_reg_email ON hubine_registrations (email);
       CREATE INDEX IF NOT EXISTS idx_reg_status ON hubine_registrations (status);
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_reg_active_email ON hubine_registrations (LOWER(email)) WHERE status NOT IN ('CANCELADO', 'DESISTIU', 'NAO_VEM');
       CREATE INDEX IF NOT EXISTS idx_reg_token ON hubine_registrations (token);
       CREATE INDEX IF NOT EXISTS idx_reg_qr_token ON hubine_registrations (qr_token);
       CREATE INDEX IF NOT EXISTS idx_reg_number ON hubine_registrations (registration_number);
@@ -498,6 +503,18 @@ class PostgresStorage {
       await this.pool.query('DELETE FROM hubine_email_outbox');
     } catch (e) {
       console.error('[PostgreSQL] Erro ao limpar outbox:', e.message);
+    }
+  }
+
+  async shutdown() {
+    if (this.pool) {
+      try {
+        await this.pool.end();
+        this.ready = false;
+        console.log('✓ [PostgreSQL] Pool de conexões encerrado com sucesso.');
+      } catch (err) {
+        console.error('Erro ao encerrar pool PostgreSQL:', err.message);
+      }
     }
   }
 }

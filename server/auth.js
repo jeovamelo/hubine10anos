@@ -3,13 +3,23 @@ const bcrypt = require('bcryptjs');
 const db = require('./db');
 
 const DEFAULT_JWT_SECRET = 'hubine-10-anos-chave-secreta-jwt-2026';
+const KNOWN_INSECURE_SECRETS = [
+  'hubine-10-anos-chave-secreta-jwt-2026',
+  'hubine-10-anos-chave-secreta-jwt-2026-prod-local',
+  'hubine-10-anos-chave-secreta-jwt-2026-vps',
+  'hubine_secure_pass_2026',
+  'secret',
+  'password',
+  '12345678901234567890123456789012',
+  'change-me-to-a-secure-random-secret-key-32chars'
+];
 
 function getJwtSecret() {
   const isProd = process.env.NODE_ENV === 'production';
   const secret = process.env.JWT_SECRET;
   if (isProd) {
-    if (!secret || secret === DEFAULT_JWT_SECRET || secret.length < 32) {
-      throw new Error('ERRO CRÍTICO DE SEGURANÇA: O JWT_SECRET padrão não pode ser utilizado em ambiente de produção. Configure uma chave secreta forte com no mínimo 32 caracteres.');
+    if (!secret || secret.length < 32 || KNOWN_INSECURE_SECRETS.includes(secret)) {
+      throw new Error('ERRO CRÍTICO DE SEGURANÇA: O JWT_SECRET não pode ser vazio, padrão ou de exemplo conhecido em ambiente de produção. Configure uma chave secreta forte e exclusiva com no mínimo 32 caracteres via variável de ambiente JWT_SECRET.');
     }
     return secret;
   }

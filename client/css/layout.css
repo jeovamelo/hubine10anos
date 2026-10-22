@@ -320,6 +320,50 @@
   color: #FFFFFF;
 }
 
+.hero-meta-card-interactive {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition-normal);
+  position: relative;
+  user-select: none;
+}
+
+.hero-meta-card-interactive:hover,
+.hero-meta-card-interactive:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  outline: none;
+}
+
+.hero-meta-card-interactive:active {
+  transform: translateY(0);
+}
+
+.hero-meta-action-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  margin-left: 0.35rem;
+}
+
+.hero-meta-card-interactive:hover .hero-meta-action-badge,
+.hero-meta-card-interactive:focus-visible .hero-meta-action-badge {
+  background: #FFFFFF;
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
 .hero-actions {
   display: flex;
   align-items: center;

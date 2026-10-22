@@ -16,50 +16,151 @@ if (isSmtpConfigured) {
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS
+    },
+    tls: {
+      rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED !== 'false'
     }
   });
+}
+
+async function verifyConnection() {
+  if (!isSmtpConfigured || !transporter) {
+    return { configured: false, connected: false, message: 'SMTP não configurado (operando em modo demonstração)' };
+  }
+  try {
+    await transporter.verify();
+    return { configured: true, connected: true, message: 'Conexão SMTP com eventos@hubine.org verificada com sucesso.' };
+  } catch (err) {
+    return { configured: true, connected: false, message: 'Falha na conexão SMTP: ' + (err.message || 'Erro desconhecido') };
+  }
 }
 
 function getAppUrl() {
-  return process.env.APP_URL || 'http://localhost:3000';
+  let url = process.env.APP_URL || 'http://localhost:3000';
+  if (url.endsWith('/')) url = url.slice(0, -1);
+  return url;
 }
 
-async function sendMail({ to, subject, html, text }) {
-  const from = process.env.SMTP_FROM || 'Hubine 10 Anos <hubine10anos@bnb.gov.br>';
+function getDefaultFrom() {
+  return process.env.SMTP_FROM || 'Hubine Eventos <eventos@hubine.org>';
+}
+
+function getDefaultReplyTo() {
+  return process.env.SMTP_REPLY_TO || 'eventos@hubine.org';
+}
+
+function getEventDetails() {
+  const settings = db.getSettings ? db.getSettings() : {};
+  return {
+    eventName: settings.eventName || 'Hubine 10 Anos',
+    theme: settings.theme || 'Conectando inovação, pessoas e desenvolvimento regional',
+    eventDateFormatted: settings.eventDateFormatted || '4 de novembro de 2026',
+    checkinStartTime: settings.checkinStartTime ? `A partir das ${settings.checkinStartTime}` : 'A partir das 13h',
+    locationName: settings.locationName || 'Auditório Celso Furtado',
+    locationAddress: settings.locationAddress || 'Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)',
+    locationCity: settings.locationCity || 'Fortaleza — CE',
+    contactEmail: settings.contactEmail || 'eventos@hubine.org'
+  };
+}
+
+async function sendMail({ to, subject, html, text, replyTo, metadata = {} }) {
+  const from = getDefaultFrom();
+  const reply = replyTo || getDefaultReplyTo();
 
   if (isSmtpConfigured && transporter) {
     try {
-      const info = await transporter.sendMail({ from, to, subject, html, text });
+      const info = await transporter.sendMail({
+        from,
+        to,
+        replyTo: reply,
+        subject,
+        html,
+        text
+      });
       console.log('E-mail real enviado via SMTP para:', to, 'ID:', info.messageId);
-      return { success: true, mode: 'SMTP', messageId: info.messageId };
+
+      const logEntry = await db.addEmailOutbox({
+        from,
+        to,
+        replyTo: reply,
+        subject,
+        html,
+        text,
+        mode: 'SMTP',
+        status: 'ENVIADO',
+        messageId: info.messageId,
+        metadata,
+        sentAt: new Date().toISOString()
+      });
+
+      return {
+        success: true,
+        mode: 'SMTP',
+        status: 'ENVIADO',
+        messageId: info.messageId,
+        outboxId: logEntry.id
+      };
     } catch (err) {
-      console.error('Falha no envio SMTP real, salvando no outbox de demonstração:', err);
+      console.error('Falha no envio SMTP real para:', to, err.message);
+      
+      const logEntry = await db.addEmailOutbox({
+        from,
+        to,
+        replyTo: reply,
+        subject,
+        html,
+        text,
+        mode: 'SMTP',
+        status: 'FALHOU',
+        error: err.message,
+        metadata,
+        failedAt: new Date().toISOString()
+      });
+
+      // Critical: do NOT treat SMTP failure as demo success
+      return {
+        success: false,
+        mode: 'SMTP',
+        status: 'FALHOU',
+        error: err.message,
+        outboxId: logEntry.id
+      };
     }
   }
 
-  // Demo mode: archive in persistent outbox
+  // Demo mode: archive in persistent outbox explicitly identified
   const outboxEntry = await db.addEmailOutbox({
     from,
     to,
+    replyTo: reply,
     subject,
     html,
     text,
-    mode: 'DEMO'
+    mode: 'DEMO',
+    status: 'DEMO',
+    metadata,
+    recordedAt: new Date().toISOString()
   });
   console.log('[MODO DEMONSTRAÇÃO] E-mail simulado registrado na Caixa de E-mails:', to, subject);
-  return { success: true, mode: 'DEMO', outboxId: outboxEntry.id };
+  return {
+    success: true,
+    mode: 'DEMO',
+    status: 'DEMO',
+    outboxId: outboxEntry.id
+  };
 }
 
 // Pre-built email templates
 async function sendRegistrationConfirmation(reg) {
   const appUrl = getAppUrl();
+  const evt = getEventDetails();
   const ticketUrl = `${appUrl}/#comprovante/${reg.token}`;
   const manageUrl = `${appUrl}/#gerenciar/${reg.token}`;
   const isWaitlist = reg.status === 'LISTA_ESPERA';
 
   const subject = isWaitlist
-    ? 'Hubine 10 Anos — Confirmação de Cadastro na Lista de Espera'
-    : 'Hubine 10 Anos — Confirmação de Inscrição Oficial';
+    ? `${evt.eventName} — Confirmação de Cadastro na Lista de Espera`
+    : `${evt.eventName} — Confirmação de Inscrição Oficial`;
 
   const html = `
     <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
@@ -214,17 +315,18 @@ async function sendSpeakerInvite(speaker) {
 }
 
 function formatGuestWhatsappMessage(reg, appUrl = getAppUrl()) {
+  const evt = getEventDetails();
   const ticketUrl = `${appUrl}/#comprovante/${reg.token}`;
   const manageUrl = `${appUrl}/#gerenciar/${reg.token}`;
 
-  return `*Hubine 10 Anos — Convite Especial da Organização* 🎉\n\n` +
+  return `*${evt.eventName} — Convite Especial da Organização* 🎉\n\n` +
     `Olá, *${reg.name}*!\n\n` +
-    `Você foi convidado(a) especial pela organização para participar do evento comemorativo *Hubine 10 Anos* (Hub de Inovação do Banco do Nordeste).\n\n` +
+    `Você foi convidado(a) especial pela organização para participar do evento comemorativo *${evt.eventName}* (Hub de Inovação do Banco do Nordeste).\n\n` +
     `📌 *Dados do Evento:*\n` +
-    `• *Evento:* Hubine 10 Anos — Conectando inovação, pessoas e desenvolvimento regional\n` +
-    `• *Data:* 4 de novembro de 2026\n` +
-    `• *Local:* Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)\n` +
-    `• *Credenciamento:* A partir das 13h\n` +
+    `• *Evento:* ${evt.eventName} — ${evt.theme}\n` +
+    `• *Data:* ${evt.eventDateFormatted}\n` +
+    `• *Local:* ${evt.locationName} — ${evt.locationAddress}\n` +
+    `• *Credenciamento:* ${evt.checkinStartTime}\n` +
     `• *Nº de Inscrição:* *${reg.registrationNumber}*\n\n` +
     `📋 *Orientações de Credenciamento:*\n` +
     `Ao chegar ao auditório, dirija-se à recepção e apresente seu QR Code ou informe o número da sua inscrição (*${reg.registrationNumber}*) para a retirada do seu crachá oficial.\n\n` +
@@ -236,10 +338,11 @@ function formatGuestWhatsappMessage(reg, appUrl = getAppUrl()) {
 
 async function sendOrganizationGuestInvite(reg) {
   const appUrl = getAppUrl();
+  const evt = getEventDetails();
   const ticketUrl = `${appUrl}/#comprovante/${reg.token}`;
   const manageUrl = `${appUrl}/#gerenciar/${reg.token}`;
 
-  const subject = 'Hubine 10 Anos — Convite Especial da Organização';
+  const subject = `${evt.eventName} — Convite Especial da Organização`;
   const html = `
     <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
       <div style="background: linear-gradient(135deg, #6B1D2F 0%, #4A1220 100%); padding: 32px 24px; text-align: center; color: #ffffff;">
@@ -330,8 +433,16 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+async function sendWaitlistNotification(reg) {
+  return sendRegistrationConfirmation(reg);
+}
+
 module.exports = {
+  sendWaitlistNotification,
   isSmtpConfigured,
+  verifyConnection,
+  getDefaultFrom,
+  getDefaultReplyTo,
   sendMail,
   sendRegistrationConfirmation,
   sendWaitlistPromotion,
