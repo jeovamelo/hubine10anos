@@ -147,4 +147,36 @@ router.post('/undo', async (req, res) => {
   res.json({ success: true, message: 'Check-in estornado com sucesso.' });
 });
 
+
+// GET /api/checkin/search?q=...
+router.get('/search', (req, res) => {
+  const query = (req.query.q || '').trim();
+  if (!query || query.length < 2) {
+    return res.json({ matches: [] });
+  }
+
+  const allRegs = db.getAllRegistrations ? db.getAllRegistrations() : (db.data.registrations || []);
+  const normalize = s => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const queryNorm = normalize(query);
+
+  const matches = allRegs.filter(r => {
+    const num = (r.registrationNumber || '').toLowerCase();
+    const name = normalize(r.name);
+    const badge = normalize(r.badgeName);
+    const inst = normalize(r.institution);
+    return num.includes(query.toLowerCase()) || name.includes(queryNorm) || badge.includes(queryNorm) || inst.includes(queryNorm);
+  }).slice(0, 8).map(r => ({
+    id: r.id,
+    registrationNumber: r.registrationNumber,
+    name: r.name,
+    badgeName: r.badgeName,
+    institution: r.institution,
+    profile: r.profile,
+    status: r.status,
+    checkinAt: r.checkinAt
+  }));
+
+  res.json({ matches });
+});
+
 module.exports = router;

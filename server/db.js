@@ -448,15 +448,7 @@ class Database {
   }
 
   async generateQrCode(text) {
-    const qrcode = require('qrcode');
-    return qrcode.toDataURL(text, {
-      width: 320,
-      margin: 2,
-      color: {
-        dark: '#6B1D2F',
-        light: '#FFFFFF'
-      }
-    });
+    return null;
   }
 
   async addRegistration(reg) {

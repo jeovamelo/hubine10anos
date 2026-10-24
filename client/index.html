@@ -19,9 +19,6 @@
   <link rel="stylesheet" href="css/comprovante.css">
   <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="css/hubine.css">
-
-  <!-- HTML5 QR Code Scanner Library (Local npm or CDN fallback) -->
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
 
@@ -284,7 +281,7 @@
               <span class="accordion-icon">▼</span>
             </button>
             <div class="accordion-content">
-              O credenciamento terá início pontualmente às 13h no foyer do Auditório Celso Furtado. Basta apresentar o QR Code gerado no seu comprovante de inscrição na tela do celular ou impresso para a leitura rápida pela equipe.
+              O credenciamento terá início pontualmente às 13h no foyer do Auditório Celso Furtado. Basta informar o número da sua inscrição ou seu nome completo na recepção para a rápida localização e retirada do seu crachá oficial.
             </div>
           </div>
 
@@ -335,7 +332,7 @@
               <div class="form-group">
                 <label class="form-label" for="reg-email">E-mail <span class="required-mark">*</span></label>
                 <input type="email" id="reg-email" class="form-input" placeholder="seu.email@exemplo.com" required>
-                <span class="form-hint">O comprovante e o QR Code serão enviados para este endereço.</span>
+                <span class="form-hint">O comprovante oficial com o seu número de inscrição e link de acesso será enviado para este endereço.</span>
               </div>
             </div>
 
@@ -1666,7 +1663,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
             <div>
               <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Caixa de E-mails do Modo Demonstração</h2>
-              <p class="text-muted" style="margin: 0;">Visualize o formato exato, QR Codes e links enviados para os participantes e palestrantes.</p>
+              <p class="text-muted" style="margin: 0;">Visualize o formato exato e links enviados para os participantes e palestrantes.</p>
             </div>
             <button id="btn-clear-outbox" class="btn btn-outline-danger">Limpar Caixa</button>
           </div>
@@ -1718,24 +1715,26 @@
     </div>
 
     <div class="container" style="max-width: 600px; padding-top: 2rem; padding-bottom: 4rem;">
-      <!-- QR Scanner Container -->
-      <div class="card" style="text-align: center; margin-bottom: 1.5rem;">
-        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: var(--primary);">Leitor de QR Code</h3>
-        
-        <div id="qr-scanner-viewport" class="scanner-viewport-wrap" style="display: none;"></div>
+      <!-- Search & Checkin Card -->
+      <div class="card mb-4" style="border: 2px solid var(--primary); box-shadow: var(--shadow-md);">
+        <div style="text-align: center; margin-bottom: 1.25rem;">
+          <div style="display: inline-block; background: rgba(107, 29, 47, 0.08); color: var(--primary); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 0.35rem 0.85rem; border-radius: 999px; margin-bottom: 0.5rem;">
+            Entrada & Recepção do Evento
+          </div>
+          <h3 style="font-size: 1.35rem; margin: 0 0 0.35rem 0; color: var(--text-main);">Localização e Credenciamento</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0;">
+            Informe o <strong>número da inscrição (HUB10-XXXX)</strong> ou o <strong>nome do participante</strong> para confirmar a presença e liberar o crachá oficial.
+          </p>
+        </div>
 
-        <button id="btn-toggle-camera" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
-          📷 Abrir Câmera do Celular
-        </button>
-      </div>
-
-      <!-- Manual Code Input -->
-      <div class="card">
-        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: var(--text-main);">Busca Manual por Inscrição ou Nome</h3>
-        <form id="cred-manual-form" style="display: flex; gap: 0.5rem;">
-          <input type="text" id="cred-manual-input" class="form-input" placeholder="Digite HUB10-XXXX, nome ou e-mail..." required autofocus>
-          <button type="submit" class="btn btn-primary" style="white-space: nowrap;">Registrar</button>
+        <form id="cred-manual-form" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <input type="text" id="cred-manual-input" class="form-input" placeholder="Ex: HUB10-1001 ou Nome do Participante..." required autofocus style="flex: 1; min-width: 240px; font-size: 1.05rem; padding: 0.75rem 1rem;">
+          <button type="submit" class="btn btn-primary btn-lg" style="white-space: nowrap; font-weight: 700; padding: 0.75rem 1.5rem;">
+            ✓ Confirmar Presença
+          </button>
         </form>
+
+        <div id="cred-live-matches" style="margin-top: 1rem; display: none;"></div>
       </div>
 
       <!-- Checkin Feedback Result Area -->
@@ -1895,7 +1894,7 @@
       </div>
       <div class="modal-body" style="font-size: 0.9rem;">
         <p><strong>Controlador:</strong> <span id="privacy-modal-controller">Banco do Nordeste do Brasil S.A. — Hubine</span></p>
-        <p><strong>Finalidade do Tratamento:</strong> <span id="privacy-modal-purpose">Credenciamento, emissão de comprovantes com QR Code, controle de capacidade do auditório e segurança predial do evento comemorativo Hubine 10 Anos.</span></p>
+        <p><strong>Finalidade do Tratamento:</strong> <span id="privacy-modal-purpose">Credenciamento, emissão de comprovantes de inscrição, controle de capacidade do auditório e segurança predial do evento comemorativo Hubine 10 Anos.</span></p>
         <p><strong>Base Legal:</strong> <span id="privacy-modal-legal">Execução de procedimentos preliminares a pedido do titular e legítimo interesse institucional (LGPD Art. 7º, V e IX).</span></p>
         <p><strong>Prazo de Retenção:</strong> <span id="privacy-modal-retention">90 dias após o evento para fins de auditoria e emissão de certificados, após o que os dados cadastrais serão eliminados.</span></p>
         <p><strong>Encarregado pelo Tratamento (DPO):</strong> <span id="privacy-modal-contact">privacidade@bnb.gov.br</span></p>
@@ -1920,7 +1919,7 @@
       <div class="modal-body">
         <p>O e-mail <strong id="duplicate-modal-email"></strong> já possui uma inscrição cadastrada para o evento Hubine 10 Anos.</p>
         <p class="text-muted" style="font-size: 0.9rem;">
-          Para consultar seu comprovante, obter seu QR Code ou atualizar suas informações, podemos reenviar o link seguro de acesso diretamente para sua caixa de entrada.
+          Para consultar seu comprovante, obter seu número de inscrição ou atualizar suas informações, podemos reenviar o link seguro de acesso diretamente para sua caixa de entrada.
         </p>
       </div>
       <div class="modal-footer">
@@ -2274,7 +2273,7 @@
               <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📧</div>
               <strong style="font-size: 0.95rem;">Convite por E-mail</strong>
               <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.25rem 0 0.75rem 0;">
-                Dispara o e-mail oficial institucional com layout comemorativo, QR Code e links seguros.
+                Dispara o e-mail oficial institucional com layout comemorativo e link seguro.
               </p>
             </div>
             <button id="btn-trigger-guest-email" class="btn btn-primary btn-block">

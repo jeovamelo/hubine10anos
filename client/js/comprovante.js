@@ -85,10 +85,10 @@ function renderTicket(reg) {
             </div>
           ` : ''}
           ${!isCancelled ? `
-            <div class="ticket-qr-container">
-              <img src="${reg.qrCodeDataUrl}" alt="QR Code de Credenciamento" class="ticket-qr-img">
+            <div class="ticket-reg-card">
+              <div class="ticket-reg-label">NÚMERO DE INSCRIÇÃO</div>
               <div class="ticket-reg-number">${escapeHtml(reg.registrationNumber)}</div>
-              <p class="ticket-qr-hint">Apresente este código no credenciamento ao chegar ao evento.</p>
+              <p class="ticket-reg-hint">Ao chegar ao auditório, dirija-se à recepção e informe o número da sua inscrição ou seu nome para a retirada do seu crachá oficial.</p>
             </div>
           ` : `
             <div class="alert alert-danger" style="margin-bottom: 2rem;">

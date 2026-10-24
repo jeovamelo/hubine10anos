@@ -12,9 +12,9 @@ Aplicação web completa, segura e responsiva para o evento comemorativo dos **1
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Backend:** Node.js, Express 5, JWT (`jsonwebtoken`), Criptografia com `bcryptjs`, Geração de QR Code (`qrcode`), Envio SMTP autenticado com TLS (`nodemailer`), Adaptador Evolution API para WhatsApp, Mutex assíncrono para serialização de concorrência.
+- **Backend:** Node.js, Express 5, JWT (`jsonwebtoken`), Criptografia com `bcryptjs`, Envio SMTP autenticado com TLS (`nodemailer`), Adaptador Evolution API para WhatsApp, Mutex assíncrono para serialização de concorrência.
 - **Frontend:** Single Page Application (SPA) em Vanilla JavaScript (ES6+), Vanilla CSS estruturado com tokens de design system, tipografia Google Fonts (*Outfit* e *Plus Jakarta Sans*).
-- **Credenciamento Mobile:** Câmera scanner em tempo real com biblioteca `html5-qrcode` e sintetizador de áudio via Web Audio API.
+- **Credenciamento Rápido:** Busca instantânea por número de inscrição e/ou nome do participante com sintetizador de áudio via Web Audio API.
 - **Persistência de Dados Híbrida:**
   - **Armazenamento JSON Seguro:** Gravação atômica via arquivo temporário com `fsync` e backup rotativo, isolamento por Mutex e quarentena automática de arquivos corrompidos em `data/database.json`.
   - **PostgreSQL de Alta Concorrência:** Suporte nativo transacional via `DATABASE_URL` com isolamento de transações e índices parciais de unicidade.

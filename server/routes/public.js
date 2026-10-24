@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
-const qrcode = require('qrcode');
 const db = require('../db');
 const emailService = require('../emailService');
 const registrationService = require('../registrationService');
@@ -140,7 +139,7 @@ router.get('/registration/:token', (req, res) => {
     futureEventsOptIn: reg.futureEventsOptIn,
     status: reg.status,
     waitlistPosition: reg.waitlistPosition,
-    qrCodeDataUrl: reg.qrCodeDataUrl,
+    qrCodeDataUrl: null,
     eventName: settings.eventName,
     eventDate: settings.eventDateFormatted,
     eventTime: settings.checkinStartTime,

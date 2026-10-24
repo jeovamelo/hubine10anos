@@ -1,4 +1,3 @@
-const qrcode = require('qrcode');
 // server/registrationService.js
 // Serviço Centralizado de Inscrição, Capacidade, Fila de Espera e Promoção Automática
 
@@ -81,7 +80,7 @@ async function registerPublicParticipant(data) {
     const registrationNumber = db.generateRegistrationNumber();
     const token = crypto.randomBytes(24).toString('hex');
     const qrToken = `urn:hubine:checkin:${crypto.randomUUID()}`;
-    const qrCodeDataUrl = await db.generateQrCode(qrToken);
+    const qrCodeDataUrl = null;
 
     const newReg = {
       id: `reg_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -161,7 +160,7 @@ async function createOrganizationGuest(data, user) {
     const registrationNumber = db.generateRegistrationNumber();
     const token = crypto.randomBytes(24).toString('hex');
     const qrToken = `urn:hubine:checkin:${crypto.randomUUID()}`;
-    const qrCodeDataUrl = await db.generateQrCode(qrToken);
+    const qrCodeDataUrl = null;
 
     // Convidado da organização SEMPRE inicia como PENDENTE (não abata vagas)
     const newGuest = {

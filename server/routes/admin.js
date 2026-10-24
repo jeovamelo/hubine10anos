@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
-const qrcode = require('qrcode');
 const db = require('../db');
 const { generateToken, hashPassword, comparePassword, authMiddleware, requireRole } = require('../auth');
 const emailService = require('../emailService');

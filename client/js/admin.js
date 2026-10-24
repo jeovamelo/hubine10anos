@@ -778,21 +778,21 @@ window.openGuestCommModal = function(id) {
   const ticketUrl = `${appUrl}/#comprovante/${r.token}`;
   const manageUrl = `${appUrl}/#gerenciar/${r.token}`;
 
-  const previewText = `*Hubine 10 Anos — Convite Especial da Organização* 🎉\n\n` +
-    `Olá, *${r.name}*!\n\n` +
-    `Você foi convidado(a) especial pela organização para participar do evento comemorativo *Hubine 10 Anos* (Hub de Inovação do Banco do Nordeste).\n\n` +
-    `📌 *Dados do Evento:*\n` +
-    `• *Evento:* Hubine 10 Anos — Conectando inovação, pessoas e desenvolvimento regional\n` +
-    `• *Data:* 4 de novembro de 2026\n` +
-    `• *Local:* Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)\n` +
-    `• *Credenciamento:* A partir das 13h\n` +
-    `• *Nº de Inscrição:* *${r.registrationNumber}*\n\n` +
-    `📋 *Orientações de Credenciamento:*\n` +
-    `Ao chegar ao auditório, dirija-se à recepção e apresente seu QR Code ou informe o número da sua inscrição (*${r.registrationNumber}*) para a retirada do seu crachá oficial.\n\n` +
-    `🎟️ *Acesse seu Comprovante Oficial com QR Code:*\n${ticketUrl}\n\n` +
-    `✏️ *Atualizar dados do crachá ou cancelar sua participação:*\n${manageUrl}\n\n` +
+  const previewText = `Hubine 10 Anos — Convite Especial da Organização 🎉\n\n` +
+    `Olá, ${r.name}!\n\n` +
+    `Você foi convidado(a) especial pela organização para participar do evento comemorativo Hubine 10 Anos (Hub de Inovação do Banco do Nordeste).\n\n` +
+    `📌 Dados do Evento:\n` +
+    `- Evento: Hubine 10 Anos — Conectando inovação, pessoas e desenvolvimento regional\n` +
+    `- Data: 4 de novembro de 2026\n` +
+    `- Local: Auditório Celso Furtado — Campus Banco do Nordeste (Av. Dr. Silas Munguba, 5700 - Passaré, Fortaleza — CE)\n` +
+    `- Credenciamento: A partir das 13h\n` +
+    `- Nº de Inscrição: ${r.registrationNumber}\n\n` +
+    `📋 Orientações de Credenciamento:\n` +
+    `Ao chegar ao auditório, dirija-se à recepção e informe o número da sua inscrição ou seu nome para a retirada do seu crachá oficial.\n\n` +
+    `✅ Confirmar Presença, Atualizar Dados ou Cancelar Participação:\n` +
+    `${manageUrl}\n\n` +
     `Esperamos por você!\n` +
-    `_Banco do Nordeste do Brasil — Hubine_`;
+    `Banco do Nordeste do Brasil — Hubine`;
 
   const previewTextarea = document.getElementById('guest-whatsapp-preview');
   if (previewTextarea) previewTextarea.value = previewText;
