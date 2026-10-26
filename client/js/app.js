@@ -352,6 +352,10 @@ function setupRegistrationForm() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    // As inscrições são realizadas exclusivamente pela Sympla.
+    window.location.href = 'https://www.sympla.com.br/evento/hubine-10-anos/3631964?share_id=copiarlink';
+    return;
+
     if (alertContainer) {
       alertContainer.style.display = 'none';
       alertContainer.innerHTML = '';
