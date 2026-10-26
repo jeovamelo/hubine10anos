@@ -17,15 +17,10 @@ router.post('/scan', async (req, res) => {
   const clean = code.trim();
 
   return await db.runLocked(async () => {
-    // 1. Try finding by QR token (urn:hubine:checkin:...)
-    let reg = db.getRegistrationByQrToken(clean);
+  // Busca por número de inscrição (HUB10-XXXX)
+  let reg = db.getRegistrationByNumber(clean);
 
-    // 2. If not found by QR, try by registration number (HUB10-XXXX)
-    if (!reg) {
-      reg = db.getRegistrationByNumber(clean);
-    }
-
-    // 3. If not found, try by email
+  // Se não encontrado, permite busca manual por e-mail
     if (!reg && clean.includes('@')) {
       reg = db.getRegistrationByEmail(clean);
     }

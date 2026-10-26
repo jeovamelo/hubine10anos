@@ -181,7 +181,7 @@ async function sendRegistrationConfirmation(reg) {
         ` : `
           <div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 16px; border-radius: 6px; margin: 20px 0;">
             <strong style="color: #065f46; font-size: 15px;">Sua participação está confirmada!</strong>
-            <p style="margin: 6px 0 0 0; color: #047857; font-size: 14px;">Seu comprovante individual foi gerado com sucesso. Ao chegar ao evento, apresente seu número de inscrição ou seu nome para a retirada do seu crachá oficial.</p>
+            <p style="margin: 6px 0 0 0; color: #047857; font-size: 14px;">Seu comprovante individual foi gerado com sucesso. No dia do evento, informe seu nome completo na portaria para acessar o CAPGV. Depois, dirija-se ao credenciamento para retirar seu crachá e confirmar sua presença.</p>
           </div>
         `}
 
@@ -327,7 +327,7 @@ function formatGuestWhatsappMessage(reg, appUrl = getAppUrl()) {
     `- Credenciamento: A partir das 13h\n` +
     `- Nº de Inscrição: ${reg.registrationNumber}\n\n` +
     `📋 Orientações de Credenciamento:\n` +
-    `Ao chegar ao auditório, dirija-se à recepção e informe o número da sua inscrição ou seu nome para a retirada do seu crachá oficial.\n\n` +
+    `No dia do evento, informe seu nome completo na portaria para acessar o CAPGV. Depois, dirija-se ao credenciamento para retirar seu crachá e confirmar sua presença.\n\n` +
     `✅ Confirmar Presença, Atualizar Dados ou Cancelar Participação:\n` +
     `${manageUrl}\n\n` +
     `Esperamos por você!\n` +
@@ -368,7 +368,7 @@ async function sendOrganizationGuestInvite(reg) {
         <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0;">
           <strong style="color: #166534; font-size: 14.5px;">📋 Orientações de Credenciamento:</strong>
           <p style="margin: 6px 0 0 0; color: #15803d; font-size: 14px;">
-            Ao chegar ao auditório, dirija-se à recepção e informe o número da sua inscrição ou seu nome para a retirada do seu crachá oficial.
+            No dia do evento, informe seu nome completo na portaria para acessar o CAPGV. Depois, dirija-se ao credenciamento para retirar seu crachá e confirmar sua presença.
           </p>
         </div>
 
@@ -400,7 +400,7 @@ async function sendOrganizationGuestInvite(reg) {
     `- Credenciamento: A partir das 13h\n` +
     `- Nº de Inscrição: ${reg.registrationNumber}\n\n` +
     `📋 Orientações de Credenciamento:\n` +
-    `Ao chegar ao auditório, dirija-se à recepção e informe o número da sua inscrição ou seu nome para a retirada do seu crachá oficial.\n\n` +
+    `No dia do evento, informe seu nome completo na portaria para acessar o CAPGV. Depois, dirija-se ao credenciamento para retirar seu crachá e confirmar sua presença.\n\n` +
     `✅ Confirmar Presença, Atualizar Dados ou Cancelar Participação:\n` +
     `${manageUrl}\n\n` +
     `Esperamos por você!\n` +

@@ -154,12 +154,12 @@ async function seed() {
       {
         id: 'spk_1',
         name: 'Roberta Fernandes Damasceno',
-        role: 'Especialista em Inovação e Cultura Organizacional',
+        role: 'Diretora de Cultura e ESG',
         institution: 'CESAR',
         talkTitle: 'Do conflito à criação — o poder das diferentes gerações na inovação organizacional',
-        talkSummary: 'Exploração prática de como conectar gerações distintas para impulsionar a criatividade e a inovação nas empresas contemporâneas.',
-        bio: 'Atua com design estratégico, cultura de inovação e desenvolvimento de lideranças no CESAR.',
-        photoUrl: '', // Editable / will show stylized monogram badge until uploaded
+        talkSummary: 'Reflexões sobre cultura organizacional, inclusão, diversidade e sustentabilidade.',
+        bio: 'Sou Beta — às vezes também Roberta. Mãe de Laís e Lucas, comunicadora por formação e apaixonada por gente como escolha de vida. Gosto de dizer que sou plantadora de jabuticabas: semeando hoje, no campo do ESG, para que as próximas gerações colham uma sociedade mais justa, igualitária e humana. Sou formada em Jornalismo pela Universidade Católica de Pernambuco, com pós-graduação em Comunicação e Marketing pela UFPE, executiva formada no Advanced ESG Program da Saint Paul, Master in Strategic Transformation pela CESAR School e Conselheira de Alta Performance (PDeC Raízes) pelo IBGC. Com mais de 33 anos de trajetória em jornalismo, publicidade, comunicação empresarial e marketing, construí grande parte da minha jornada no CESAR, onde trabalho há mais de 28 anos e hoje atuo como Diretora de Cultura e ESG.',
+        photoUrl: '/dezanos/assets/speakers/roberta-damasceno.jpeg',
         inviteToken: 'spk_token_roberta_cesar_2026',
         status: 'APROVADO',
         avNeeds: 'Microfone auricular, apresentador de slides e conexão HDMI.',
@@ -170,13 +170,13 @@ async function seed() {
       },
       {
         id: 'spk_2',
-        name: 'Márcia Tereza Almeida',
-        role: 'Executiva de Transformação e Inovação',
+        name: 'Márcia Tereza Almeida Campos',
+        role: 'Gestora de Soluções em Tecnologia',
         institution: 'Banco do Brasil',
         talkTitle: 'O futuro é agora!',
-        talkSummary: 'Visão de vanguarda sobre tecnologias emergentes, IA aplicada e o futuro do ecossistema financeiro.',
-        bio: 'Lidera projetos de inovação aberta e aceleração corporativa.',
-        photoUrl: '',
+        talkSummary: 'Inovação, inteligência artificial e futuro do trabalho.',
+        bio: 'Márcia Tereza Almeida Campos é economista, com pós-graduação em Finanças pela Fundação Dom Cabral, e atua como gestora de Soluções na Diretoria de Tecnologia do Banco do Brasil. Sua trajetória combina inovação, transformação digital, desenvolvimento de pessoas e construção de competências para o futuro do trabalho. Ao longo de oito anos na Diretoria de Gestão de Pessoas do Banco do Brasil, atuou como gerente de Inovação e conduziu o Movimento Evolution na Universidade Corporativa do Banco do Brasil. Atualmente, conecta estratégia, pessoas e inovação para impulsionar a evolução do Banco.',
+        photoUrl: '/dezanos/assets/speakers/marcia-almeida-campos.jpeg',
         inviteToken: 'spk_token_marcia_bb_2026',
         status: 'APROVADO',
         avNeeds: 'Microfone de mão e áudio do notebook.',
@@ -184,6 +184,18 @@ async function seed() {
         authorizedPublishing: true,
         isApproved: true,
         createdAt: new Date().toISOString()
+      },
+      {
+        id: 'spk_3', name: 'Prof. Dr. Abraão Freires Saraiva Júnior', role: 'Professor e Diretor-Presidente do Parque Tecnológico', institution: 'Universidade Federal do Ceará / Partec UFC', talkTitle: 'Empreendedorismo, inovação e desenvolvimento regional', talkSummary: 'Modelagem econômico-financeira de empreendimentos e empreendedorismo tecnológico.', bio: 'Graduado pelo Centro de Tecnologia da UFC, mestre e doutor em Engenharia de Produção pela POLI USP. Docente do Centro de Tecnologia da UFC, fundador e coordenador do Centro de Empreendedorismo (CEMP UFC), diretor-presidente do Parque Tecnológico (Partec UFC) e coordenador de projeto do programa Cientista Chefe de Inovação em Processos da Funcap-CE.', photoUrl: '/dezanos/assets/speakers/abraao-freires.jpeg', status: 'APROVADO', authorizedPublishing: true, isApproved: true, createdAt: new Date().toISOString()
+      },
+      {
+        id: 'spk_4', name: 'Mauro Oliveira', role: 'Professor, pesquisador e escritor', institution: 'Instituto Federal do Ceará', talkTitle: 'Soberania digital, inovação e letramento', talkSummary: 'Tecnologia, soberania digital e transformação do conhecimento.', bio: 'Eletrotécnico pela ETFCE, engenheiro eletricista pela UFC, mestre em Sistemas de Computação pela PUC Rio e doutor em Informática pela Sorbonne Université. Realizou estágios pós-doutorais em Telecomunicações no King’s College of London e na University of Ottawa. Foi Secretário de Telecomunicações do Ministério das Comunicações, Secretário Adjunto de Ciência e Tecnologia do Ceará e Diretor Geral do CEFET Ceará. É autor de oito livros com ISBN, incluindo Soberania Digital — Colonização e Letramento (2025).', photoUrl: '/dezanos/assets/speakers/mauro-oliveira.png', status: 'APROVADO', authorizedPublishing: true, isApproved: true, createdAt: new Date().toISOString()
+      },
+      {
+        id: 'spk_5', name: 'Luiz Sucupira Júnior', role: 'Superintendente de Tecnologia da Informação (CIO)', institution: 'Banco do Nordeste', talkTitle: 'Segurança cibernética, proteção de dados e inteligência artificial', talkSummary: 'Segurança da informação, continuidade de negócios, proteção de dados e IA.', bio: 'Superintendente de Tecnologia da Informação (CIO), especialista em Segurança da Informação, Cibernética e Proteção de Dados. Com 15 anos de experiência e certificações como CISSP, DPO EXIN e ISO 27001 LA, liderou projetos nas áreas de segurança cibernética, continuidade de negócios e inteligência artificial. Também atuou por 10 anos como professor universitário.', photoUrl: '/dezanos/assets/speakers/luiz-sucupira.jpeg', status: 'APROVADO', authorizedPublishing: true, isApproved: true, createdAt: new Date().toISOString()
+      },
+      {
+        id: 'spk_6', name: 'Diego Souza', role: 'Principal Technical Manager', institution: 'CESAR', talkTitle: 'Arquiteturas digitais, dados e inteligência artificial', talkSummary: 'Arquitetura de sistemas distribuídos, nuvem, dados e IA para transformação digital.', bio: 'Principal Technical Manager no CESAR, com mais de 20 anos de experiência em engenharia e arquitetura de software. Lidera equipes multidisciplinares em projetos de inovação e transformação digital para grandes instituições financeiras, conectando decisões técnicas a resultados de negócio. É especialista em arquitetura de sistemas distribuídos e nuvem, com atuação em plataformas de pagamento, modernização de sistemas legados, novas arquiteturas digitais, dados e IA.', photoUrl: '/dezanos/assets/speakers/diego-souza.jpeg', status: 'APROVADO', authorizedPublishing: true, isApproved: true, createdAt: new Date().toISOString()
       }
     ];
 

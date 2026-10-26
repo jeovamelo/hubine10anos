@@ -88,7 +88,7 @@ function renderTicket(reg) {
             <div class="ticket-reg-card">
               <div class="ticket-reg-label">NÚMERO DE INSCRIÇÃO</div>
               <div class="ticket-reg-number">${escapeHtml(reg.registrationNumber)}</div>
-              <p class="ticket-reg-hint">Ao chegar ao auditório, dirija-se à recepção e informe o número da sua inscrição ou seu nome para a retirada do seu crachá oficial.</p>
+              <p class="ticket-reg-hint"><strong>No dia do evento:</strong> informe seu nome completo na portaria para acessar o CAPGV. Depois, dirija-se ao credenciamento para retirar seu crachá e confirmar sua presença.</p>
             </div>
           ` : `
             <div class="alert alert-danger" style="margin-bottom: 2rem;">

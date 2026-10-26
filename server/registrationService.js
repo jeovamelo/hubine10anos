@@ -79,15 +79,10 @@ async function registerPublicParticipant(data) {
 
     const registrationNumber = db.generateRegistrationNumber();
     const token = crypto.randomBytes(24).toString('hex');
-    const qrToken = `urn:hubine:checkin:${crypto.randomUUID()}`;
-    const qrCodeDataUrl = null;
-
     const newReg = {
       id: `reg_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       registrationNumber,
       token,
-      qrToken,
-      qrCodeDataUrl,
       name: data.name,
       email: cleanEmail,
       institution: data.institution,
@@ -115,16 +110,8 @@ async function registerPublicParticipant(data) {
       user: 'Público (Web)'
     });
 
-    // Envio de e-mail de confirmação ou espera
-    try {
-      if (newReg.status === 'CONFIRMADO') {
-        await emailService.sendRegistrationConfirmation(newReg);
-      } else {
-        await emailService.sendWaitlistNotification(newReg);
-      }
-    } catch (e) {
-      console.warn('⚠️ [RegistrationService] Falha ao enviar e-mail de confirmação:', e.message);
-    }
+    // A confirmação é exibida imediatamente na tela do comprovante.
+    // Não enviar e-mail ou WhatsApp automaticamente após a inscrição pública.
 
     return { success: true, ...newReg, registration: newReg };
   });
@@ -159,16 +146,11 @@ async function createOrganizationGuest(data, user) {
 
     const registrationNumber = db.generateRegistrationNumber();
     const token = crypto.randomBytes(24).toString('hex');
-    const qrToken = `urn:hubine:checkin:${crypto.randomUUID()}`;
-    const qrCodeDataUrl = null;
-
     // Convidado da organização SEMPRE inicia como PENDENTE (não abata vagas)
     const newGuest = {
       id: `reg_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       registrationNumber,
       token,
-      qrToken,
-      qrCodeDataUrl,
       name: data.name,
       email: cleanEmail,
       institution: data.institution,
@@ -464,14 +446,6 @@ async function confirmAttendanceByToken(token) {
       details: `${reg.name} (${reg.registrationNumber}) confirmou presença via autoatendimento no comprovante. Status atualizado para CONFIRMADO.`,
       user: `${reg.name} (Convidado)`
     });
-
-    try {
-      if (updated.email) {
-        await emailService.sendRegistrationConfirmation(updated);
-      }
-    } catch (e) {
-      console.warn('⚠️ [RegistrationService] Falha ao enviar e-mail de confirmação ao convidado:', e.message);
-    }
 
     return {
       success: true,

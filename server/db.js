@@ -365,13 +365,6 @@ class Database {
     return formatRegistration(reg);
   }
 
-  getRegistrationByQrToken(qrToken) {
-    this.reloadIfModified();
-    const reg = (this.data.registrations || []).find(r => r.qrToken === qrToken);
-    return formatRegistration(reg);
-  }
-
-
   // Helper para buscar inscrição ATIVA (exclui CANCELADO, DESISTIU, NAO_VEM)
   getActiveRegistrationByEmail(email) {
     this.reloadIfModified();
@@ -447,9 +440,6 @@ class Database {
     return this.getNextRegistrationNumber();
   }
 
-  async generateQrCode(text) {
-    return null;
-  }
 
   async addRegistration(reg) {
     const formatted = formatRegistration(reg);
