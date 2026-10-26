@@ -87,8 +87,8 @@ function setupAdminLogin() {
       if (!emailInput || !passInput) return;
 
       if (role === 'admin') {
-        emailInput.value = 'admin@hubine10anos.bnb.gov.br';
-        passInput.value = 'HubineAdmin2026!';
+        emailInput.value = 'admin@hubine.org';
+        passInput.value = 'hubine10anos';
       } else if (role === 'org') {
         emailInput.value = 'organizacao@hubine10anos.bnb.gov.br';
         passInput.value = 'HubineOrg2026!';
@@ -112,8 +112,8 @@ function setupAdminLogin() {
       if (profileSelect) profileSelect.value = role;
 
       if (role === 'admin') {
-        emailInput.value = 'admin@hubine10anos.bnb.gov.br';
-        passInput.value = 'HubineAdmin2026!';
+        emailInput.value = 'admin@hubine.org';
+        passInput.value = 'hubine10anos';
       } else if (role === 'org') {
         emailInput.value = 'organizacao@hubine10anos.bnb.gov.br';
         passInput.value = 'HubineOrg2026!';

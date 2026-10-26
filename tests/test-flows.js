@@ -275,7 +275,7 @@ async function runTests() {
 
     const adminLogin = await request('/api/admin/login', {
       method: 'POST',
-      body: { email: 'admin@hubine10anos.bnb.gov.br', password: 'HubineAdmin2026!' }
+      body: { email: 'admin@hubine.org', password: 'hubine10anos' }
     });
     const adminToken = adminLogin.data.token;
 

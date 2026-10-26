@@ -25,8 +25,8 @@
     {
       "id": "usr_admin_01",
       "name": "Administrador Hubine",
-      "email": "admin@hubine10anos.bnb.gov.br",
-      "passwordHash": "$2b$10$JrzE6RV/4KeZxVbW0GqXOuMJkJDo4wWdrpxasVLzT8K0TYDHdAG0m",
+      "email": "admin@hubine.org",
+      "passwordHash": "$2b$10$ISzd67ZWHYGEeUUn0Qgo1uwO5TtiXaTrjZjtWdpxa5zMrKR4HslOi",
       "role": "administrador",
       "active": true,
       "createdAt": "2026-10-15T16:52:12.223Z"

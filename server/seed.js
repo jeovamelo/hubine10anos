@@ -12,7 +12,7 @@ async function seed() {
     const isProd = process.env.NODE_ENV === 'production';
     if (isProd) {
       console.log('Ambiente de PRODUÇÃO detectado: inicialização segura de credenciais...');
-      const adminEmail = process.env.INITIAL_ADMIN_EMAIL || 'admin@hubine10anos.bnb.gov.br';
+      const adminEmail = process.env.INITIAL_ADMIN_EMAIL || 'admin@hubine.org';
       let adminPass = process.env.INITIAL_ADMIN_PASSWORD;
 
       if (!adminPass) {
@@ -38,8 +38,8 @@ async function seed() {
       await db.addUser({
         id: 'usr_admin_01',
         name: 'Administrador Hubine',
-        email: 'admin@hubine10anos.bnb.gov.br',
-        passwordHash: hashPassword('HubineAdmin2026!'),
+        email: 'admin@hubine.org',
+        passwordHash: hashPassword('hubine10anos'),
         role: 'administrador',
         active: true,
         createdAt: new Date().toISOString()
@@ -66,7 +66,7 @@ async function seed() {
       });
 
       console.log('✅ Usuários de demonstração criados com sucesso:');
-      console.log('   - Administrador: admin@hubine10anos.bnb.gov.br (Senha: HubineAdmin2026!)');
+      console.log('   - Administrador: admin@hubine.org (Senha: hubine10anos)');
       console.log('   - Organização: organizacao@hubine10anos.bnb.gov.br (Senha: HubineOrg2026!)');
       console.log('   - Credenciamento: credenciamento@hubine10anos.bnb.gov.br (Senha: Checkin2026!)');
     }
